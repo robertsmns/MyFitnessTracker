@@ -1,0 +1,19 @@
+# Android
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+*.keystore
+
+# WICHTIG: API-Key nie in Git!
+secrets.properties
+
+# Room Schema
+/app/schemas
+
+secrets.properties

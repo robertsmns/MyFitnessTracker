@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "com.schule.myfitnessTracker.app-mergeDebugResources-55:/layout/item_run.xml",
+        "source": "com.schule.myfitnessTracker.app-main-58:/layout/item_run.xml"
+    },
+    {
+        "merged": "com.schule.myfitnessTracker.app-mergeDebugResources-55:/layout/activity_main.xml",
+        "source": "com.schule.myfitnessTracker.app-main-58:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.schule.myfitnessTracker.app-mergeDebugResources-55:/layout/fragment_dashboard.xml",
+        "source": "com.schule.myfitnessTracker.app-main-58:/layout/fragment_dashboard.xml"
+    },
+    {
+        "merged": "com.schule.myfitnessTracker.app-mergeDebugResources-55:/layout/fragment_map.xml",
+        "source": "com.schule.myfitnessTracker.app-main-58:/layout/fragment_map.xml"
+    }
+]
