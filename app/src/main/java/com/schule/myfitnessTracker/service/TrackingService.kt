@@ -20,6 +20,7 @@ import com.schule.myfitnessTracker.data.db.FitnessDatabase
 import com.schule.myfitnessTracker.data.db.FitnessRepository
 import com.schule.myfitnessTracker.data.model.RoutePoint
 import com.schule.myfitnessTracker.ui.MainActivity
+import com.schule.myfitnessTracker.util.ProfileManager
 import kotlinx.coroutines.*
 import kotlin.math.roundToInt
 
@@ -55,17 +56,20 @@ class TrackingService : LifecycleService(), SensorEventListener {
         val stepCount    = MutableLiveData(0)
         val elapsedSec   = MutableLiveData(0L)
         val lastLocation = MutableLiveData<Location?>(null)
+        val heartRate    = MutableLiveData(0) // Platzhalter für Bluetooth-Brustgurt
     }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private lateinit var sensorManager: SensorManager
     private lateinit var repository: FitnessRepository
+    private lateinit var profileManager: ProfileManager
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private var prevLocation: Location? = null
     private var totalDistance = 0f
+    private var totalElevationGain = 0f
     private var startTime = 0L
     private var timerJob: Job? = null
     private var stepsAtStart = 0
@@ -78,6 +82,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
         super.onCreate()
         val db = FitnessDatabase.getInstance(applicationContext)
         repository = FitnessRepository(db)
+        profileManager = ProfileManager(applicationContext)
 
         setupLocationClient()
         setupSensors()
@@ -133,6 +138,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
         startForeground(NOTIFICATION_ID, buildNotification("GPS wird verbunden…"))
 
         totalDistance = 0f
+        totalElevationGain = 0f
         prevLocation  = null
         startTime     = System.currentTimeMillis()
         stepsAtStart  = totalStepsRaw
@@ -163,7 +169,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
         val runId = currentRunId.value ?: return
         serviceScope.launch {
             val steps    = stepCount.value ?: 0
-            val calories = calculateCalories(totalDistance, steps)
+            val calories = profileManager.calculateCalories(totalDistance)
             val avgSpeed = if (elapsedSec.value!! > 0)
                 (totalDistance / 1000f) / (elapsedSec.value!! / 3600f)
             else 0f
@@ -174,7 +180,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
                 avgSpeedKmh    = avgSpeed,
                 steps          = steps,
                 calories       = calories,
-                elevationGain  = 0f   // Optional: aus RoutePoints berechnen
+                elevationGain  = totalElevationGain
             )
         }
 
@@ -213,12 +219,20 @@ class TrackingService : LifecycleService(), SensorEventListener {
     private fun handleNewLocation(location: Location) {
         lastLocation.postValue(location)
 
-        // Distanz berechnen
+        // Distanz & Höhenmeter berechnen
         prevLocation?.let { prev ->
             val delta = prev.distanceTo(location)
             if (delta > 1f) {   // < 1m ignorieren (GPS-Rauschen)
                 totalDistance += delta
                 distanceM.postValue(totalDistance)
+
+                // Höhenmeter-Zuwachs (nur wenn gestiegen)
+                if (location.hasAltitude() && prev.hasAltitude()) {
+                    val altDelta = location.altitude - prev.altitude
+                    if (altDelta > 0.5) { // Kleiner Filter gegen Rauschen
+                        totalElevationGain += altDelta.toFloat()
+                    }
+                }
             }
         }
         prevLocation = location
@@ -270,17 +284,6 @@ class TrackingService : LifecycleService(), SensorEventListener {
                 elapsedSec.postValue(elapsed)
             }
         }
-    }
-
-    // ── Kalorien-Schätzung ───────────────────────────────────────────────────
-
-    /**
-     * Grobe Schätzung: ~60 kcal pro km (für ~70 kg Person).
-     * Für ein Schulprojekt ausreichend genau.
-     */
-    private fun calculateCalories(distanceMeters: Float, steps: Int): Int {
-        val km = distanceMeters / 1000f
-        return (km * 60).roundToInt()
     }
 
     // ── Benachrichtigung ─────────────────────────────────────────────────────

@@ -4,12 +4,12 @@
         "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\layout\\activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-56:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
-    },
-    {
         "merged": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-56:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
         "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-56:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
     {
         "merged": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-56:\\layout_fragment_map.xml.flat",
@@ -24,16 +24,16 @@
         "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\drawable\\ic_my_location.xml"
     },
     {
+        "merged": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-56:\\drawable_ic_run.xml.flat",
+        "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\drawable\\ic_run.xml"
+    },
+    {
         "merged": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-56:\\drawable_ic_delete.xml.flat",
         "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\drawable\\ic_delete.xml"
     },
     {
         "merged": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-56:\\menu_bottom_nav_menu.xml.flat",
         "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\menu\\bottom_nav_menu.xml"
-    },
-    {
-        "merged": "com.schule.myfitnessTracker.app-debug-56:/drawable_ic_run.xml.flat",
-        "source": "com.schule.myfitnessTracker.app-main-58:/drawable/ic_run.xml"
     },
     {
         "merged": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-56:\\navigation_nav_graph.xml.flat",
@@ -48,6 +48,10 @@
         "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\drawable\\ic_launcher_background.xml"
     },
     {
+        "merged": "com.schule.myfitnessTracker.app-debug-56:/layout_fragment_dashboard.xml.flat",
+        "source": "com.schule.myfitnessTracker.app-main-58:/layout/fragment_dashboard.xml"
+    },
+    {
         "merged": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-56:\\layout_item_run.xml.flat",
         "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\layout\\item_run.xml"
     },
@@ -58,5 +62,9 @@
     {
         "merged": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-56:\\layout_fragment_dashboard.xml.flat",
         "source": "C:\\Users\\Robert Siemens\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-58:\\layout\\fragment_dashboard.xml"
+    },
+    {
+        "merged": "com.schule.myfitnessTracker.app-debug-56:/layout_dialog_elevation_profile.xml.flat",
+        "source": "com.schule.myfitnessTracker.app-main-58:/layout/dialog_elevation_profile.xml"
     }
 ]

@@ -20,7 +20,8 @@ import java.util.*
  *  - Schritte
  */
 class RunHistoryAdapter(
-    private val onDeleteClick: (Run) -> Unit
+    private val onDeleteClick: (Run) -> Unit,
+    private val onItemClick: (Run) -> Unit
 ) : ListAdapter<Run, RunHistoryAdapter.RunViewHolder>(RunDiffCallback()) {
 
     private val dateFormat = SimpleDateFormat("dd.MM.yyyy  HH:mm", Locale.GERMAN)
@@ -38,6 +39,7 @@ class RunHistoryAdapter(
                 tvCalories.text = "${run.calories} kcal"
 
                 btnDelete.setOnClickListener { onDeleteClick(run) }
+                root.setOnClickListener { onItemClick(run) }
             }
         }
     }

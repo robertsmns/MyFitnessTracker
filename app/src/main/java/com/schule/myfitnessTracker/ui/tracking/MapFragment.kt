@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.*
 import com.schule.myfitnessTracker.R
 import com.schule.myfitnessTracker.data.model.RoutePoint
 import com.schule.myfitnessTracker.databinding.FragmentMapBinding
+import com.schule.myfitnessTracker.util.ProfileManager
 
 /**
  * Karten-Fragment – zeigt die live gezeichnete Route auf Google Maps.
@@ -31,6 +32,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private val binding get() = _binding!!
 
     private val viewModel: TrackingViewModel by viewModels()
+    private lateinit var profileManager: ProfileManager
 
     private var map: GoogleMap? = null
     private var polyline: Polyline? = null
@@ -49,6 +51,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        profileManager = ProfileManager(requireContext())
 
         // Google Maps initialisieren
         val mapFragment = childFragmentManager
@@ -144,6 +147,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         // Live-Statistiken in Overlay anzeigen
+        viewModel.distanceM.observe(viewLifecycleOwner) { meters ->
+            val target = profileManager.targetDistanceKm * 1000f
+            if (meters >= target && target > 0) {
+                // Ziel erreicht! (Könnte man optisch hervorheben)
+                binding.tvDistance.setTextColor(Color.parseColor("#4CAF50")) // Grün
+            } else {
+                binding.tvDistance.setTextColor(Color.WHITE)
+            }
+        }
+
         viewModel.distanceFormatted.observe(viewLifecycleOwner) { dist ->
             binding.tvDistance.text = dist
         }
@@ -152,6 +165,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
         viewModel.speedKmh.observe(viewLifecycleOwner) { speed ->
             binding.tvSpeed.text = "%.1f km/h".format(speed)
+        }
+
+        // Standort-Updates für initiale Zentrierung
+        viewModel.lastLocation.observe(viewLifecycleOwner) { location ->
+            if (location != null && isFirstLocationUpdate) {
+                zoomToPosition(location.latitude, location.longitude)
+                isFirstLocationUpdate = false
+            }
         }
     }
 
@@ -196,7 +217,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun centerOnCurrentLocation() {
-        val last = routePoints.lastOrNull() ?: return
-        zoomToPosition(last.latitude, last.longitude)
+        // Erst versuchen wir es über die gezeichnete Route
+        val lastPoint = routePoints.lastOrNull()
+        if (lastPoint != null) {
+            zoomToPosition(lastPoint.latitude, lastPoint.longitude)
+            return
+        }
+
+        // Falls noch keine Route da ist, nehmen wir den letzten bekannten GPS-Standort
+        viewModel.lastLocation.value?.let { location ->
+            zoomToPosition(location.latitude, location.longitude)
+        }
     }
 }

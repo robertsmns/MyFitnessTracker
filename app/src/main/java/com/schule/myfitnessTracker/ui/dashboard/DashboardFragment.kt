@@ -6,14 +6,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.schule.myfitnessTracker.R
 import com.schule.myfitnessTracker.data.db.DailyStats
 import com.schule.myfitnessTracker.data.db.FitnessDatabase
 import com.schule.myfitnessTracker.data.db.FitnessRepository
@@ -30,11 +35,15 @@ import java.util.*
 class DashboardViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = FitnessRepository(FitnessDatabase.getInstance(application))
+    private val profileManager = com.schule.myfitnessTracker.util.ProfileManager(application)
 
     val todayDistance: LiveData<Float>  = repository.todayDistance
     val todaySteps: LiveData<Int>       = repository.todaySteps
     val allRuns: LiveData<List<Run>>    = repository.allRuns
     val avgSpeed: LiveData<Float>       = repository.avgSpeed
+
+    val userName   = androidx.lifecycle.MutableLiveData(profileManager.name)
+    val userWeight = androidx.lifecycle.MutableLiveData(profileManager.weight)
 
     // Wöchentliche Statistiken (für Balkendiagramm)
     private val _weeklyStats = androidx.lifecycle.MutableLiveData<List<DailyStats>>()
@@ -56,6 +65,15 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
             repository.deleteRun(run)
         }
     }
+
+    fun updateProfile(name: String, weight: Float) {
+        profileManager.name = name
+        profileManager.weight = weight
+        userName.value = name
+        userWeight.value = weight
+    }
+
+    suspend fun getRoutePoints(runId: Long) = repository.getRouteForRun(runId)
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -90,6 +108,7 @@ class DashboardFragment : Fragment() {
 
         setupRecyclerView()
         setupChart()
+        setupProfile()
         observeViewModel()
     }
 
@@ -101,8 +120,96 @@ class DashboardFragment : Fragment() {
     // ── RecyclerView ──────────────────────────────────────────────────────────
 
     private fun setupRecyclerView() {
-        runAdapter = RunHistoryAdapter { run -> viewModel.deleteRun(run) }
+        runAdapter = RunHistoryAdapter(
+            onDeleteClick = { run -> viewModel.deleteRun(run) },
+            onItemClick = { run -> showElevationProfile(run) }
+        )
         binding.rvRunHistory.adapter = runAdapter
+    }
+
+    private fun setupProfile() {
+        binding.cardProfile.setOnClickListener {
+            showEditProfileDialog()
+        }
+    }
+
+    private fun showEditProfileDialog() {
+        val profileManager = com.schule.myfitnessTracker.util.ProfileManager(requireContext())
+        val layout = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(60, 20, 60, 20)
+        }
+
+        val nameInput = EditText(context).apply {
+            hint = "Name"
+            setText(viewModel.userName.value)
+        }
+        val weightInput = EditText(context).apply {
+            hint = "Gewicht (kg)"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+            setText(viewModel.userWeight.value.toString())
+        }
+        val targetInput = EditText(context).apply {
+            hint = "Ziel-Distanz (km)"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+            setText(profileManager.targetDistanceKm.toString())
+        }
+
+        layout.addView(nameInput)
+        layout.addView(weightInput)
+        layout.addView(targetInput)
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Profil & Ziele")
+            .setView(layout)
+            .setPositiveButton("Speichern") { _, _ ->
+                val name = nameInput.text.toString()
+                val weight = weightInput.text.toString().toFloatOrNull() ?: 75f
+                val target = targetInput.text.toString().toFloatOrNull() ?: 5f
+                
+                viewModel.updateProfile(name, weight)
+                profileManager.targetDistanceKm = target
+            }
+            .setNegativeButton("Abbrechen", null)
+            .show()
+    }
+
+    private fun showElevationProfile(run: Run) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_elevation_profile, null)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        val chart = dialogView.findViewById<com.github.mikephil.charting.charts.LineChart>(R.id.elevationChart)
+        val infoText = dialogView.findViewById<android.widget.TextView>(R.id.tvElevationInfo)
+        val btnClose = dialogView.findViewById<View>(R.id.btnClose)
+
+        infoText.text = "Gesamtanstieg: %.1f m".format(run.elevationGain)
+        btnClose.setOnClickListener { dialog.dismiss() }
+
+        // Punkte laden und Diagramm füllen
+        lifecycleScope.launch {
+            val points = viewModel.getRoutePoints(run.id)
+            if (points.isNotEmpty()) {
+                val entries = points.mapIndexed { i, p -> Entry(i.toFloat(), p.altitude.toFloat()) }
+                val dataSet = LineDataSet(entries, "Höhe (m)").apply {
+                    color = Color.parseColor("#FF9800")
+                    setDrawCircles(false)
+                    setDrawValues(false)
+                    setDrawFilled(true)
+                    fillColor = Color.parseColor("#FF9800")
+                    fillAlpha = 50
+                    mode = LineDataSet.Mode.CUBIC_BEZIER
+                }
+                chart.data = LineData(dataSet)
+                chart.description.isEnabled = false
+                chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+                chart.axisRight.isEnabled = false
+                chart.invalidate()
+            }
+        }
+
+        dialog.show()
     }
 
     // ── Diagramm ──────────────────────────────────────────────────────────────
@@ -197,6 +304,14 @@ class DashboardFragment : Fragment() {
         // Wöchentliches Diagramm
         viewModel.weeklyStats.observe(viewLifecycleOwner) { stats ->
             updateChart(stats)
+        }
+
+        // Profil
+        viewModel.userName.observe(viewLifecycleOwner) { name ->
+            binding.tvProfileName.text = if (name.isNullOrEmpty()) "Hallo Sportler!" else "Hallo $name!"
+        }
+        viewModel.userWeight.observe(viewLifecycleOwner) { weight ->
+            binding.tvProfileWeight.text = "$weight kg"
         }
     }
 }

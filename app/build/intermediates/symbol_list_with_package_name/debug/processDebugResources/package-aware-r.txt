@@ -3306,6 +3306,7 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id btnClose
 id btnContainer
 id btn_center
 id btn_delete
@@ -3315,6 +3316,7 @@ id buttonPanel
 id cache_measures
 id callMeasure
 id cancel_button
+id card_profile
 id carryVelocity
 id center
 id centerCrop
@@ -3389,6 +3391,7 @@ id edge
 id edit_query
 id edit_text_id
 id elastic
+id elevationChart
 id embed
 id end
 id endToStart
@@ -3707,12 +3710,15 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id tvElevationInfo
 id tv_avg_speed
 id tv_calories
 id tv_date
 id tv_distance
 id tv_duration
 id tv_no_runs
+id tv_profile_name
+id tv_profile_weight
 id tv_speed
 id tv_steps
 id tv_steps_goal
@@ -3877,6 +3883,7 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout dialog_elevation_profile
 layout fragment_dashboard
 layout fragment_map
 layout ime_base_split_test_activity

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.github.mikephil.charting.charts.BarChart;
+import com.google.android.material.card.MaterialCardView;
 import com.schule.myfitnessTracker.R;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -24,6 +25,9 @@ public final class FragmentDashboardBinding implements ViewBinding {
 
   @NonNull
   public final BarChart barChart;
+
+  @NonNull
+  public final MaterialCardView cardProfile;
 
   @NonNull
   public final ProgressBar progressSteps;
@@ -38,6 +42,12 @@ public final class FragmentDashboardBinding implements ViewBinding {
   public final TextView tvNoRuns;
 
   @NonNull
+  public final TextView tvProfileName;
+
+  @NonNull
+  public final TextView tvProfileWeight;
+
+  @NonNull
   public final TextView tvStepsGoal;
 
   @NonNull
@@ -50,16 +60,20 @@ public final class FragmentDashboardBinding implements ViewBinding {
   public final TextView tvTotalKm;
 
   private FragmentDashboardBinding(@NonNull ScrollView rootView, @NonNull BarChart barChart,
-      @NonNull ProgressBar progressSteps, @NonNull RecyclerView rvRunHistory,
-      @NonNull TextView tvAvgSpeed, @NonNull TextView tvNoRuns, @NonNull TextView tvStepsGoal,
-      @NonNull TextView tvTodayDistance, @NonNull TextView tvTodaySteps,
-      @NonNull TextView tvTotalKm) {
+      @NonNull MaterialCardView cardProfile, @NonNull ProgressBar progressSteps,
+      @NonNull RecyclerView rvRunHistory, @NonNull TextView tvAvgSpeed, @NonNull TextView tvNoRuns,
+      @NonNull TextView tvProfileName, @NonNull TextView tvProfileWeight,
+      @NonNull TextView tvStepsGoal, @NonNull TextView tvTodayDistance,
+      @NonNull TextView tvTodaySteps, @NonNull TextView tvTotalKm) {
     this.rootView = rootView;
     this.barChart = barChart;
+    this.cardProfile = cardProfile;
     this.progressSteps = progressSteps;
     this.rvRunHistory = rvRunHistory;
     this.tvAvgSpeed = tvAvgSpeed;
     this.tvNoRuns = tvNoRuns;
+    this.tvProfileName = tvProfileName;
+    this.tvProfileWeight = tvProfileWeight;
     this.tvStepsGoal = tvStepsGoal;
     this.tvTodayDistance = tvTodayDistance;
     this.tvTodaySteps = tvTodaySteps;
@@ -99,6 +113,12 @@ public final class FragmentDashboardBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.card_profile;
+      MaterialCardView cardProfile = ViewBindings.findChildViewById(rootView, id);
+      if (cardProfile == null) {
+        break missingId;
+      }
+
       id = R.id.progress_steps;
       ProgressBar progressSteps = ViewBindings.findChildViewById(rootView, id);
       if (progressSteps == null) {
@@ -120,6 +140,18 @@ public final class FragmentDashboardBinding implements ViewBinding {
       id = R.id.tv_no_runs;
       TextView tvNoRuns = ViewBindings.findChildViewById(rootView, id);
       if (tvNoRuns == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_profile_name;
+      TextView tvProfileName = ViewBindings.findChildViewById(rootView, id);
+      if (tvProfileName == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_profile_weight;
+      TextView tvProfileWeight = ViewBindings.findChildViewById(rootView, id);
+      if (tvProfileWeight == null) {
         break missingId;
       }
 
@@ -147,9 +179,9 @@ public final class FragmentDashboardBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentDashboardBinding((ScrollView) rootView, barChart, progressSteps,
-          rvRunHistory, tvAvgSpeed, tvNoRuns, tvStepsGoal, tvTodayDistance, tvTodaySteps,
-          tvTotalKm);
+      return new FragmentDashboardBinding((ScrollView) rootView, barChart, cardProfile,
+          progressSteps, rvRunHistory, tvAvgSpeed, tvNoRuns, tvProfileName, tvProfileWeight,
+          tvStepsGoal, tvTodayDistance, tvTodaySteps, tvTotalKm);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
