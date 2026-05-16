@@ -9,7 +9,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.github.mikephil.charting.charts.BarChart;
@@ -30,10 +29,10 @@ public final class FragmentDashboardBinding implements ViewBinding {
   public final MaterialCardView cardProfile;
 
   @NonNull
-  public final ProgressBar progressSteps;
+  public final ItemRunBinding lastRunLayout;
 
   @NonNull
-  public final RecyclerView rvRunHistory;
+  public final ProgressBar progressSteps;
 
   @NonNull
   public final TextView tvAvgSpeed;
@@ -51,6 +50,9 @@ public final class FragmentDashboardBinding implements ViewBinding {
   public final TextView tvStepsGoal;
 
   @NonNull
+  public final TextView tvTodayCalories;
+
+  @NonNull
   public final TextView tvTodayDistance;
 
   @NonNull
@@ -60,21 +62,23 @@ public final class FragmentDashboardBinding implements ViewBinding {
   public final TextView tvTotalKm;
 
   private FragmentDashboardBinding(@NonNull ScrollView rootView, @NonNull BarChart barChart,
-      @NonNull MaterialCardView cardProfile, @NonNull ProgressBar progressSteps,
-      @NonNull RecyclerView rvRunHistory, @NonNull TextView tvAvgSpeed, @NonNull TextView tvNoRuns,
+      @NonNull MaterialCardView cardProfile, @NonNull ItemRunBinding lastRunLayout,
+      @NonNull ProgressBar progressSteps, @NonNull TextView tvAvgSpeed, @NonNull TextView tvNoRuns,
       @NonNull TextView tvProfileName, @NonNull TextView tvProfileWeight,
-      @NonNull TextView tvStepsGoal, @NonNull TextView tvTodayDistance,
-      @NonNull TextView tvTodaySteps, @NonNull TextView tvTotalKm) {
+      @NonNull TextView tvStepsGoal, @NonNull TextView tvTodayCalories,
+      @NonNull TextView tvTodayDistance, @NonNull TextView tvTodaySteps,
+      @NonNull TextView tvTotalKm) {
     this.rootView = rootView;
     this.barChart = barChart;
     this.cardProfile = cardProfile;
+    this.lastRunLayout = lastRunLayout;
     this.progressSteps = progressSteps;
-    this.rvRunHistory = rvRunHistory;
     this.tvAvgSpeed = tvAvgSpeed;
     this.tvNoRuns = tvNoRuns;
     this.tvProfileName = tvProfileName;
     this.tvProfileWeight = tvProfileWeight;
     this.tvStepsGoal = tvStepsGoal;
+    this.tvTodayCalories = tvTodayCalories;
     this.tvTodayDistance = tvTodayDistance;
     this.tvTodaySteps = tvTodaySteps;
     this.tvTotalKm = tvTotalKm;
@@ -119,15 +123,16 @@ public final class FragmentDashboardBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.lastRunLayout;
+      View lastRunLayout = ViewBindings.findChildViewById(rootView, id);
+      if (lastRunLayout == null) {
+        break missingId;
+      }
+      ItemRunBinding binding_lastRunLayout = ItemRunBinding.bind(lastRunLayout);
+
       id = R.id.progress_steps;
       ProgressBar progressSteps = ViewBindings.findChildViewById(rootView, id);
       if (progressSteps == null) {
-        break missingId;
-      }
-
-      id = R.id.rv_run_history;
-      RecyclerView rvRunHistory = ViewBindings.findChildViewById(rootView, id);
-      if (rvRunHistory == null) {
         break missingId;
       }
 
@@ -161,6 +166,12 @@ public final class FragmentDashboardBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tv_today_calories;
+      TextView tvTodayCalories = ViewBindings.findChildViewById(rootView, id);
+      if (tvTodayCalories == null) {
+        break missingId;
+      }
+
       id = R.id.tv_today_distance;
       TextView tvTodayDistance = ViewBindings.findChildViewById(rootView, id);
       if (tvTodayDistance == null) {
@@ -180,8 +191,8 @@ public final class FragmentDashboardBinding implements ViewBinding {
       }
 
       return new FragmentDashboardBinding((ScrollView) rootView, barChart, cardProfile,
-          progressSteps, rvRunHistory, tvAvgSpeed, tvNoRuns, tvProfileName, tvProfileWeight,
-          tvStepsGoal, tvTodayDistance, tvTodaySteps, tvTotalKm);
+          binding_lastRunLayout, progressSteps, tvAvgSpeed, tvNoRuns, tvProfileName,
+          tvProfileWeight, tvStepsGoal, tvTodayCalories, tvTodayDistance, tvTodaySteps, tvTotalKm);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

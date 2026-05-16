@@ -2158,6 +2158,7 @@ color mtrl_textinput_disabled_color
 color mtrl_textinput_filled_box_default_background_color
 color mtrl_textinput_focused_box_stroke_color
 color mtrl_textinput_hovered_box_stroke_color
+color nav_item_tint
 color notification_action_color_filter
 color notification_icon_bg_color
 color on_surface
@@ -3114,6 +3115,7 @@ drawable ic_clear_black_24
 drawable ic_clock_black_24dp
 drawable ic_dashboard
 drawable ic_delete
+drawable ic_history
 drawable ic_keyboard_black_24dp
 drawable ic_launcher_background
 drawable ic_launcher_foreground
@@ -3308,6 +3310,7 @@ id bounceEnd
 id bounceStart
 id btnClose
 id btnContainer
+id btnShareGpx
 id btn_center
 id btn_delete
 id btn_pause
@@ -3366,6 +3369,7 @@ id design_menu_item_action_area
 id design_menu_item_action_area_stub
 id design_menu_item_text
 id design_navigation_view
+id detailMap
 id dialog_button
 id dimensions
 id direct
@@ -3428,6 +3432,7 @@ id groups
 id header_title
 id hide_ime_id
 id hideable
+id historyFragment
 id home
 id homeAsUp
 id honorRequest
@@ -3451,6 +3456,7 @@ id item_touch_helper_previous_elevation
 id jumpToEnd
 id jumpToStart
 id labeled
+id lastRunLayout
 id layout
 id left
 id leftToRight
@@ -3711,6 +3717,7 @@ id transition_scene_layoutid_cache
 id transition_transform
 id triangle
 id tvElevationInfo
+id tvTitle
 id tv_avg_speed
 id tv_calories
 id tv_date
@@ -3722,7 +3729,9 @@ id tv_profile_weight
 id tv_speed
 id tv_steps
 id tv_steps_goal
+id tv_time_range
 id tv_timer
+id tv_today_calories
 id tv_today_distance
 id tv_today_steps
 id tv_total_km
@@ -3884,7 +3893,9 @@ layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
 layout dialog_elevation_profile
+layout dialog_run_details
 layout fragment_dashboard
+layout fragment_history
 layout fragment_map
 layout ime_base_split_test_activity
 layout ime_secondary_split_test_activity
@@ -3955,6 +3966,7 @@ mipmap ic_launcher
 mipmap ic_launcher_round
 navigation nav_graph
 plurals mtrl_badge_content_description
+raw map_style_dark
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description
@@ -5441,3 +5453,4 @@ styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
 styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration ifTagNotSet ifTagSet motionInterpolator motionTarget onStateTransition pathMotionArc setsTag transitionDisable upDuration viewTransitionMode
 styleable include constraintSet
+xml file_paths

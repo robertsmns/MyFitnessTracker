@@ -23,7 +23,7 @@
     <string name="stop_tracking">STOP</string>
     <string name="today_distance">Heute gelaufen</string>
     <string name="weekly_chart">Diese Woche</string>
-    <style name="Theme.MyFitnessTracker" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.MyFitnessTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="colorSecondary">@color/secondary</item>

@@ -34,6 +34,14 @@ interface RunDao {
     """)
     fun getTodayDistanceLive(): LiveData<Float>
 
+    /** Heute verbrannte Kalorien */
+    @Query("""
+        SELECT COALESCE(SUM(calories), 0) 
+        FROM runs 
+        WHERE DATE(startTime / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime')
+    """)
+    fun getTodayCaloriesLive(): LiveData<Int>
+
     /** Aktiven Run laden (isActive = true) */
     @Query("SELECT * FROM runs WHERE isActive = 1 LIMIT 1")
     suspend fun getActiveRun(): Run?

@@ -72,6 +72,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
+        // Dark Mode für Google Maps anwenden, falls System auf Dark Mode steht
+        val isDarkMode = (resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == 
+                         android.content.res.Configuration.UI_MODE_NIGHT_YES
+        if (isDarkMode) {
+            try {
+                googleMap.setMapStyle(com.google.android.gms.maps.model.MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style_dark))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
         // Karten-Stil
         map?.apply {
             mapType = GoogleMap.MAP_TYPE_NORMAL
@@ -114,7 +125,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun observeViewModel() {
-        // Tracking-Status → Button-Beschriftung
+        // Tracking-Status → Button-Beschriftung & Reset UI
         viewModel.isTracking.observe(viewLifecycleOwner) { tracking ->
             binding.btnStartStop.text = if (tracking) "STOP" else "START"
             binding.btnStartStop.setBackgroundColor(
@@ -122,10 +133,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 else Color.parseColor("#4CAF50")            // Grün
             )
             binding.btnPause.visibility = if (tracking) View.VISIBLE else View.GONE
+            
             if (!tracking) {
                 isFirstLocationUpdate = true
                 routePoints.clear()
                 redrawRoute()
+                
+                // Overlay-Werte sofort auf 0 setzen
+                binding.tvDistance.text = "0 m"
+                binding.tvTimer.text = "00:00"
+                binding.tvSpeed.text = "0.0 km/h"
+                binding.tvDistance.setTextColor(Color.WHITE)
             }
         }
 
@@ -163,6 +181,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         viewModel.timerFormatted.observe(viewLifecycleOwner) { time ->
             binding.tvTimer.text = time
         }
+
+        viewModel.isPaused.observe(viewLifecycleOwner) { paused ->
+            binding.btnPause.text = if (paused) "WEITER" else "PAUSE"
+            binding.btnPause.setBackgroundColor(
+                if (paused) Color.parseColor("#4CAF50") // Grün zum Weitermachen
+                else Color.parseColor("#FF9800")       // Orange für Pause
+            )
+        }
+
         viewModel.speedKmh.observe(viewLifecycleOwner) { speed ->
             binding.tvSpeed.text = "%.1f km/h".format(speed)
         }

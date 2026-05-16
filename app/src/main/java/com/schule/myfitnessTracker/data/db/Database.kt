@@ -56,6 +56,7 @@ class FitnessRepository(private val db: FitnessDatabase) {
     val allRuns = runDao.getAllRuns()
     val todayDistance = runDao.getTodayDistanceLive()
     val todaySteps = runDao.getTodayStepsLive()
+    val todayCalories = runDao.getTodayCaloriesLive()
     val lastRun = runDao.getLastRun()
     val avgSpeed = runDao.getAvgSpeedLive()
 

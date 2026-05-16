@@ -56,6 +56,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
         val stepCount    = MutableLiveData(0)
         val elapsedSec   = MutableLiveData(0L)
         val lastLocation = MutableLiveData<Location?>(null)
+        val isPaused     = MutableLiveData(false)
         val heartRate    = MutableLiveData(0) // Platzhalter für Bluetooth-Brustgurt
     }
 
@@ -74,7 +75,6 @@ class TrackingService : LifecycleService(), SensorEventListener {
     private var timerJob: Job? = null
     private var stepsAtStart = 0
     private var totalStepsRaw = 0
-    private var isPaused = false
 
     // ── Lifecycle ────────────────────────────────────────────────────────────
 
@@ -113,7 +113,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
-                if (!isPaused) {
+                if (isPaused.value != true) {
                     result.lastLocation?.let { location ->
                         handleNewLocation(location)
                     }
@@ -142,7 +142,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
         prevLocation  = null
         startTime     = System.currentTimeMillis()
         stepsAtStart  = totalStepsRaw
-        isPaused      = false
+        isPaused.postValue(false)
 
         isTracking.postValue(true)
         distanceM.postValue(0f)
@@ -160,39 +160,68 @@ class TrackingService : LifecycleService(), SensorEventListener {
     }
 
     private fun stopTracking() {
-        isPaused = false
+        isPaused.postValue(false)
         isTracking.postValue(false)
         timerJob?.cancel()
         fusedLocationClient.removeLocationUpdates(locationCallback)
 
         // Run in DB abschließen
         val runId = currentRunId.value ?: return
+        val finalDistance = totalDistance
+        val finalSteps = stepCount.value ?: 0
+        val finalElapsed = elapsedSec.value ?: 0L
+        val finalElevation = totalElevationGain
+
         serviceScope.launch {
-            val steps    = stepCount.value ?: 0
-            val calories = profileManager.calculateCalories(totalDistance)
-            val avgSpeed = if (elapsedSec.value!! > 0)
-                (totalDistance / 1000f) / (elapsedSec.value!! / 3600f)
+            val calories = profileManager.calculateCalories(finalDistance)
+            val avgSpeed = if (finalElapsed > 0)
+                (finalDistance / 1000f) / (finalElapsed / 3600f)
             else 0f
 
             repository.finishRun(
                 runId          = runId,
-                distanceMeters = totalDistance,
+                distanceMeters = finalDistance,
                 avgSpeedKmh    = avgSpeed,
-                steps          = steps,
+                steps          = finalSteps,
                 calories       = calories,
-                elevationGain  = totalElevationGain
+                elevationGain  = finalElevation
             )
+
+            // Werte nach dem Speichern zurücksetzen
+            withContext(Dispatchers.Main) {
+                resetTrackingValues()
+            }
         }
 
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
 
+    private fun resetTrackingValues() {
+        currentRunId.postValue(null)
+        distanceM.postValue(0f)
+        speedKmh.postValue(0f)
+        stepCount.postValue(0)
+        elapsedSec.postValue(0L)
+        lastLocation.postValue(null)
+        totalDistance = 0f
+        totalStepsRaw = 0
+        stepsAtStart = 0
+        totalElevationGain = 0f
+        startTime = 0L
+        prevLocation = null
+    }
+
     private fun pauseTracking() {
-        isPaused = !isPaused
-        if (isPaused) {
+        val currentlyPaused = isPaused.value ?: false
+        isPaused.postValue(!currentlyPaused)
+        
+        if (!currentlyPaused) {
+            // Pausieren
             timerJob?.cancel()
         } else {
+            // Fortsetzen - Startzeit anpassen, um Pause zu "überspringen"
+            // (Einfachheitshalber starten wir den Timer-Job neu)
             startTimer()
         }
     }
@@ -217,6 +246,8 @@ class TrackingService : LifecycleService(), SensorEventListener {
     }
 
     private fun handleNewLocation(location: Location) {
+        if (isPaused.value == true) return
+        
         lastLocation.postValue(location)
 
         // Distanz & Höhenmeter berechnen
@@ -277,11 +308,14 @@ class TrackingService : LifecycleService(), SensorEventListener {
     // ── Timer ────────────────────────────────────────────────────────────────
 
     private fun startTimer() {
+        timerJob?.cancel() // Sicherstellen, dass kein alter Job läuft
         timerJob = serviceScope.launch {
             while (isActive) {
                 delay(1000L)
-                val elapsed = (System.currentTimeMillis() - startTime) / 1000L
-                elapsedSec.postValue(elapsed)
+                if (isPaused.value != true) {
+                    val elapsed = elapsedSec.value ?: 0L
+                    elapsedSec.postValue(elapsed + 1)
+                }
             }
         }
     }

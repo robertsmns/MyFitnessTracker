@@ -26,7 +26,7 @@ class ProfileManager(context: Context) {
 
     /**
      * Berechnet die verbrannten Kalorien basierend auf Distanz und Gewicht.
-     * Faustformel: kcal = Gewicht (kg) * Distanz (km) * Faktor (ca. 0.9 für Laufen)
+     * Formel: kcal = Strecke (km) * Gewicht (kg) * Aktivitätsfaktor (ca. 0.9 für Laufen)
      */
     fun calculateCalories(distanceMeters: Float): Int {
         val km = distanceMeters / 1000f

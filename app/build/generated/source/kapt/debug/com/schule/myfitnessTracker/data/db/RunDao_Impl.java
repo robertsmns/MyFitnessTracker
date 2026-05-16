@@ -257,6 +257,45 @@ public final class RunDao_Impl implements RunDao {
   }
 
   @Override
+  public LiveData<Integer> getTodayCaloriesLive() {
+    final String _sql = "\n"
+            + "        SELECT COALESCE(SUM(calories), 0) \n"
+            + "        FROM runs \n"
+            + "        WHERE DATE(startTime / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime')\n"
+            + "    ";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    return __db.getInvalidationTracker().createLiveData(new String[] {"runs"}, false, new Callable<Integer>() {
+      @Override
+      @Nullable
+      public Integer call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final Integer _result;
+          if (_cursor.moveToFirst()) {
+            final Integer _tmp;
+            if (_cursor.isNull(0)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getInt(0);
+            }
+            _result = _tmp;
+          } else {
+            _result = null;
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+        }
+      }
+
+      @Override
+      protected void finalize() {
+        _statement.release();
+      }
+    });
+  }
+
+  @Override
   public Object getActiveRun(final Continuation<? super Run> $completion) {
     final String _sql = "SELECT * FROM runs WHERE isActive = 1 LIMIT 1";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);

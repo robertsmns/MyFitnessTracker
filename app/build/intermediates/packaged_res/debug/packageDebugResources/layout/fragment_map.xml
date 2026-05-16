@@ -46,7 +46,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ZEIT"
+                    android:text="ZEIT (System-Uhr)"
                     android:textColor="#AAFFFFFF"
                     android:textSize="10sp" />
 
@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="DISTANZ"
+                    android:text="DISTANZ (GPS)"
                     android:textColor="#AAFFFFFF"
                     android:textSize="10sp" />
 
@@ -96,7 +96,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TEMPO"
+                    android:text="TEMPO (GPS)"
                     android:textColor="#AAFFFFFF"
                     android:textSize="10sp" />
 

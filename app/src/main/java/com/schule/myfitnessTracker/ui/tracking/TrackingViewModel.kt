@@ -32,6 +32,7 @@ class TrackingViewModel(application: Application) : AndroidViewModel(application
     val stepCount    = TrackingService.stepCount
     val elapsedSec   = TrackingService.elapsedSec
     val lastLocation = TrackingService.lastLocation
+    val isPaused     = TrackingService.isPaused
 
     // ── Formatierte Werte ─────────────────────────────────────────────────────
 

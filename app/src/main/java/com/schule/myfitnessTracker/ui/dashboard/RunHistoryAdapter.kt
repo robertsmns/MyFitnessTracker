@@ -24,15 +24,21 @@ class RunHistoryAdapter(
     private val onItemClick: (Run) -> Unit
 ) : ListAdapter<Run, RunHistoryAdapter.RunViewHolder>(RunDiffCallback()) {
 
-    private val dateFormat = SimpleDateFormat("dd.MM.yyyy  HH:mm", Locale.GERMAN)
+    private val timeFormat = SimpleDateFormat("HH:mm", Locale.GERMAN)
+    private val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
 
     inner class RunViewHolder(private val binding: ItemRunBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(run: Run) {
             binding.apply {
-                tvDate.text     = dateFormat.format(Date(run.startTime))
-                tvDistance.text = run.distanceKm
+                val start = timeFormat.format(Date(run.startTime))
+                val end = if (run.endTime > 0) timeFormat.format(Date(run.endTime)) else "--:--"
+                val date = dateFormat.format(Date(run.startTime))
+                
+                tvDate.text     = "$date"
+                tvTimeRange.text = "$start - $end"
+                tvDistance.text = run.distanceFormatted
                 tvDuration.text = run.durationFormatted
                 tvSpeed.text    = "⌀ %.1f km/h".format(run.avgSpeedKmh)
                 tvSteps.text    = "%,d Schritte".format(run.steps)

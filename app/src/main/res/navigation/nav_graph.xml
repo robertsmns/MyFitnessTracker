@@ -17,4 +17,10 @@
         android:name="com.schule.myfitnessTracker.ui.tracking.MapFragment"
         android:label="Karte" />
 
+    <!-- Trainings-Historie -->
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.schule.myfitnessTracker.ui.history.HistoryFragment"
+        android:label="Historie" />
+
 </navigation>

@@ -51,9 +51,10 @@ data class Run(
             return "%02d:%02d".format(minutes, seconds)
         }
 
-    /** Distanz in km (2 Nachkommastellen) */
-    val distanceKm: String
-        get() = "%.2f km".format(distanceMeters / 1000f)
+    /** Distanz formatiert (m oder km) */
+    val distanceFormatted: String
+        get() = if (distanceMeters < 1000f) "%.0f m".format(distanceMeters)
+                else "%.2f km".format(distanceMeters / 1000f)
 }
 
 /**

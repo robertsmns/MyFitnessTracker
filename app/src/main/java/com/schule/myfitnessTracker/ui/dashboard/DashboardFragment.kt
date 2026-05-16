@@ -24,6 +24,7 @@ import com.schule.myfitnessTracker.data.db.FitnessDatabase
 import com.schule.myfitnessTracker.data.db.FitnessRepository
 import com.schule.myfitnessTracker.data.model.Run
 import com.schule.myfitnessTracker.databinding.FragmentDashboardBinding
+import com.schule.myfitnessTracker.ui.history.RunDetailsDialogFragment
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,10 +37,12 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val repository = FitnessRepository(FitnessDatabase.getInstance(application))
     private val profileManager = com.schule.myfitnessTracker.util.ProfileManager(application)
+    private val mockDataManager = com.schule.myfitnessTracker.util.MockDataManager(repository)
 
     val todayDistance: LiveData<Float>  = repository.todayDistance
     val todaySteps: LiveData<Int>       = repository.todaySteps
-    val allRuns: LiveData<List<Run>>    = repository.allRuns
+    val todayCalories: LiveData<Int>    = repository.todayCalories
+    val lastRun: LiveData<Run?>         = repository.lastRun
     val avgSpeed: LiveData<Float>       = repository.avgSpeed
 
     val userName   = androidx.lifecycle.MutableLiveData(profileManager.name)
@@ -71,6 +74,12 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         profileManager.weight = weight
         userName.value = name
         userWeight.value = weight
+    }
+
+    fun loadMockData() {
+        viewModelScope.launch {
+            mockDataManager.insertSimulationData()
+        }
     }
 
     suspend fun getRoutePoints(runId: Long) = repository.getRouteForRun(runId)
@@ -106,7 +115,6 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
         setupChart()
         setupProfile()
         observeViewModel()
@@ -117,15 +125,7 @@ class DashboardFragment : Fragment() {
         _binding = null
     }
 
-    // ── RecyclerView ──────────────────────────────────────────────────────────
-
-    private fun setupRecyclerView() {
-        runAdapter = RunHistoryAdapter(
-            onDeleteClick = { run -> viewModel.deleteRun(run) },
-            onItemClick = { run -> showElevationProfile(run) }
-        )
-        binding.rvRunHistory.adapter = runAdapter
-    }
+    // RecyclerView entfernt, da wir nur noch das letzte Training zeigen
 
     private fun setupProfile() {
         binding.cardProfile.setOnClickListener {
@@ -170,75 +170,62 @@ class DashboardFragment : Fragment() {
                 viewModel.updateProfile(name, weight)
                 profileManager.targetDistanceKm = target
             }
+            .setNeutralButton("Demo-Daten laden") { _, _ ->
+                viewModel.loadMockData()
+            }
             .setNegativeButton("Abbrechen", null)
             .show()
     }
 
-    private fun showElevationProfile(run: Run) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_elevation_profile, null)
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .create()
-
-        val chart = dialogView.findViewById<com.github.mikephil.charting.charts.LineChart>(R.id.elevationChart)
-        val infoText = dialogView.findViewById<android.widget.TextView>(R.id.tvElevationInfo)
-        val btnClose = dialogView.findViewById<View>(R.id.btnClose)
-
-        infoText.text = "Gesamtanstieg: %.1f m".format(run.elevationGain)
-        btnClose.setOnClickListener { dialog.dismiss() }
-
-        // Punkte laden und Diagramm füllen
-        lifecycleScope.launch {
-            val points = viewModel.getRoutePoints(run.id)
-            if (points.isNotEmpty()) {
-                val entries = points.mapIndexed { i, p -> Entry(i.toFloat(), p.altitude.toFloat()) }
-                val dataSet = LineDataSet(entries, "Höhe (m)").apply {
-                    color = Color.parseColor("#FF9800")
-                    setDrawCircles(false)
-                    setDrawValues(false)
-                    setDrawFilled(true)
-                    fillColor = Color.parseColor("#FF9800")
-                    fillAlpha = 50
-                    mode = LineDataSet.Mode.CUBIC_BEZIER
-                }
-                chart.data = LineData(dataSet)
-                chart.description.isEnabled = false
-                chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-                chart.axisRight.isEnabled = false
-                chart.invalidate()
-            }
-        }
-
-        dialog.show()
-    }
+    // Die Funktion showElevationProfile kann komplett gelöscht werden, da wir die Höhenmeter nicht mehr wollen
 
     // ── Diagramm ──────────────────────────────────────────────────────────────
 
     private fun setupChart() {
         binding.barChart.apply {
             description.isEnabled = false
-            legend.isEnabled = false
             setDrawGridBackground(false)
             setFitBars(true)
-            animateY(800)
+            animateY(1000)
+            extraBottomOffset = 10f
+
+            legend.apply {
+                isEnabled = true
+                verticalAlignment = com.github.mikephil.charting.components.Legend.LegendVerticalAlignment.TOP
+                horizontalAlignment = com.github.mikephil.charting.components.Legend.LegendHorizontalAlignment.RIGHT
+                orientation = com.github.mikephil.charting.components.Legend.LegendOrientation.HORIZONTAL
+                setDrawInside(false)
+                textColor = Color.parseColor("#666666")
+            }
 
             xAxis.apply {
                 position = XAxis.XAxisPosition.BOTTOM
                 setDrawGridLines(false)
                 granularity = 1f
                 textColor = Color.parseColor("#666666")
+                setDrawAxisLine(true)
             }
             axisLeft.apply {
                 setDrawGridLines(true)
                 axisMinimum = 0f
                 textColor = Color.parseColor("#666666")
+                gridColor = Color.parseColor("#EEEEEE")
+                // Dynamische Einheit an der Achse
+                valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return if (value >= 1f) "%.1f km".format(value) else "%.0f m".format(value * 1000)
+                    }
+                }
             }
             axisRight.isEnabled = false
         }
     }
 
     private fun updateChart(stats: List<DailyStats>) {
-        if (stats.isEmpty()) return
+        if (stats.isEmpty()) {
+            binding.barChart.clear()
+            return
+        }
 
         // Letzte 7 Tage mit Standardwert 0 auffüllen
         val dayFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -258,10 +245,18 @@ class DashboardFragment : Fragment() {
         }
         val labels = filledStats.map { it.first }
 
-        val dataSet = BarDataSet(entries, "km").apply {
+        val dataSet = BarDataSet(entries, "Distanz pro Tag").apply {
             color = Color.parseColor("#2196F3")
             valueTextColor = Color.parseColor("#333333")
             valueTextSize = 10f
+            // Werte über den Balken formatieren (m oder km)
+            valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return if (value <= 0f) "" 
+                           else if (value < 1f) "%.0f m".format(value * 1000)
+                           else "%.1f km".format(value)
+                }
+            }
         }
 
         binding.barChart.data = BarData(dataSet)
@@ -274,31 +269,66 @@ class DashboardFragment : Fragment() {
     private fun observeViewModel() {
         // Tages-Stats
         viewModel.todayDistance.observe(viewLifecycleOwner) { distM ->
-            val km = distM / 1000f
-            binding.tvTodayDistance.text = "%.2f".format(km)
+            val meters = distM ?: 0f
+            if (meters < 1000f) {
+                binding.tvTodayDistance.text = "%.0f".format(meters)
+                // Wir müssen auch das Label "km" unter der Zahl anpassen, 
+                // falls wir eine TextView dafür haben.
+                // In deinem Layout ist das TextView unter tv_today_distance:
+                val parent = binding.tvTodayDistance.parent as? android.widget.LinearLayout
+                (parent?.getChildAt(2) as? android.widget.TextView)?.text = "m"
+            } else {
+                val km = meters / 1000f
+                binding.tvTodayDistance.text = "%.2f".format(km)
+                val parent = binding.tvTodayDistance.parent as? android.widget.LinearLayout
+                (parent?.getChildAt(2) as? android.widget.TextView)?.text = "km"
+            }
         }
 
         viewModel.todaySteps.observe(viewLifecycleOwner) { steps ->
-            binding.tvTodaySteps.text = "%,d".format(steps)
+            val s = steps ?: 0
+            binding.tvTodaySteps.text = "%,d".format(s)
 
             // Fortschrittsbalken (Ziel: 10.000 Schritte)
-            val progress = (steps.toFloat() / 10_000f * 100).toInt().coerceIn(0, 100)
+            val progress = (s.toFloat() / 10_000f * 100).toInt().coerceIn(0, 100)
             binding.progressSteps.progress = progress
-            binding.tvStepsGoal.text = "$steps / 10.000"
+            binding.tvStepsGoal.text = "$s / 10.000"
         }
 
         viewModel.avgSpeed.observe(viewLifecycleOwner) { speed ->
-            binding.tvAvgSpeed.text = "%.1f".format(speed)
+            binding.tvAvgSpeed.text = "%.1f".format(speed ?: 0f)
         }
 
-        // Run-Liste
-        viewModel.allRuns.observe(viewLifecycleOwner) { runs ->
-            runAdapter.submitList(runs)
-            binding.tvNoRuns.visibility = if (runs.isEmpty()) View.VISIBLE else View.GONE
+        viewModel.todayCalories.observe(viewLifecycleOwner) { calories ->
+            binding.tvTodayCalories.text = (calories ?: 0).toString()
+        }
 
-            // Gesamt-Distanz
-            val totalKm = runs.sumOf { it.distanceMeters.toDouble() } / 1000.0
-            binding.tvTotalKm.text = "%.1f km total".format(totalKm)
+        // Letztes Training anzeigen
+        viewModel.lastRun.observe(viewLifecycleOwner) { run ->
+            if (run != null) {
+                binding.lastRunLayout.root.visibility = View.VISIBLE
+                binding.tvNoRuns.visibility = View.GONE
+                
+                // Manuelles Binden der Daten an das included Layout
+                val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
+                val timeFormat = SimpleDateFormat("HH:mm", Locale.GERMAN)
+                
+                binding.lastRunLayout.tvDate.text = dateFormat.format(Date(run.startTime))
+                binding.lastRunLayout.tvTimeRange.text = "${timeFormat.format(Date(run.startTime))} - ${if (run.endTime > 0) timeFormat.format(Date(run.endTime)) else ""}"
+                binding.lastRunLayout.tvDistance.text = run.distanceFormatted
+                binding.lastRunLayout.tvDuration.text = run.durationFormatted
+                binding.lastRunLayout.tvSpeed.text = "⌀ %.1f km/h".format(run.avgSpeedKmh)
+                binding.lastRunLayout.tvSteps.text = "%,d Schritte".format(run.steps)
+                binding.lastRunLayout.tvCalories.text = "${run.calories} kcal"
+                binding.lastRunLayout.btnDelete.setOnClickListener { viewModel.deleteRun(run) }
+                binding.lastRunLayout.root.setOnClickListener {
+                    val detailsDialog = RunDetailsDialogFragment(run)
+                    detailsDialog.show(childFragmentManager, "run_details")
+                }
+            } else {
+                binding.lastRunLayout.root.visibility = View.GONE
+                binding.tvNoRuns.visibility = View.VISIBLE
+            }
         }
 
         // Wöchentliches Diagramm
