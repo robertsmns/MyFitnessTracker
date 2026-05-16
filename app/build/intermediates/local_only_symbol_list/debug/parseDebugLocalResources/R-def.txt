@@ -75,6 +75,7 @@ layout fragment_map
 layout item_run
 menu bottom_nav_menu
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 navigation nav_graph
 raw map_style_dark

@@ -95,172 +95,171 @@
 54-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:26:9-54
 55        android:supportsRtl="true"
 55-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:27:9-35
-56        android:testOnly="true"
-57        android:theme="@style/Theme.MyFitnessTracker" >
-57-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:28:9-54
-58
-59        <!-- Google Maps API Key -->
-60        <meta-data
-61            android:name="com.google.android.geo.API_KEY"
-61-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:32:13-58
-62            android:value="AIzaSyB0SfjLRTb5gw6yWdptoLSA08g9LaXHNk8" />
-62-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:33:13-44
-63
-64        <activity
-64-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:35:9-43:20
-65            android:name="com.schule.myfitnessTracker.ui.MainActivity"
-65-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:36:13-44
-66            android:exported="true"
-66-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:37:13-36
-67            android:windowSoftInputMode="adjustResize" >
-67-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:38:13-55
-68            <intent-filter>
-68-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:39:13-42:29
-69                <action android:name="android.intent.action.MAIN" />
-69-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:40:17-69
-69-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:40:25-66
-70
-71                <category android:name="android.intent.category.LAUNCHER" />
-71-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:41:17-77
-71-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:41:27-74
-72            </intent-filter>
-73        </activity>
-74
-75        <!-- Foreground Service für GPS-Tracking im Hintergrund -->
-76        <service
-76-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:46:9-49:56
-77            android:name="com.schule.myfitnessTracker.service.TrackingService"
-77-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:47:13-52
-78            android:exported="false"
-78-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:48:13-37
-79            android:foregroundServiceType="location" />
-79-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:49:13-53
-80
-81        <provider
-82            android:name="androidx.core.content.FileProvider"
-82-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:52:13-62
-83            android:authorities="com.schule.myfitnessTracker.fileprovider"
-83-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:53:13-64
-84            android:exported="false"
-84-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:54:13-37
-85            android:grantUriPermissions="true" >
-85-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:55:13-47
-86            <meta-data
-86-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:56:13-58:54
-87                android:name="android.support.FILE_PROVIDER_PATHS"
-87-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:57:17-67
-88                android:resource="@xml/file_paths" />
-88-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:58:17-51
-89        </provider>
-90        <provider
-90-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-91            android:name="androidx.startup.InitializationProvider"
-91-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
-92            android:authorities="com.schule.myfitnessTracker.androidx-startup"
-92-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
-93            android:exported="false" >
-93-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
-94            <meta-data
-94-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-95                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-95-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
-96                android:value="androidx.startup" />
-96-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
-97            <meta-data
-97-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\d28f6a43f318cf29fa81258de52c41de\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
-98                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-98-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\d28f6a43f318cf29fa81258de52c41de\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
-99                android:value="androidx.startup" />
-99-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\d28f6a43f318cf29fa81258de52c41de\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
-100            <meta-data
-100-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
-101                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-101-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
-102                android:value="androidx.startup" />
-102-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
-103        </provider> <!-- Needs to be explicitly declared on P+ -->
-104        <uses-library
-104-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\b175419deb37174909c69bc0e18ae5d4\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:39:9-41:40
-105            android:name="org.apache.http.legacy"
-105-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\b175419deb37174909c69bc0e18ae5d4\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:40:13-50
-106            android:required="false" />
-106-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\b175419deb37174909c69bc0e18ae5d4\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:41:13-37
-107
-108        <activity
-108-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\019f7e12989dbfda45e8b18eff783e05\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:9-22:45
-109            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-109-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\019f7e12989dbfda45e8b18eff783e05\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:19-85
-110            android:exported="false"
-110-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\019f7e12989dbfda45e8b18eff783e05\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:22:19-43
-111            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-111-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\019f7e12989dbfda45e8b18eff783e05\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:21:19-78
-112
-113        <meta-data
-113-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\02cb53419d3dc81b7564763333ea5674\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:21:9-23:69
-114            android:name="com.google.android.gms.version"
-114-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\02cb53419d3dc81b7564763333ea5674\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:22:13-58
-115            android:value="@integer/google_play_services_version" />
-115-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\02cb53419d3dc81b7564763333ea5674\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:23:13-66
-116
-117        <uses-library
-117-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:25:9-27:40
-118            android:name="androidx.window.extensions"
-118-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:26:13-54
-119            android:required="false" />
-119-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:27:13-37
-120        <uses-library
-120-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:28:9-30:40
-121            android:name="androidx.window.sidecar"
-121-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:29:13-51
-122            android:required="false" />
-122-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:30:13-37
-123
-124        <service
-124-->[androidx.room:room-runtime:2.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a61b4cc069a191926bdb6e29ad05cd52\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
-125            android:name="androidx.room.MultiInstanceInvalidationService"
-125-->[androidx.room:room-runtime:2.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a61b4cc069a191926bdb6e29ad05cd52\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
-126            android:directBootAware="true"
-126-->[androidx.room:room-runtime:2.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a61b4cc069a191926bdb6e29ad05cd52\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
-127            android:exported="false" />
-127-->[androidx.room:room-runtime:2.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a61b4cc069a191926bdb6e29ad05cd52\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
-128
-129        <receiver
-129-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
-130            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-130-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
-131            android:directBootAware="false"
-131-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
-132            android:enabled="true"
-132-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
-133            android:exported="true"
-133-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
-134            android:permission="android.permission.DUMP" >
-134-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
-135            <intent-filter>
-135-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
-136                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-136-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
-136-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
-137            </intent-filter>
-138            <intent-filter>
-138-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
-139                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-139-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
-139-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
-140            </intent-filter>
-141            <intent-filter>
-141-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
-142                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-142-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
-142-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
-143            </intent-filter>
-144            <intent-filter>
-144-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
-145                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-145-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
-145-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
-146            </intent-filter>
-147        </receiver>
-148    </application>
-149
-150</manifest>
+56        android:theme="@style/Theme.MyFitnessTracker" >
+56-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:28:9-54
+57
+58        <!-- Google Maps API Key -->
+59        <meta-data
+60            android:name="com.google.android.geo.API_KEY"
+60-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:32:13-58
+61            android:value="AIzaSyB0SfjLRTb5gw6yWdptoLSA08g9LaXHNk8" />
+61-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:33:13-44
+62
+63        <activity
+63-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:35:9-43:20
+64            android:name="com.schule.myfitnessTracker.ui.MainActivity"
+64-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:36:13-44
+65            android:exported="true"
+65-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:37:13-36
+66            android:windowSoftInputMode="adjustResize" >
+66-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:38:13-55
+67            <intent-filter>
+67-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:39:13-42:29
+68                <action android:name="android.intent.action.MAIN" />
+68-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:40:17-69
+68-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:40:25-66
+69
+70                <category android:name="android.intent.category.LAUNCHER" />
+70-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:41:17-77
+70-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:41:27-74
+71            </intent-filter>
+72        </activity>
+73
+74        <!-- Foreground Service für GPS-Tracking im Hintergrund -->
+75        <service
+75-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:46:9-49:56
+76            android:name="com.schule.myfitnessTracker.service.TrackingService"
+76-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:47:13-52
+77            android:exported="false"
+77-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:48:13-37
+78            android:foregroundServiceType="location" />
+78-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:49:13-53
+79
+80        <provider
+81            android:name="androidx.core.content.FileProvider"
+81-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:52:13-62
+82            android:authorities="com.schule.myfitnessTracker.fileprovider"
+82-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:53:13-64
+83            android:exported="false"
+83-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:54:13-37
+84            android:grantUriPermissions="true" >
+84-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:55:13-47
+85            <meta-data
+85-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:56:13-58:54
+86                android:name="android.support.FILE_PROVIDER_PATHS"
+86-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:57:17-67
+87                android:resource="@xml/file_paths" />
+87-->C:\Users\Robert Siemens\Downloads\MyFitnessTracker\MyFitnessTracker\app\src\main\AndroidManifest.xml:58:17-51
+88        </provider>
+89        <provider
+89-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+90            android:name="androidx.startup.InitializationProvider"
+90-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+91            android:authorities="com.schule.myfitnessTracker.androidx-startup"
+91-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+92            android:exported="false" >
+92-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+93            <meta-data
+93-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+94                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+94-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+95                android:value="androidx.startup" />
+95-->[androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+96            <meta-data
+96-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\d28f6a43f318cf29fa81258de52c41de\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+97                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+97-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\d28f6a43f318cf29fa81258de52c41de\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+98                android:value="androidx.startup" />
+98-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\d28f6a43f318cf29fa81258de52c41de\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+99            <meta-data
+99-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+100                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+100-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+101                android:value="androidx.startup" />
+101-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+102        </provider> <!-- Needs to be explicitly declared on P+ -->
+103        <uses-library
+103-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\b175419deb37174909c69bc0e18ae5d4\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:39:9-41:40
+104            android:name="org.apache.http.legacy"
+104-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\b175419deb37174909c69bc0e18ae5d4\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:40:13-50
+105            android:required="false" />
+105-->[com.google.android.gms:play-services-maps:18.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\b175419deb37174909c69bc0e18ae5d4\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:41:13-37
+106
+107        <activity
+107-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\019f7e12989dbfda45e8b18eff783e05\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:9-22:45
+108            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+108-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\019f7e12989dbfda45e8b18eff783e05\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:19-85
+109            android:exported="false"
+109-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\019f7e12989dbfda45e8b18eff783e05\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:22:19-43
+110            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+110-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\019f7e12989dbfda45e8b18eff783e05\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:21:19-78
+111
+112        <meta-data
+112-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\02cb53419d3dc81b7564763333ea5674\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:21:9-23:69
+113            android:name="com.google.android.gms.version"
+113-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\02cb53419d3dc81b7564763333ea5674\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:22:13-58
+114            android:value="@integer/google_play_services_version" />
+114-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\02cb53419d3dc81b7564763333ea5674\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:23:13-66
+115
+116        <uses-library
+116-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:25:9-27:40
+117            android:name="androidx.window.extensions"
+117-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:26:13-54
+118            android:required="false" />
+118-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:27:13-37
+119        <uses-library
+119-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:28:9-30:40
+120            android:name="androidx.window.sidecar"
+120-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:29:13-51
+121            android:required="false" />
+121-->[androidx.window:window:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ea9fe510829f6dc73526f199762820fa\transformed\jetified-window-1.0.0\AndroidManifest.xml:30:13-37
+122
+123        <service
+123-->[androidx.room:room-runtime:2.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a61b4cc069a191926bdb6e29ad05cd52\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
+124            android:name="androidx.room.MultiInstanceInvalidationService"
+124-->[androidx.room:room-runtime:2.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a61b4cc069a191926bdb6e29ad05cd52\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
+125            android:directBootAware="true"
+125-->[androidx.room:room-runtime:2.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a61b4cc069a191926bdb6e29ad05cd52\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
+126            android:exported="false" />
+126-->[androidx.room:room-runtime:2.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a61b4cc069a191926bdb6e29ad05cd52\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
+127
+128        <receiver
+128-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+129            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+129-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+130            android:directBootAware="false"
+130-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+131            android:enabled="true"
+131-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+132            android:exported="true"
+132-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+133            android:permission="android.permission.DUMP" >
+133-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+134            <intent-filter>
+134-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+135                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+135-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+135-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+136            </intent-filter>
+137            <intent-filter>
+137-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+138                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+138-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+138-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+139            </intent-filter>
+140            <intent-filter>
+140-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+141                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+141-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+141-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+142            </intent-filter>
+143            <intent-filter>
+143-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+144                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+144-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+144-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+145            </intent-filter>
+146        </receiver>
+147    </application>
+148
+149</manifest>
