@@ -1,7 +1,7 @@
 # 🏃 MyFitnessTracker – Android App (Schulprojekt)
 
 Ein vollständiger GPS-Fitness-Tracker für Android, entwickelt mit **Kotlin** und **Android Studio**,
-speziell optimiert für das **Google Pixel 8**.
+speziell optimiert für moderne Smartphones (z.B. **Google Pixel 8**).
 
 ---
 
@@ -9,14 +9,17 @@ speziell optimiert für das **Google Pixel 8**.
 
 | Feature | Beschreibung |
 |---|---|
-| 🗺️ **Live-Karte** | Google Maps mit automatisch gezeichneter Route als blaue Linie |
-| 📍 **GPS-Tracking** | Hochpräzises GPS alle 3 Sekunden, Foreground Service bleibt aktiv |
-| 👟 **Schrittzähler** | Hardware Step Counter Sensor des Pixel 8 |
-| 📏 **Distanz** | Echtzeit-Distanz in Metern / Kilometern |
-| ⚡ **Geschwindigkeit** | Momentangeschwindigkeit über GPS-Speed |
-| 📊 **Dashboard** | Tages- und Wochenübersicht mit Balkendiagramm |
-| 💾 **Lokale DB** | Alle Daten in Room-Datenbank (kein Server nötig) |
-| 🔔 **Notification** | Persistente Benachrichtigung zeigt Distanz und Tempo |
+| 🗺️ **Live-Karte** | Google Maps mit automatisch gezeichneter Route als blaue Linie. |
+| 📍 **GPS-Tracking** | Hochpräzises GPS (3s Intervall), Foreground Service für Tracking im Hintergrund. |
+| 👟 **Schrittzähler** | Nutzung des Hardware-Schrittzählers für präzise Messungen. |
+| 📏 **Smart-Distanz** | Automatische Umschaltung zwischen Metern (m) und Kilometern (km). |
+| 🔥 **Kalorien-Rechner**| Berechnung basierend auf Distanz, Gewicht und Aktivitätsfaktor (0.9). |
+| 📊 **Dashboard** | Tages-Stats, Wochenbericht (Balkendiagramm) und Schnellzugriff auf das letzte Training. |
+| ⏱️ **Historie** | Eigene Seite für alle vergangenen Läufe mit detaillierter Zeitspanne (von-bis). |
+| 🗺️ **Routen-Details**| Klick auf Training zeigt gelaufene Strecke auf einer Karte an. |
+| 📤 **GPX Export** | Export der Läufe als standardisierte GPX-Datei zum Teilen oder für Strava/Komoot. |
+| 🌙 **Dark Mode** | Vollständige Unterstützung für dunkles Design, inklusive angepasstem Google Maps Stil. |
+| 🔔 **Interaktive Notif**| Steuerung (Pause/Stopp) und Live-Daten direkt in der Statusleiste. |
 
 ---
 
@@ -29,28 +32,34 @@ app/
 │   │   └── Models.kt          ← Run & RoutePoint (Room Entities)
 │   └── db/
 │       ├── Dao.kt             ← RunDao & RoutePointDao
-│       ├── Database.kt        ← FitnessDatabase (Singleton)
-│       └── Database.kt        ← FitnessRepository
+│       ├── Database.kt        ← FitnessDatabase & Repository
 │
 ├── service/
-│   └── TrackingService.kt     ← Foreground Service (GPS + Sensoren)
+│   └── TrackingService.kt     ← Foreground Service (GPS, Sensoren, Notifications)
+│
+├── util/
+│   ├── ProfileManager.kt      ← SharedPreferences (Name, Gewicht, Ziele)
+│   ├── GpxExporter.kt         ← GPX XML-Generierung & FileProvider
+│   └── MockDataManager.kt     ← Simulationsdaten-Generator
 │
 └── ui/
-    ├── MainActivity.kt        ← Navigation Host + Permissions
+    ├── MainActivity.kt        ← Navigation Host & Permissions
     ├── tracking/
-    │   ├── MapFragment.kt     ← Google Maps + Route zeichnen
+    │   ├── MapFragment.kt     ← Live-Karte & Tracking-UI
     │   └── TrackingViewModel.kt
+    ├── history/
+    │   ├── HistoryFragment.kt ← Liste aller Trainingseinheiten
+    │   └── RunDetailsDialogFragment.kt ← Routenvorschau & GPX-Teilen
     └── dashboard/
-        ├── DashboardFragment.kt  ← Stats + Diagramm
-        └── RunHistoryAdapter.kt  ← RecyclerView
+        └── DashboardFragment.kt  ← Wochen-Diagramm & Tages-Zusammenfassung
 ```
 
-### Verwendete Sensoren (Google Pixel 8)
+### Verwendete Sensoren
 
 | Sensor | Android API | Verwendung |
 |---|---|---|
-| `TYPE_STEP_COUNTER` | `SensorManager` | Absolute Schrittanzahl seit Gerätestart |
-| GPS (FusedLocationProvider) | Google Play Services | Präzise Position, Höhe, Geschwindigkeit |
+| `TYPE_STEP_COUNTER` | `SensorManager` | Hardware-basierte Schrittzählung seit Systemstart. |
+| GPS (FusedLocationProvider) | Google Play Services | Präzise Position, Geschwindigkeit und Distanzberechnung. |
 
 ---
 
@@ -58,99 +67,44 @@ app/
 
 ### 1. Voraussetzungen
 
-- Android Studio Hedgehog (2023.1.1) oder neuer
-- Google Pixel 8 (oder Emulator mit GPS-Unterstützung)
-- Google Maps API Key
+- Android Studio Jellyfish (2023.3.1) oder neuer
+- Java 17 (Gradle JDK Einstellung)
+- Google Maps API Key mit aktivierter "Maps SDK for Android"
 
-### 2. Google Maps API Key erstellen
+### 2. Google Maps API Key konfigurieren
 
-1. Gehe zu [Google Cloud Console](https://console.cloud.google.com/)
-2. Erstelle ein neues Projekt (z. B. "MyFitnessTracker")
-3. Aktiviere die **Maps SDK for Android**
-4. Erstelle einen API-Key unter **APIs & Services → Credentials**
-5. Kopiere die Datei `secrets.properties.template` → `secrets.properties`
-6. Trage deinen Key ein:
-   ```
+1. Erstelle einen API-Key in der [Google Cloud Console](https://console.cloud.google.com/).
+2. Füge deinen **SHA-1 Fingerprint** (aus `./gradlew signingReport`) zum Key hinzu.
+3. Erstelle die Datei `secrets.properties` im Hauptverzeichnis:
+   ```properties
    MAPS_API_KEY=AIzaSy...deinKey...
    ```
-7. Füge `secrets.properties` zu `.gitignore` hinzu!
 
-### 3. Projekt öffnen und starten
+### 3. Demo-Daten laden
 
-```bash
-# Projekt öffnen
-File → Open → MyFitnessTracker/
-
-# Sync
-File → Sync Project with Gradle Files
-
-# Auf Pixel 8 deployen
-Run → Run 'app'
-```
-
-### 4. Berechtigungen auf dem Gerät
-
-Beim ersten Start werden folgende Berechtigungen angefragt:
-- ✅ **Standort (genau)** – für GPS
-- ✅ **Körperliche Aktivität** – für Schrittzähler  
-- ✅ **Benachrichtigungen** – für Tracking-Notification
-- ✅ **Standort im Hintergrund** – damit GPS auch bei minimierter App läuft
+Um die App sofort mit Diagrammen und Routen zu testen:
+1. App starten und zum **Dashboard** gehen.
+2. Oben auf die **Profil-Karte** klicken.
+3. Den Button **"Demo-Daten laden"** wählen.
 
 ---
 
 ## 🛠️ Verwendete Bibliotheken
 
-| Bibliothek | Version | Zweck |
-|---|---|---|
-| `play-services-maps` | 18.2.0 | Google Maps |
-| `play-services-location` | 21.1.0 | FusedLocationProvider (GPS) |
-| `room` | 2.6.1 | Lokale SQLite-Datenbank |
-| `lifecycle-viewmodel` | 2.7.0 | MVVM ViewModel |
-| `navigation-fragment` | 2.7.6 | Fragment-Navigation |
-| `MPAndroidChart` | 3.1.0 | Balkendiagramm |
-| `kotlinx-coroutines` | 1.7.3 | Asynchrone Programmierung |
+- **Google Maps SDK**: Kartenanzeige & Routenzeichnung.
+- **Jetpack Room**: Lokale SQLite-Datenbank für Runs und Wegpunkte.
+- **Navigation Component**: Fragment-Navigation via Bottom-Nav.
+- **MPAndroidChart**: Visualisierung des Wochenberichts.
+- **AndroidX Media**: Modernes Layout für die Tracking-Notification.
 
 ---
 
-## 📐 Datenfluss (Schematisch)
+## 💡 Besondere Funktionen für das Projekt
 
-```
-GPS-Sensor (alle 3s)
-      │
-      ▼
-TrackingService (Foreground)
-      │  ├── distanceM  (LiveData)
-      │  ├── speedKmh   (LiveData)
-      │  ├── stepCount  (LiveData)
-      │  └── elapsedSec (LiveData)
-      │
-      ├──► Room DB (RoutePoint speichern)
-      │
-      ▼
-TrackingViewModel (beobachtet LiveData)
-      │
-      ├──► MapFragment    (Route zeichnen, Stats anzeigen)
-      └──► DashboardFragment (Tages-/Wochenüberblick)
-```
-
----
-
-## 🐛 Bekannte Einschränkungen (für Schulprojekt)
-
-- Kalorien-Berechnung ist eine Schätzung (60 kcal/km bei ~70 kg)
-- Höhenmeter werden noch nicht berechnet (Daten vorhanden in `RoutePoint.altitude`)
-- Kein Benutzerprofil (Gewicht, Alter) → kann leicht ergänzt werden
-
----
-
-## 💡 Erweiterungsideen
-
-- [ ] Benutzerprofil (Name, Gewicht) für genauere Kalorienwerte
-- [ ] Höhenprofil-Diagramm für einzelne Runs
-- [ ] Export als GPX-Datei
-- [ ] Zielzone (z. B. 5 km Ziel setzen)
-- [ ] Herzfrequenz via Bluetooth-Brustgurt
-- [ ] Dark Mode
+- **GPX Export**: Zeigt die Verwendung von XML-Standards und dem Android `FileProvider`.
+- **Foreground Service**: Garantiert unterbrechungsfreies Tracking auch bei gesperrtem Bildschirm.
+- **Dark Mode Integration**: Dynamische Farbanpassung der UI und der Google Maps API.
+- **Snapshot-Speicherung**: Verhindert Datenverlust beim Beenden der App über die Nachrichtenleiste.
 
 ---
 

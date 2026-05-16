@@ -35,6 +35,9 @@ public final class FragmentDashboardBinding implements ViewBinding {
   public final ProgressBar progressSteps;
 
   @NonNull
+  public final TextView textView;
+
+  @NonNull
   public final TextView tvAvgSpeed;
 
   @NonNull
@@ -58,21 +61,19 @@ public final class FragmentDashboardBinding implements ViewBinding {
   @NonNull
   public final TextView tvTodaySteps;
 
-  @NonNull
-  public final TextView tvTotalKm;
-
   private FragmentDashboardBinding(@NonNull ScrollView rootView, @NonNull BarChart barChart,
       @NonNull MaterialCardView cardProfile, @NonNull ItemRunBinding lastRunLayout,
-      @NonNull ProgressBar progressSteps, @NonNull TextView tvAvgSpeed, @NonNull TextView tvNoRuns,
-      @NonNull TextView tvProfileName, @NonNull TextView tvProfileWeight,
-      @NonNull TextView tvStepsGoal, @NonNull TextView tvTodayCalories,
-      @NonNull TextView tvTodayDistance, @NonNull TextView tvTodaySteps,
-      @NonNull TextView tvTotalKm) {
+      @NonNull ProgressBar progressSteps, @NonNull TextView textView, @NonNull TextView tvAvgSpeed,
+      @NonNull TextView tvNoRuns, @NonNull TextView tvProfileName,
+      @NonNull TextView tvProfileWeight, @NonNull TextView tvStepsGoal,
+      @NonNull TextView tvTodayCalories, @NonNull TextView tvTodayDistance,
+      @NonNull TextView tvTodaySteps) {
     this.rootView = rootView;
     this.barChart = barChart;
     this.cardProfile = cardProfile;
     this.lastRunLayout = lastRunLayout;
     this.progressSteps = progressSteps;
+    this.textView = textView;
     this.tvAvgSpeed = tvAvgSpeed;
     this.tvNoRuns = tvNoRuns;
     this.tvProfileName = tvProfileName;
@@ -81,7 +82,6 @@ public final class FragmentDashboardBinding implements ViewBinding {
     this.tvTodayCalories = tvTodayCalories;
     this.tvTodayDistance = tvTodayDistance;
     this.tvTodaySteps = tvTodaySteps;
-    this.tvTotalKm = tvTotalKm;
   }
 
   @Override
@@ -136,6 +136,12 @@ public final class FragmentDashboardBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.textView;
+      TextView textView = ViewBindings.findChildViewById(rootView, id);
+      if (textView == null) {
+        break missingId;
+      }
+
       id = R.id.tv_avg_speed;
       TextView tvAvgSpeed = ViewBindings.findChildViewById(rootView, id);
       if (tvAvgSpeed == null) {
@@ -184,15 +190,9 @@ public final class FragmentDashboardBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.tv_total_km;
-      TextView tvTotalKm = ViewBindings.findChildViewById(rootView, id);
-      if (tvTotalKm == null) {
-        break missingId;
-      }
-
       return new FragmentDashboardBinding((ScrollView) rootView, barChart, cardProfile,
-          binding_lastRunLayout, progressSteps, tvAvgSpeed, tvNoRuns, tvProfileName,
-          tvProfileWeight, tvStepsGoal, tvTodayCalories, tvTodayDistance, tvTodaySteps, tvTotalKm);
+          binding_lastRunLayout, progressSteps, textView, tvAvgSpeed, tvNoRuns, tvProfileName,
+          tvProfileWeight, tvStepsGoal, tvTodayCalories, tvTodayDistance, tvTodaySteps);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

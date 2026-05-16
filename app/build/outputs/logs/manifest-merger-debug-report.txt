@@ -35,6 +35,7 @@ MERGED from [com.google.android.material:material:1.11.0] C:\Users\Robert Siemen
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\Robert Siemens\.gradle\caches\transforms-4\715c5ab241962fc98c8fbede09df75da\transformed\constraintlayout-2.1.4\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\de2bf89ad91eb0cc781e095bf68ddd2e\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\f37a83a5882df90e235c41d4b3b00b13\transformed\appcompat-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media:media:1.7.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a58ba706ba98aba188bed48956c7b39f\transformed\media-1.7.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\c1672966028216efa6a83a072b37cd1d\transformed\jetified-emoji2-views-helper-1.2.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:17:1-35:12
 MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\b175419deb37174909c69bc0e18ae5d4\transformed\jetified-play-services-maps-18.2.0\AndroidManifest.xml:17:1-44:12
@@ -84,8 +85,8 @@ MERGED from [com.github.PhilJay:MPAndroidChart:v3.1.0] C:\Users\Robert Siemens\.
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\819f26d7ff5860085e30ee073f54dcff\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\b220652377811bb464e56158f8106c91\transformed\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\12215fd0e1f04dc21338bc2e38741733\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\99d2f0399ffb6dddd7dae6122f1e021d\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a2a5741d0d2eb225ab4f6507745d0a40\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\99d2f0399ffb6dddd7dae6122f1e021d\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:17:1-55:12
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\82614f66ab56aed35eb376c652fbcf8e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede1f9375250d2eff7c8564a95149e7b\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
@@ -258,6 +259,8 @@ MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Robert Sieme
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\de2bf89ad91eb0cc781e095bf68ddd2e\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\f37a83a5882df90e235c41d4b3b00b13\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\f37a83a5882df90e235c41d4b3b00b13\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.7.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a58ba706ba98aba188bed48956c7b39f\transformed\media-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.media:media:1.7.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a58ba706ba98aba188bed48956c7b39f\transformed\media-1.7.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\c1672966028216efa6a83a072b37cd1d\transformed\jetified-emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\c1672966028216efa6a83a072b37cd1d\transformed\jetified-emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\4f5ef8ca0515745379e73471d342e48c\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:21:5-44
@@ -356,10 +359,10 @@ MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Robert Siemens\.gradle\c
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\b220652377811bb464e56158f8106c91\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\12215fd0e1f04dc21338bc2e38741733\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\12215fd0e1f04dc21338bc2e38741733\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\99d2f0399ffb6dddd7dae6122f1e021d\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\99d2f0399ffb6dddd7dae6122f1e021d\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a2a5741d0d2eb225ab4f6507745d0a40\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\a2a5741d0d2eb225ab4f6507745d0a40\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\99d2f0399ffb6dddd7dae6122f1e021d\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\99d2f0399ffb6dddd7dae6122f1e021d\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:21:5-44
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\Robert Siemens\.gradle\caches\transforms-4\ede7f589d27251c027cc0090d8cb24a0\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:21:5-44
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Robert Siemens\.gradle\caches\transforms-4\82614f66ab56aed35eb376c652fbcf8e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41

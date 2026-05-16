@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.schule.myfitnessTracker.app-mergeDebugResources-54:/values-lt/values-lt.xml",
+            "outputFile": "com.schule.myfitnessTracker.app-mergeDebugResources-55:/values-lt/values-lt.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Robert Siemens\\.gradle\\caches\\transforms-4\\02cb53419d3dc81b7564763333ea5674\\transformed\\jetified-play-services-basement-18.1.0\\res\\values-lt\\values.xml",

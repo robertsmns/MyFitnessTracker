@@ -160,41 +160,50 @@ class TrackingService : LifecycleService(), SensorEventListener {
     }
 
     private fun stopTracking() {
-        isPaused.postValue(false)
-        isTracking.postValue(false)
-        timerJob?.cancel()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-
-        // Run in DB abschließen
-        val runId = currentRunId.value ?: return
+        // 1. Daten SOFORT einfrieren (Snapshot erstellen)
+        val finalRunId = currentRunId.value
         val finalDistance = totalDistance
         val finalSteps = stepCount.value ?: 0
         val finalElapsed = elapsedSec.value ?: 0L
         val finalElevation = totalElevationGain
+        
+        // 2. Sofortiger UI-Reset (damit die App sauber aussieht)
+        isTracking.postValue(false)
+        isPaused.postValue(false)
+        timerJob?.cancel()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
 
+        // 3. Speichern und Beenden im Hintergrund-Scope
         serviceScope.launch {
-            val calories = profileManager.calculateCalories(finalDistance)
-            val avgSpeed = if (finalElapsed > 0)
-                (finalDistance / 1000f) / (finalElapsed / 3600f)
-            else 0f
+            try {
+                if (finalRunId != null) {
+                    val calories = profileManager.calculateCalories(finalDistance)
+                    val avgSpeed = if (finalElapsed > 0)
+                        (finalDistance / 1000f) / (finalElapsed / 3600f)
+                    else 0f
 
-            repository.finishRun(
-                runId          = runId,
-                distanceMeters = finalDistance,
-                avgSpeedKmh    = avgSpeed,
-                steps          = finalSteps,
-                calories       = calories,
-                elevationGain  = finalElevation
-            )
-
-            // Werte nach dem Speichern zurücksetzen
-            withContext(Dispatchers.Main) {
-                resetTrackingValues()
+                    // Datenbank-Operation abwarten
+                    repository.finishRun(
+                        runId          = finalRunId,
+                        distanceMeters = finalDistance,
+                        avgSpeedKmh    = avgSpeed,
+                        steps          = finalSteps,
+                        calories       = calories,
+                        elevationGain  = finalElevation
+                    )
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                // Erst wenn alles fertig ist, Service stoppen und Werte nullen
+                withContext(Dispatchers.Main) {
+                    showFinishedNotification(finalDistance)
+                    resetTrackingValues()
+                    stopForeground(STOP_FOREGROUND_REMOVE)
+                    stopSelf()
+                }
             }
         }
-
-        stopForeground(STOP_FOREGROUND_REMOVE)
-        stopSelf()
     }
 
     private fun resetTrackingValues() {
@@ -315,6 +324,8 @@ class TrackingService : LifecycleService(), SensorEventListener {
                 if (isPaused.value != true) {
                     val elapsed = elapsedSec.value ?: 0L
                     elapsedSec.postValue(elapsed + 1)
+                    // Benachrichtigung jede Sekunde aktualisieren
+                    updateNotification()
                 }
             }
         }
@@ -331,6 +342,21 @@ class TrackingService : LifecycleService(), SensorEventListener {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        // Pause/Fortsetzen Action
+        val isCurrentlyPaused = isPaused.value ?: false
+        val pauseActionIntent = Intent(this, TrackingService::class.java).apply { action = ACTION_PAUSE }
+        val pausePendingIntent = PendingIntent.getService(this, 1, pauseActionIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val pauseAction = NotificationCompat.Action(
+            if (isCurrentlyPaused) R.drawable.ic_play else R.drawable.ic_pause,
+            if (isCurrentlyPaused) "Fortsetzen" else "Pause",
+            pausePendingIntent
+        )
+
+        // Stopp Action
+        val stopActionIntent = Intent(this, TrackingService::class.java).apply { action = ACTION_STOP }
+        val stopPendingIntent = PendingIntent.getService(this, 2, stopActionIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val stopAction = NotificationCompat.Action(R.drawable.ic_stop, "Stoppen", stopPendingIntent)
+
         NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_run)
             .setContentTitle("MyFitnessTracker – Tracking aktiv")
@@ -338,15 +364,40 @@ class TrackingService : LifecycleService(), SensorEventListener {
             .setContentIntent(pendingIntent)
             .setOngoing(true)
             .setSilent(true)
+            .addAction(pauseAction)
+            .addAction(stopAction)
+            .setStyle(androidx.media.app.NotificationCompat.MediaStyle()
+                .setShowActionsInCompactView(0, 1))
             .build()
     }
 
+    private fun showFinishedNotification(distance: Float) {
+        val distText = if (distance < 1000f) "%.0f m".format(distance) else "%.2f km".format(distance / 1000f)
+        val notif = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_run)
+            .setContentTitle("Training abgeschlossen!")
+            .setContentText("Super! Du bist insgesamt $distText gelaufen.")
+            .setAutoCancel(true)
+            .build()
+        
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        manager.notify(NOTIFICATION_ID + 100, notif)
+    }
+
     private fun updateNotification() {
-        val dist  = "%.2f km".format(totalDistance / 1000f)
-        val speed = "%.1f km/h".format(speedKmh.value ?: 0f)
-        val notif = buildNotification("$dist  •  $speed")
+        val dist  = if (totalDistance < 1000f) "%.0f m".format(totalDistance) else "%.2f km".format(totalDistance / 1000f)
+        val time  = formatTime(elapsedSec.value ?: 0L)
+        val status = if (isPaused.value == true) "(Pausiert)" else ""
+        
+        val notif = buildNotification("$dist  •  $time  $status")
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(NOTIFICATION_ID, notif)
+    }
+
+    private fun formatTime(sec: Long): String {
+        val m = sec / 60
+        val s = sec % 60
+        return "%02d:%02d".format(m, s)
     }
 
     private fun createNotificationChannel() {

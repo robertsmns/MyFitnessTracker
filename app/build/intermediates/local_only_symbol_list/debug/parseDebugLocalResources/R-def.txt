@@ -21,7 +21,10 @@ drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_map
 drawable ic_my_location
+drawable ic_pause
+drawable ic_play
 drawable ic_run
+drawable ic_stop
 id bar_chart
 id bottom_navigation
 id btnClose
@@ -44,6 +47,7 @@ id nav_host_fragment
 id progress_steps
 id rv_run_history
 id statsOverlay
+id textView
 id tvElevationInfo
 id tvTitle
 id tv_avg_speed
@@ -62,7 +66,6 @@ id tv_timer
 id tv_today_calories
 id tv_today_distance
 id tv_today_steps
-id tv_total_km
 layout activity_main
 layout dialog_elevation_profile
 layout dialog_run_details

@@ -10,7 +10,7 @@
     <item
         android:id="@+id/mapFragment"
         android:icon="@drawable/ic_map"
-        android:title="Karte" />
+        android:title="Laufen" />
 
     <item
         android:id="@+id/historyFragment"

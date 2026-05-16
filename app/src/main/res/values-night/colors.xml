@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand Colors (etwas entspannter im Dark Mode) -->
-    <color name="primary">#90CAF9</color>
-    <color name="primary_variant">#2196F3</color>
-    <color name="secondary">#FFB74D</color>
+    <!-- Kräftigere Brand Colors für den Dark Mode -->
+    <color name="primary">#42A5F5</color> <!-- Ein leuchtenderes Blau -->
+    <color name="primary_variant">#1E88E5</color>
+    <color name="secondary">#FFA726</color> <!-- Ein satteres Orange -->
+    <color name="secondary_variant">#FB8C00</color>
 
     <!-- Surface & Background -->
     <color name="background">#121212</color>
     <color name="surface">#1E1E1E</color>
     <item name="on_surface" type="color">#FFFFFF</item>
-    <item name="on_surface_variant" type="color">#B0B0B0</item>
+    <item name="on_surface_variant" type="color">#E0E0E0</item> <!-- Hellere Texte für mehr Kontrast -->
+
+    <!-- Status -->
+    <color name="error">#EF5350</color> <!-- Kräftiges Rot -->
+    <color name="success">#66BB6A</color> <!-- Kräftiges Grün -->
 
     <!-- Karte -->
-    <color name="route_color">#90CAF9</color>
+    <color name="route_color">#42A5F5</color>
 </resources>

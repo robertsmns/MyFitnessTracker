@@ -70,7 +70,7 @@ public final class RoutePointDao_Impl implements RoutePointDao {
   }
 
   @Override
-  public Object insertPoint(final RoutePoint point, final Continuation<? super Unit> arg1) {
+  public Object insertPoint(final RoutePoint point, final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -84,11 +84,12 @@ public final class RoutePointDao_Impl implements RoutePointDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, $completion);
   }
 
   @Override
-  public Object insertPoints(final List<RoutePoint> points, final Continuation<? super Unit> arg1) {
+  public Object insertPoints(final List<RoutePoint> points,
+      final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -102,11 +103,11 @@ public final class RoutePointDao_Impl implements RoutePointDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, $completion);
   }
 
   @Override
-  public Object deletePointsForRun(final long runId, final Continuation<? super Unit> arg1) {
+  public Object deletePointsForRun(final long runId, final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -127,12 +128,12 @@ public final class RoutePointDao_Impl implements RoutePointDao {
           __preparedStmtOfDeletePointsForRun.release(_stmt);
         }
       }
-    }, arg1);
+    }, $completion);
   }
 
   @Override
   public Object getPointsForRun(final long runId,
-      final Continuation<? super List<RoutePoint>> arg1) {
+      final Continuation<? super List<RoutePoint>> $completion) {
     final String _sql = "SELECT * FROM route_points WHERE runId = ? ORDER BY timestamp ASC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
@@ -180,7 +181,7 @@ public final class RoutePointDao_Impl implements RoutePointDao {
           _statement.release();
         }
       }
-    }, arg1);
+    }, $completion);
   }
 
   @Override

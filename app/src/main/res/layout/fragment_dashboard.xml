@@ -16,11 +16,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:text="Dashboard"
-            android:textSize="28sp"
-            android:textStyle="bold"
             android:textColor="@color/on_surface"
-            android:layout_marginBottom="4dp" />
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
         <!-- Profil-Card -->
         <com.google.android.material.card.MaterialCardView
@@ -28,16 +28,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            app:cardBackgroundColor="@color/primary"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/primary">
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical">
+                android:padding="16dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -50,15 +50,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hallo Sportler!"
+                        android:textColor="@android:color/white"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_profile_weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="75 kg"
+                        android:text="Gewicht: 75 kg"
                         android:textColor="#CCFFFFFF" />
                 </LinearLayout>
 
@@ -69,15 +69,6 @@
                     app:tint="@android:color/white" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:id="@+id/tv_total_km"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0.0 km total"
-            android:textColor="@color/primary"
-            android:textSize="14sp"
-            android:layout_marginBottom="20dp" />
 
         <!-- ── Heute ──────────────────────────────────────────────────────── -->
 
@@ -194,10 +185,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🔥 Kalorien heute"
+                    android:text="🔥 Verbrannte Kalorien"
+                    android:textColor="@color/on_surface"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/on_surface" />
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -233,6 +224,7 @@
                     android:textSize="10sp"
                     android:textColor="@color/on_surface_variant"
                     android:fontStyle="italic" />
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -259,10 +251,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="👟 Schritte (Hardware-Sensor)"
+                        android:text="👟 Schritte"
+                        android:textColor="@color/on_surface"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/on_surface" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_steps_goal"
@@ -283,6 +275,16 @@
                     android:textStyle="bold"
                     android:textColor="@color/primary" />
 
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontStyle="italic"
+                    android:text="(Schritte Sensor)"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="10sp" />
+
                 <ProgressBar
                     android:id="@+id/progress_steps"
                     style="?android:attr/progressBarStyleHorizontal"
@@ -292,6 +294,7 @@
                     android:max="100"
                     android:progress="0"
                     android:progressTint="@color/primary" />
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
