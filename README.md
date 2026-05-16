@@ -7,23 +7,22 @@ speziell optimiert für moderne Smartphones (z.B. **Google Pixel 8**).
 
 ## 📱 Features
 
-| Feature | Beschreibung |
-|---|---|
-| 🗺️ **Live-Karte** | Google Maps mit automatisch gezeichneter Route als blaue Linie. |
-| 📍 **GPS-Tracking** | Hochpräzises GPS (3s Intervall), Foreground Service für Tracking im Hintergrund. |
-| 👟 **Schrittzähler** | Nutzung des Hardware-Schrittzählers für präzise Messungen. |
-| 📏 **Smart-Distanz** | Automatische Umschaltung zwischen Metern (m) und Kilometern (km). |
-| 🔥 **Kalorien-Rechner**| Berechnung basierend auf Distanz, Gewicht und Aktivitätsfaktor (0.9). |
+| Feature | Beschreibung                                                                            |
+|---|-----------------------------------------------------------------------------------------|
+| 🗺️ **Live-Karte** | Google Maps mit automatisch gezeichneter Route als blaue Linie.                         |
+| 📍 **GPS-Tracking** | Hochpräzises GPS (3s Intervall), Foreground Service für Tracking im Hintergrund.        |
+| 👟 **Schrittzähler** | Nutzung des Schrittzählers vom Handy für präzise Messungen.                             |
+| 🔥 **Kalorien-Rechner**| Berechnung basierend auf Distanz, Gewicht und Aktivitätsfaktor (0.9).                   |
 | 📊 **Dashboard** | Tages-Stats, Wochenbericht (Balkendiagramm) und Schnellzugriff auf das letzte Training. |
-| ⏱️ **Historie** | Eigene Seite für alle vergangenen Läufe mit detaillierter Zeitspanne (von-bis). |
-| 🗺️ **Routen-Details**| Klick auf Training zeigt gelaufene Strecke auf einer Karte an. |
-| 📤 **GPX Export** | Export der Läufe als standardisierte GPX-Datei zum Teilen oder für Strava/Komoot. |
-| 🌙 **Dark Mode** | Vollständige Unterstützung für dunkles Design, inklusive angepasstem Google Maps Stil. |
-| 🔔 **Interaktive Notif**| Steuerung (Pause/Stopp) und Live-Daten direkt in der Statusleiste. |
+| ⏱️ **Historie** | Eigene Seite für alle vergangenen Läufe mit detaillierter Zeitspanne (von-bis).         |
+| 🗺️ **Routen-Details**| Klick auf Training zeigt gelaufene Strecke auf einer Karte an.                          |
+| 📤 **GPX Export** | Export der Läufe als standardisierte GPX-Datei zum Teilen oder für Strava/Komoot.       |
+| 🌙 **Dark Mode** | Vollständige Unterstützung für dunkles Design, inklusive angepasstem Google Maps Stil.  |
+| 🔔 **Interaktive Notif**| Steuerung (Pause/Stopp) und Live-Daten direkt in der Statusleiste.                      |
 
 ---
 
-## 🏗️ Architektur (MVVM + Clean Architecture)
+## 🏗️ Architektur
 
 ```
 app/
@@ -108,4 +107,4 @@ Um die App sofort mit Diagrammen und Routen zu testen:
 
 ---
 
-*Entwickelt als Schulprojekt | Klasse: [Deine Klasse] | Datum: [Datum]*
+*Entwickelt als Schulprojekt bei Herrn Reimann dem Top G!
