@@ -15,5 +15,3 @@ secrets.properties
 
 # Room Schema
 /app/schemas
-
-secrets.properties

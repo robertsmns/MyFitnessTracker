@@ -3,7 +3,7 @@
     <color name="background">#121212</color>
     <color name="error">#EF5350</color>
     <item name="on_surface" type="color">#FFFFFF</item>
-    <item name="on_surface_variant" type="color">#E0E0E0</item>
+    <item name="on_surface_variant" type="color">#B0B0B0</item>
     <color name="primary">#42A5F5</color>
     <color name="primary_variant">#1E88E5</color>
     <color name="route_color">#42A5F5</color>

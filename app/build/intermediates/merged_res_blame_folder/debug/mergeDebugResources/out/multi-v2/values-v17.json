@@ -4,7 +4,7 @@
             "outputFile": "com.schule.myfitnessTracker.app-mergeDebugResources-55:/values-v17/values-v17.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Robert Siemens\\.gradle\\caches\\transforms-4\\f37a83a5882df90e235c41d4b3b00b13\\transformed\\appcompat-1.6.1\\res\\values-v17\\values-v17.xml",
+                    "source": "C:\\Users\\sieme\\.gradle\\caches\\transforms-4\\f37a83a5882df90e235c41d4b3b00b13\\transformed\\appcompat-1.6.1\\res\\values-v17\\values-v17.xml",
                     "from": {
                         "startLines": "2,5,9,12,15,18,22,25,29,33,37,40,43,46,50,53,57",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

@@ -67,6 +67,11 @@ class FitnessRepository(private val db: FitnessDatabase) {
         return runDao.insertRun(run)
     }
 
+    /** Wird für Mock-Daten verwendet, um komplette Läufe einzufügen */
+    suspend fun insertFullRun(run: Run): Long {
+        return runDao.insertRun(run)
+    }
+
     suspend fun finishRun(
         runId: Long,
         distanceMeters: Float,

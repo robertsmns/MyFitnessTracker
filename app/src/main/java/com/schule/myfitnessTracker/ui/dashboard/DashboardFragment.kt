@@ -79,6 +79,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     fun loadMockData() {
         viewModelScope.launch {
             mockDataManager.insertSimulationData()
+            loadWeeklyStats()
         }
     }
 
@@ -118,6 +119,12 @@ class DashboardFragment : Fragment() {
         setupChart()
         setupProfile()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Aktualisiert die Statistiken und das Diagramm jedes Mal, wenn das Dashboard sichtbar wird
+        viewModel.loadWeeklyStats()
     }
 
     override fun onDestroyView() {
@@ -182,6 +189,11 @@ class DashboardFragment : Fragment() {
     // ── Diagramm ──────────────────────────────────────────────────────────────
 
     private fun setupChart() {
+        val isDarkMode = (resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == 
+                         android.content.res.Configuration.UI_MODE_NIGHT_YES
+        val textColor = if (isDarkMode) Color.WHITE else Color.parseColor("#666666")
+        val gridColor = if (isDarkMode) Color.parseColor("#333333") else Color.parseColor("#EEEEEE")
+
         binding.barChart.apply {
             description.isEnabled = false
             setDrawGridBackground(false)
@@ -195,21 +207,21 @@ class DashboardFragment : Fragment() {
                 horizontalAlignment = com.github.mikephil.charting.components.Legend.LegendHorizontalAlignment.RIGHT
                 orientation = com.github.mikephil.charting.components.Legend.LegendOrientation.HORIZONTAL
                 setDrawInside(false)
-                textColor = Color.parseColor("#666666")
+                this.textColor = textColor
             }
 
             xAxis.apply {
                 position = XAxis.XAxisPosition.BOTTOM
                 setDrawGridLines(false)
                 granularity = 1f
-                textColor = Color.parseColor("#666666")
+                this.textColor = textColor
                 setDrawAxisLine(true)
             }
             axisLeft.apply {
                 setDrawGridLines(true)
                 axisMinimum = 0f
-                textColor = Color.parseColor("#666666")
-                gridColor = Color.parseColor("#EEEEEE")
+                this.textColor = textColor
+                this.gridColor = gridColor
                 // Dynamische Einheit an der Achse
                 valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
@@ -226,6 +238,10 @@ class DashboardFragment : Fragment() {
             binding.barChart.clear()
             return
         }
+
+        val isDarkMode = (resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == 
+                         android.content.res.Configuration.UI_MODE_NIGHT_YES
+        val valueColor = if (isDarkMode) Color.WHITE else Color.parseColor("#333333")
 
         // Letzte 7 Tage mit Standardwert 0 auffüllen
         val dayFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -247,7 +263,7 @@ class DashboardFragment : Fragment() {
 
         val dataSet = BarDataSet(entries, "Distanz pro Tag").apply {
             color = Color.parseColor("#2196F3")
-            valueTextColor = Color.parseColor("#333333")
+            valueTextColor = valueColor
             valueTextSize = 10f
             // Werte über den Balken formatieren (m oder km)
             valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {

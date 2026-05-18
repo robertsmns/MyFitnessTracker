@@ -10,7 +10,7 @@
     <color name="background">#121212</color>
     <color name="surface">#1E1E1E</color>
     <item name="on_surface" type="color">#FFFFFF</item>
-    <item name="on_surface_variant" type="color">#E0E0E0</item> <!-- Hellere Texte für mehr Kontrast -->
+    <item name="on_surface_variant" type="color">#B0B0B0</item> <!-- Viel heller für bessere Lesbarkeit -->
 
     <!-- Status -->
     <color name="error">#EF5350</color> <!-- Kräftiges Rot -->

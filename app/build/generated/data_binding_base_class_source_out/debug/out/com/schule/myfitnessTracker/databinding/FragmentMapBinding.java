@@ -45,13 +45,16 @@ public final class FragmentMapBinding implements ViewBinding {
   public final TextView tvSpeed;
 
   @NonNull
+  public final TextView tvSteps;
+
+  @NonNull
   public final TextView tvTimer;
 
   private FragmentMapBinding(@NonNull ConstraintLayout rootView,
       @NonNull FloatingActionButton btnCenter, @NonNull LinearLayout btnContainer,
       @NonNull MaterialButton btnPause, @NonNull MaterialButton btnStartStop,
       @NonNull MaterialCardView statsOverlay, @NonNull TextView tvDistance,
-      @NonNull TextView tvSpeed, @NonNull TextView tvTimer) {
+      @NonNull TextView tvSpeed, @NonNull TextView tvSteps, @NonNull TextView tvTimer) {
     this.rootView = rootView;
     this.btnCenter = btnCenter;
     this.btnContainer = btnContainer;
@@ -60,6 +63,7 @@ public final class FragmentMapBinding implements ViewBinding {
     this.statsOverlay = statsOverlay;
     this.tvDistance = tvDistance;
     this.tvSpeed = tvSpeed;
+    this.tvSteps = tvSteps;
     this.tvTimer = tvTimer;
   }
 
@@ -132,6 +136,12 @@ public final class FragmentMapBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tv_steps;
+      TextView tvSteps = ViewBindings.findChildViewById(rootView, id);
+      if (tvSteps == null) {
+        break missingId;
+      }
+
       id = R.id.tv_timer;
       TextView tvTimer = ViewBindings.findChildViewById(rootView, id);
       if (tvTimer == null) {
@@ -139,7 +149,7 @@ public final class FragmentMapBinding implements ViewBinding {
       }
 
       return new FragmentMapBinding((ConstraintLayout) rootView, btnCenter, btnContainer, btnPause,
-          btnStartStop, statsOverlay, tvDistance, tvSpeed, tvTimer);
+          btnStartStop, statsOverlay, tvDistance, tvSpeed, tvSteps, tvTimer);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

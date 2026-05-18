@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -33,6 +35,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private val viewModel: TrackingViewModel by viewModels()
     private lateinit var profileManager: ProfileManager
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private var map: GoogleMap? = null
     private var polyline: Polyline? = null
@@ -52,6 +55,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         profileManager = ProfileManager(requireContext())
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         // Google Maps initialisieren
         val mapFragment = childFragmentManager
@@ -143,6 +147,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 binding.tvDistance.text = "0 m"
                 binding.tvTimer.text = "00:00"
                 binding.tvSpeed.text = "0.0 km/h"
+                binding.tvSteps.text = "0"
                 binding.tvDistance.setTextColor(Color.WHITE)
             }
         }
@@ -192,6 +197,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         viewModel.speedKmh.observe(viewLifecycleOwner) { speed ->
             binding.tvSpeed.text = "%.1f km/h".format(speed)
+        }
+
+        viewModel.stepCount.observe(viewLifecycleOwner) { steps ->
+            binding.tvSteps.text = steps.toString()
         }
 
         // Standort-Updates für initiale Zentrierung
@@ -244,16 +253,28 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun centerOnCurrentLocation() {
-        // Erst versuchen wir es über die gezeichnete Route
+        // 1. Falls ein Run läuft, zentriere auf den letzten Punkt der Route
         val lastPoint = routePoints.lastOrNull()
         if (lastPoint != null) {
             zoomToPosition(lastPoint.latitude, lastPoint.longitude)
             return
         }
 
-        // Falls noch keine Route da ist, nehmen wir den letzten bekannten GPS-Standort
+        // 2. Falls kein Run läuft, aber der Service uns einen Standort liefert
         viewModel.lastLocation.value?.let { location ->
             zoomToPosition(location.latitude, location.longitude)
+            return
+        }
+
+        // 3. Letzte Rettung: Direkte Abfrage über den FusedLocationClient (falls Tracking aus ist)
+        try {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                location?.let {
+                    zoomToPosition(it.latitude, it.longitude)
+                }
+            }
+        } catch (e: SecurityException) {
+            e.printStackTrace()
         }
     }
 }
