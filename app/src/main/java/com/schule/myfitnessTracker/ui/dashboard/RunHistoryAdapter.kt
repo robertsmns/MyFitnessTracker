@@ -44,6 +44,21 @@ class RunHistoryAdapter(
                 tvSteps.text    = "%,d Schritte".format(run.steps)
                 tvCalories.text = "${run.calories} kcal"
 
+                val modeLabel = if (run.trackingMode == "PASSIVE") "Alltag: " else "Sport: "
+                val typeLabel = when (run.activityType) {
+                    "WALKING" -> "Gehen"
+                    "RUNNING" -> "Laufen"
+                    "BICYCLE" -> "Radfahren"
+                    "VEHICLE" -> "Fahrzeug"
+                    "STILL"   -> "Stillstand"
+                    else      -> "Unbekannt"
+                }
+                tvActivityType.text = "$modeLabel$typeLabel"
+                tvActivityType.setTextColor(
+                    if (run.trackingMode == "PASSIVE") android.graphics.Color.GRAY 
+                    else androidx.core.content.ContextCompat.getColor(root.context, com.schule.myfitnessTracker.R.color.primary)
+                )
+
                 btnDelete.setOnClickListener { onDeleteClick(run) }
                 root.setOnClickListener { onItemClick(run) }
             }

@@ -24,6 +24,9 @@ public final class ItemRunBinding implements ViewBinding {
   public final ImageButton btnDelete;
 
   @NonNull
+  public final TextView tvActivityType;
+
+  @NonNull
   public final TextView tvCalories;
 
   @NonNull
@@ -45,11 +48,12 @@ public final class ItemRunBinding implements ViewBinding {
   public final TextView tvTimeRange;
 
   private ItemRunBinding(@NonNull MaterialCardView rootView, @NonNull ImageButton btnDelete,
-      @NonNull TextView tvCalories, @NonNull TextView tvDate, @NonNull TextView tvDistance,
-      @NonNull TextView tvDuration, @NonNull TextView tvSpeed, @NonNull TextView tvSteps,
-      @NonNull TextView tvTimeRange) {
+      @NonNull TextView tvActivityType, @NonNull TextView tvCalories, @NonNull TextView tvDate,
+      @NonNull TextView tvDistance, @NonNull TextView tvDuration, @NonNull TextView tvSpeed,
+      @NonNull TextView tvSteps, @NonNull TextView tvTimeRange) {
     this.rootView = rootView;
     this.btnDelete = btnDelete;
+    this.tvActivityType = tvActivityType;
     this.tvCalories = tvCalories;
     this.tvDate = tvDate;
     this.tvDistance = tvDistance;
@@ -89,6 +93,12 @@ public final class ItemRunBinding implements ViewBinding {
       id = R.id.btn_delete;
       ImageButton btnDelete = ViewBindings.findChildViewById(rootView, id);
       if (btnDelete == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_activity_type;
+      TextView tvActivityType = ViewBindings.findChildViewById(rootView, id);
+      if (tvActivityType == null) {
         break missingId;
       }
 
@@ -134,8 +144,8 @@ public final class ItemRunBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ItemRunBinding((MaterialCardView) rootView, btnDelete, tvCalories, tvDate,
-          tvDistance, tvDuration, tvSpeed, tvSteps, tvTimeRange);
+      return new ItemRunBinding((MaterialCardView) rootView, btnDelete, tvActivityType, tvCalories,
+          tvDate, tvDistance, tvDuration, tvSpeed, tvSteps, tvTimeRange);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

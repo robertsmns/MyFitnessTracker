@@ -17,6 +17,84 @@
         android:textColor="@color/on_surface"
         android:layout_marginBottom="16dp" />
 
+    <!-- Live Status Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_live_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/primary"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+
+            <FrameLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="16dp">
+
+                <View
+                    android:id="@+id/view_pulse"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_run"
+                    android:backgroundTint="@color/primary"
+                    android:alpha="0.2" />
+
+                <ImageView
+                    android:id="@+id/iv_live_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_run"
+                    app:tint="@color/primary" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_live_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gerade aktiv: Gehen"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/on_surface" />
+
+                <TextView
+                    android:id="@+id/tv_live_since"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hier seit 14:30 (0 Min.)"
+                    android:textSize="13sp"
+                    android:textColor="@color/on_surface_variant" />
+            </LinearLayout>
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LIVE"
+                app:chipBackgroundColor="@color/error"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                app:chipMinHeight="24dp"
+                app:chipCornerRadius="4dp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
     <TextView
         android:id="@+id/tv_no_runs"
         android:layout_width="match_parent"

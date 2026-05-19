@@ -10,7 +10,7 @@ package com.schule.myfitnessTracker.service;
  * - Speichert jeden GPS-Punkt in der Room-DB
  * - Zeigt eine persistente Benachrichtigung
  */
-@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u0080\u0001\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\t\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0007\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0006\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u000f\u0018\u0000 ?2\u00020\u00012\u00020\u0002:\u0001?B\u0005\u00a2\u0006\u0002\u0010\u0003J\u0010\u0010\u001c\u001a\u00020\u001d2\u0006\u0010\u001e\u001a\u00020\u001fH\u0002J\b\u0010 \u001a\u00020!H\u0002J\u0010\u0010\"\u001a\u00020\u001f2\u0006\u0010#\u001a\u00020\u0013H\u0002J\u0010\u0010$\u001a\u00020!2\u0006\u0010%\u001a\u00020\tH\u0002J\u0018\u0010&\u001a\u00020!2\u0006\u0010\'\u001a\u00020(2\u0006\u0010)\u001a\u00020\u0015H\u0016J\b\u0010*\u001a\u00020!H\u0016J\b\u0010+\u001a\u00020!H\u0016J\u0010\u0010,\u001a\u00020!2\u0006\u0010-\u001a\u00020.H\u0016J\"\u0010/\u001a\u00020\u00152\b\u00100\u001a\u0004\u0018\u0001012\u0006\u00102\u001a\u00020\u00152\u0006\u00103\u001a\u00020\u0015H\u0016J\b\u00104\u001a\u00020!H\u0002J\b\u00105\u001a\u00020!H\u0002J\b\u00106\u001a\u00020!H\u0002J\b\u00107\u001a\u00020!H\u0002J\b\u00108\u001a\u00020!H\u0002J\u0010\u00109\u001a\u00020!2\u0006\u0010:\u001a\u00020\u0019H\u0002J\b\u0010;\u001a\u00020!H\u0002J\b\u0010<\u001a\u00020!H\u0002J\b\u0010=\u001a\u00020!H\u0002J\b\u0010>\u001a\u00020!H\u0002R\u000e\u0010\u0004\u001a\u00020\u0005X\u0082.\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0006\u001a\u00020\u0007X\u0082.\u00a2\u0006\u0002\n\u0000R\u0010\u0010\b\u001a\u0004\u0018\u00010\tX\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\n\u001a\u00020\u000bX\u0082.\u00a2\u0006\u0002\n\u0000R\u000e\u0010\f\u001a\u00020\rX\u0082.\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u000e\u001a\u00020\u000fX\u0082.\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0010\u001a\u00020\u0011X\u0082\u0004\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0012\u001a\u00020\u0013X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0014\u001a\u00020\u0015X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u0010\u0010\u0016\u001a\u0004\u0018\u00010\u0017X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0018\u001a\u00020\u0019X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u001a\u001a\u00020\u0019X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u001b\u001a\u00020\u0015X\u0082\u000e\u00a2\u0006\u0002\n\u0000\u00a8\u0006@"}, d2 = {"Lcom/schule/myfitnessTracker/service/TrackingService;", "Landroidx/lifecycle/LifecycleService;", "Landroid/hardware/SensorEventListener;", "()V", "fusedLocationClient", "Lcom/google/android/gms/location/FusedLocationProviderClient;", "locationCallback", "Lcom/google/android/gms/location/LocationCallback;", "prevLocation", "Landroid/location/Location;", "profileManager", "Lcom/schule/myfitnessTracker/util/ProfileManager;", "repository", "Lcom/schule/myfitnessTracker/data/db/FitnessRepository;", "sensorManager", "Landroid/hardware/SensorManager;", "serviceScope", "Lkotlinx/coroutines/CoroutineScope;", "startTime", "", "stepsAtStart", "", "timerJob", "Lkotlinx/coroutines/Job;", "totalDistance", "", "totalElevationGain", "totalStepsRaw", "buildNotification", "Landroid/app/Notification;", "text", "", "createNotificationChannel", "", "formatTime", "sec", "handleNewLocation", "location", "onAccuracyChanged", "sensor", "Landroid/hardware/Sensor;", "accuracy", "onCreate", "onDestroy", "onSensorChanged", "event", "Landroid/hardware/SensorEvent;", "onStartCommand", "intent", "Landroid/content/Intent;", "flags", "startId", "pauseTracking", "requestLocationUpdates", "resetTrackingValues", "setupLocationClient", "setupSensors", "showFinishedNotification", "distance", "startTimer", "startTracking", "stopTracking", "updateNotification", "Companion", "app_debug"})
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u008c\u0001\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\t\n\u0000\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u0007\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\u0006\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u000e\n\u0002\u0010\u000b\n\u0002\b\u0006\u0018\u0000 G2\u00020\u00012\u00020\u0002:\u0001GB\u0005\u00a2\u0006\u0002\u0010\u0003J\u001c\u0010\u001d\u001a\u00020\u001e2\u0006\u0010\u001f\u001a\u00020 2\n\b\u0002\u0010!\u001a\u0004\u0018\u00010 H\u0002J\b\u0010\"\u001a\u00020#H\u0002J\u0010\u0010$\u001a\u00020 2\u0006\u0010%\u001a\u00020\u0015H\u0002J\u0010\u0010&\u001a\u00020#2\u0006\u0010\'\u001a\u00020\tH\u0002J\u0018\u0010(\u001a\u00020#2\u0006\u0010)\u001a\u00020*2\u0006\u0010+\u001a\u00020\u0017H\u0016J\b\u0010,\u001a\u00020#H\u0016J\b\u0010-\u001a\u00020#H\u0016J\u0010\u0010.\u001a\u00020#2\u0006\u0010/\u001a\u000200H\u0016J\"\u00101\u001a\u00020\u00172\b\u00102\u001a\u0004\u0018\u0001032\u0006\u00104\u001a\u00020\u00172\u0006\u00105\u001a\u00020\u0017H\u0016J\b\u00106\u001a\u00020#H\u0002J\u0010\u00107\u001a\u00020#2\u0006\u00108\u001a\u00020\u0015H\u0002J\b\u00109\u001a\u00020#H\u0002J\b\u0010:\u001a\u00020#H\u0002J\b\u0010;\u001a\u00020#H\u0002J\u0010\u0010<\u001a\u00020#2\u0006\u0010=\u001a\u00020\u001aH\u0002J\b\u0010>\u001a\u00020#H\u0002J\b\u0010?\u001a\u00020#H\u0002J&\u0010@\u001a\u00020#2\b\b\u0002\u0010A\u001a\u00020B2\b\b\u0002\u0010C\u001a\u00020 2\b\b\u0002\u0010D\u001a\u00020 H\u0002J\b\u0010E\u001a\u00020#H\u0002J\b\u0010F\u001a\u00020#H\u0002R\u000e\u0010\u0004\u001a\u00020\u0005X\u0082.\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0006\u001a\u00020\u0007X\u0082.\u00a2\u0006\u0002\n\u0000R\u0010\u0010\b\u001a\u0004\u0018\u00010\tX\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\n\u001a\u00020\u000bX\u0082.\u00a2\u0006\u0002\n\u0000R\u000e\u0010\f\u001a\u00020\rX\u0082.\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u000e\u001a\u00020\u000fX\u0082.\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0010\u001a\u00020\u0011X\u0082\u0004\u00a2\u0006\u0002\n\u0000R\u0010\u0010\u0012\u001a\u0004\u0018\u00010\u0013X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0014\u001a\u00020\u0015X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0016\u001a\u00020\u0017X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u0010\u0010\u0018\u001a\u0004\u0018\u00010\u0013X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0019\u001a\u00020\u001aX\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u001b\u001a\u00020\u001aX\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u001c\u001a\u00020\u0017X\u0082\u000e\u00a2\u0006\u0002\n\u0000\u00a8\u0006H"}, d2 = {"Lcom/schule/myfitnessTracker/service/TrackingService;", "Landroidx/lifecycle/LifecycleService;", "Landroid/hardware/SensorEventListener;", "()V", "fusedLocationClient", "Lcom/google/android/gms/location/FusedLocationProviderClient;", "locationCallback", "Lcom/google/android/gms/location/LocationCallback;", "prevLocation", "Landroid/location/Location;", "profileManager", "Lcom/schule/myfitnessTracker/util/ProfileManager;", "repository", "Lcom/schule/myfitnessTracker/data/db/FitnessRepository;", "sensorManager", "Landroid/hardware/SensorManager;", "serviceScope", "Lkotlinx/coroutines/CoroutineScope;", "simulationJob", "Lkotlinx/coroutines/Job;", "startTime", "", "stepsAtStart", "", "timerJob", "totalDistance", "", "totalElevationGain", "totalStepsRaw", "buildNotification", "Landroid/app/Notification;", "text", "", "title", "createNotificationChannel", "", "formatTime", "sec", "handleNewLocation", "location", "onAccuracyChanged", "sensor", "Landroid/hardware/Sensor;", "accuracy", "onCreate", "onDestroy", "onSensorChanged", "event", "Landroid/hardware/SensorEvent;", "onStartCommand", "intent", "Landroid/content/Intent;", "flags", "startId", "pauseTracking", "requestLocationUpdates", "intervalMs", "resetTrackingValues", "setupLocationClient", "setupSensors", "showFinishedNotification", "distance", "startGpsSimulation", "startTimer", "startTracking", "simulate", "", "type", "mode", "stopTracking", "updateNotification", "Companion", "app_debug"})
 public final class TrackingService extends androidx.lifecycle.LifecycleService implements android.hardware.SensorEventListener {
     @org.jetbrains.annotations.NotNull()
     public static final java.lang.String ACTION_START = "ACTION_START_TRACKING";
@@ -19,10 +19,11 @@ public final class TrackingService extends androidx.lifecycle.LifecycleService i
     @org.jetbrains.annotations.NotNull()
     public static final java.lang.String ACTION_PAUSE = "ACTION_PAUSE_TRACKING";
     @org.jetbrains.annotations.NotNull()
+    public static final java.lang.String ACTION_ACTIVITY_UPDATE = "ACTION_ACTIVITY_UPDATE";
+    @org.jetbrains.annotations.NotNull()
     private static final java.lang.String CHANNEL_ID = "fitness_tracking_channel";
     private static final int NOTIFICATION_ID = 1;
-    private static final long LOCATION_INTERVAL_MS = 3000L;
-    private static final long LOCATION_FASTEST_MS = 1500L;
+    private static final long INTERVAL_ACTIVE_MS = 1000L;
     @org.jetbrains.annotations.NotNull()
     private static final androidx.lifecycle.MutableLiveData<java.lang.Boolean> isTracking = null;
     @org.jetbrains.annotations.NotNull()
@@ -40,7 +41,13 @@ public final class TrackingService extends androidx.lifecycle.LifecycleService i
     @org.jetbrains.annotations.NotNull()
     private static final androidx.lifecycle.MutableLiveData<java.lang.Boolean> isPaused = null;
     @org.jetbrains.annotations.NotNull()
+    private static final androidx.lifecycle.MutableLiveData<java.lang.Boolean> isSimulationActive = null;
+    @org.jetbrains.annotations.NotNull()
     private static final androidx.lifecycle.MutableLiveData<java.lang.Integer> heartRate = null;
+    @org.jetbrains.annotations.NotNull()
+    private static final androidx.lifecycle.MutableLiveData<java.lang.String> activityType = null;
+    @org.jetbrains.annotations.NotNull()
+    private static final androidx.lifecycle.MutableLiveData<java.lang.Long> currentStartTime = null;
     private com.google.android.gms.location.FusedLocationProviderClient fusedLocationClient;
     private com.google.android.gms.location.LocationCallback locationCallback;
     private android.hardware.SensorManager sensorManager;
@@ -50,6 +57,8 @@ public final class TrackingService extends androidx.lifecycle.LifecycleService i
     private final kotlinx.coroutines.CoroutineScope serviceScope = null;
     @org.jetbrains.annotations.Nullable()
     private android.location.Location prevLocation;
+    @org.jetbrains.annotations.Nullable()
+    private kotlinx.coroutines.Job simulationJob;
     private float totalDistance = 0.0F;
     private float totalElevationGain = 0.0F;
     private long startTime = 0L;
@@ -84,7 +93,10 @@ public final class TrackingService extends androidx.lifecycle.LifecycleService i
     private final void setupSensors() {
     }
     
-    private final void startTracking() {
+    private final void startTracking(boolean simulate, java.lang.String type, java.lang.String mode) {
+    }
+    
+    private final void startGpsSimulation() {
     }
     
     private final void stopTracking() {
@@ -96,7 +108,7 @@ public final class TrackingService extends androidx.lifecycle.LifecycleService i
     private final void pauseTracking() {
     }
     
-    private final void requestLocationUpdates() {
+    private final void requestLocationUpdates(long intervalMs) {
     }
     
     private final void handleNewLocation(android.location.Location location) {
@@ -115,7 +127,7 @@ public final class TrackingService extends androidx.lifecycle.LifecycleService i
     private final void startTimer() {
     }
     
-    private final android.app.Notification buildNotification(java.lang.String text) {
+    private final android.app.Notification buildNotification(java.lang.String text, java.lang.String title) {
         return null;
     }
     
@@ -132,7 +144,7 @@ public final class TrackingService extends androidx.lifecycle.LifecycleService i
     private final void createNotificationChannel() {
     }
     
-    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000B\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0002\b\u0004\n\u0002\u0010\t\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u0007\n\u0002\b\u0007\n\u0002\u0010\u000b\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0006\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002R\u000e\u0010\u0003\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0006\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0007\u001a\u00020\u0004X\u0082T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\b\u001a\u00020\tX\u0082T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\n\u001a\u00020\tX\u0082T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u000b\u001a\u00020\fX\u0082T\u00a2\u0006\u0002\n\u0000R\u0019\u0010\r\u001a\n\u0012\u0006\u0012\u0004\u0018\u00010\t0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u000f\u0010\u0010R\u001f\u0010\u0011\u001a\u0010\u0012\f\u0012\n \u0013*\u0004\u0018\u00010\u00120\u00120\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0014\u0010\u0010R\u001f\u0010\u0015\u001a\u0010\u0012\f\u0012\n \u0013*\u0004\u0018\u00010\t0\t0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0016\u0010\u0010R\u001f\u0010\u0017\u001a\u0010\u0012\f\u0012\n \u0013*\u0004\u0018\u00010\f0\f0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0018\u0010\u0010R\u001f\u0010\u0019\u001a\u0010\u0012\f\u0012\n \u0013*\u0004\u0018\u00010\u001a0\u001a0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0019\u0010\u0010R\u001f\u0010\u001b\u001a\u0010\u0012\f\u0012\n \u0013*\u0004\u0018\u00010\u001a0\u001a0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001b\u0010\u0010R\u0019\u0010\u001c\u001a\n\u0012\u0006\u0012\u0004\u0018\u00010\u001d0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001e\u0010\u0010R\u001f\u0010\u001f\u001a\u0010\u0012\f\u0012\n \u0013*\u0004\u0018\u00010\u00120\u00120\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b \u0010\u0010R\u001f\u0010!\u001a\u0010\u0012\f\u0012\n \u0013*\u0004\u0018\u00010\f0\f0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\"\u0010\u0010\u00a8\u0006#"}, d2 = {"Lcom/schule/myfitnessTracker/service/TrackingService$Companion;", "", "()V", "ACTION_PAUSE", "", "ACTION_START", "ACTION_STOP", "CHANNEL_ID", "LOCATION_FASTEST_MS", "", "LOCATION_INTERVAL_MS", "NOTIFICATION_ID", "", "currentRunId", "Landroidx/lifecycle/MutableLiveData;", "getCurrentRunId", "()Landroidx/lifecycle/MutableLiveData;", "distanceM", "", "kotlin.jvm.PlatformType", "getDistanceM", "elapsedSec", "getElapsedSec", "heartRate", "getHeartRate", "isPaused", "", "isTracking", "lastLocation", "Landroid/location/Location;", "getLastLocation", "speedKmh", "getSpeedKmh", "stepCount", "getStepCount", "app_debug"})
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000@\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0002\b\u0005\n\u0002\u0010\t\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0002\b\b\n\u0002\u0010\u0007\n\u0002\b\u0006\n\u0002\u0010\u000b\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0006\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002R\u000e\u0010\u0003\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0006\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0007\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\b\u001a\u00020\u0004X\u0082T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\t\u001a\u00020\nX\u0082T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u000b\u001a\u00020\fX\u0082T\u00a2\u0006\u0002\n\u0000R\u001f\u0010\r\u001a\u0010\u0012\f\u0012\n \u000f*\u0004\u0018\u00010\u00040\u00040\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0010\u0010\u0011R\u0019\u0010\u0012\u001a\n\u0012\u0006\u0012\u0004\u0018\u00010\n0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0013\u0010\u0011R\u001f\u0010\u0014\u001a\u0010\u0012\f\u0012\n \u000f*\u0004\u0018\u00010\n0\n0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0015\u0010\u0011R\u001f\u0010\u0016\u001a\u0010\u0012\f\u0012\n \u000f*\u0004\u0018\u00010\u00170\u00170\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0018\u0010\u0011R\u001f\u0010\u0019\u001a\u0010\u0012\f\u0012\n \u000f*\u0004\u0018\u00010\n0\n0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001a\u0010\u0011R\u001f\u0010\u001b\u001a\u0010\u0012\f\u0012\n \u000f*\u0004\u0018\u00010\f0\f0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001c\u0010\u0011R\u001f\u0010\u001d\u001a\u0010\u0012\f\u0012\n \u000f*\u0004\u0018\u00010\u001e0\u001e0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001d\u0010\u0011R\u001f\u0010\u001f\u001a\u0010\u0012\f\u0012\n \u000f*\u0004\u0018\u00010\u001e0\u001e0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\u001f\u0010\u0011R\u001f\u0010 \u001a\u0010\u0012\f\u0012\n \u000f*\u0004\u0018\u00010\u001e0\u001e0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b \u0010\u0011R\u0019\u0010!\u001a\n\u0012\u0006\u0012\u0004\u0018\u00010\"0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b#\u0010\u0011R\u001f\u0010$\u001a\u0010\u0012\f\u0012\n \u000f*\u0004\u0018\u00010\u00170\u00170\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b%\u0010\u0011R\u001f\u0010&\u001a\u0010\u0012\f\u0012\n \u000f*\u0004\u0018\u00010\f0\f0\u000e\u00a2\u0006\b\n\u0000\u001a\u0004\b\'\u0010\u0011\u00a8\u0006("}, d2 = {"Lcom/schule/myfitnessTracker/service/TrackingService$Companion;", "", "()V", "ACTION_ACTIVITY_UPDATE", "", "ACTION_PAUSE", "ACTION_START", "ACTION_STOP", "CHANNEL_ID", "INTERVAL_ACTIVE_MS", "", "NOTIFICATION_ID", "", "activityType", "Landroidx/lifecycle/MutableLiveData;", "kotlin.jvm.PlatformType", "getActivityType", "()Landroidx/lifecycle/MutableLiveData;", "currentRunId", "getCurrentRunId", "currentStartTime", "getCurrentStartTime", "distanceM", "", "getDistanceM", "elapsedSec", "getElapsedSec", "heartRate", "getHeartRate", "isPaused", "", "isSimulationActive", "isTracking", "lastLocation", "Landroid/location/Location;", "getLastLocation", "speedKmh", "getSpeedKmh", "stepCount", "getStepCount", "app_debug"})
     public static final class Companion {
         
         private Companion() {
@@ -180,7 +192,22 @@ public final class TrackingService extends androidx.lifecycle.LifecycleService i
         }
         
         @org.jetbrains.annotations.NotNull()
+        public final androidx.lifecycle.MutableLiveData<java.lang.Boolean> isSimulationActive() {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
         public final androidx.lifecycle.MutableLiveData<java.lang.Integer> getHeartRate() {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final androidx.lifecycle.MutableLiveData<java.lang.String> getActivityType() {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final androidx.lifecycle.MutableLiveData<java.lang.Long> getCurrentStartTime() {
             return null;
         }
     }

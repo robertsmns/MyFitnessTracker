@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- res/values/colors.xml -->
 <resources>
-    <!-- Brand Colors -->
-    <color name="primary">#2196F3</color>
-    <color name="primary_variant">#1565C0</color>
-    <color name="secondary">#FF9800</color>
-    <color name="secondary_variant">#E65100</color>
+    <!-- Modern "Athletic Blue" Palette -->
+    <color name="primary">#1976D2</color>
+    <color name="primary_variant">#0D47A1</color>
+    <color name="secondary">#00BCD4</color>
+    <color name="secondary_variant">#0097A7</color>
 
-    <!-- Surface & Background -->
+    <!-- Surface & Background - Optimiert für saubere Dialoge -->
     <color name="background">#F5F7FA</color>
     <color name="surface">#FFFFFF</color>
-    <color name="on_surface">#1A1A1A</color>
-    <color name="on_surface_variant">#666666</color>
-
+    <color name="on_surface">#212121</color>
+    <color name="on_surface_variant">#757575</color>
+    <color name="navigation_selection_color">#BBDEFB</color>
     <!-- Status -->
-    <color name="error">#F44336</color>
-    <color name="success">#4CAF50</color>
+    <color name="error">#E53935</color>
+    <color name="success">#43A047</color>
 
-    <!-- Karte -->
-    <color name="route_color">#2196F3</color>
-    <color name="marker_start">#4CAF50</color>
-    <color name="marker_end">#F44336</color>
+    <!-- Karte & Charts -->
+    <color name="route_color">#1976D2</color>
+    <color name="marker_start">#388E3C</color>
+    <color name="marker_end">#D32F2F</color>
+    <color name="chart_color">#1976D2</color>
 </resources>

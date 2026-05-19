@@ -22,6 +22,8 @@ class TrackingViewModel(application: Application) : AndroidViewModel(application
     private val repository: FitnessRepository by lazy {
         FitnessRepository(FitnessDatabase.getInstance(application))
     }
+    
+    private val profileManager = com.schule.myfitnessTracker.util.ProfileManager(application)
 
     // ── Service LiveData (direkte Referenzen) ─────────────────────────────────
 
@@ -64,9 +66,12 @@ class TrackingViewModel(application: Application) : AndroidViewModel(application
         val intent = Intent(context, TrackingService::class.java)
 
         if (isTracking.value == true) {
+            // Sport beenden
             intent.action = TrackingService.ACTION_STOP
         } else {
+            // Sport neu starten (auch wenn passiv im Hintergrund läuft)
             intent.action = TrackingService.ACTION_START
+            intent.putExtra("SIMULATE", profileManager.isSimulationMode)
             context.startForegroundService(intent)
             return
         }

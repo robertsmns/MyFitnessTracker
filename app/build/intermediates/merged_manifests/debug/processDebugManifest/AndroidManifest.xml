@@ -78,6 +78,10 @@
             android:exported="false"
             android:foregroundServiceType="location" />
 
+        <receiver
+            android:name="com.schule.myfitnessTracker.service.ActivityRecognitionReceiver"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.schule.myfitnessTracker.fileprovider"

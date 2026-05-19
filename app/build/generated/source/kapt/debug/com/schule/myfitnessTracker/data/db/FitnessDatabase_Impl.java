@@ -27,6 +27,8 @@ import javax.annotation.processing.Generated;
 @Generated("androidx.room.RoomProcessor")
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class FitnessDatabase_Impl extends FitnessDatabase {
+  private volatile UserDao _userDao;
+
   private volatile RunDao _runDao;
 
   private volatile RoutePointDao _routePointDao;
@@ -34,18 +36,21 @@ public final class FitnessDatabase_Impl extends FitnessDatabase {
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(1) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(4) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS `runs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `startTime` INTEGER NOT NULL, `endTime` INTEGER NOT NULL, `distanceMeters` REAL NOT NULL, `avgSpeedKmh` REAL NOT NULL, `steps` INTEGER NOT NULL, `calories` INTEGER NOT NULL, `elevationGain` REAL NOT NULL, `isActive` INTEGER NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT NOT NULL, `email` TEXT NOT NULL, `passwordHash` TEXT NOT NULL, `role` TEXT NOT NULL, `profilePicturePath` TEXT, `weight` REAL NOT NULL, `targetDistanceKm` REAL NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `runs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userId` INTEGER NOT NULL, `startTime` INTEGER NOT NULL, `endTime` INTEGER NOT NULL, `distanceMeters` REAL NOT NULL, `avgSpeedKmh` REAL NOT NULL, `steps` INTEGER NOT NULL, `calories` INTEGER NOT NULL, `elevationGain` REAL NOT NULL, `isActive` INTEGER NOT NULL, `isMock` INTEGER NOT NULL, `trackingMode` TEXT NOT NULL, `activityType` TEXT NOT NULL, FOREIGN KEY(`userId`) REFERENCES `users`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_runs_userId` ON `runs` (`userId`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `route_points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `runId` INTEGER NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `altitude` REAL NOT NULL, `speed` REAL NOT NULL, `accuracy` REAL NOT NULL, `timestamp` INTEGER NOT NULL, FOREIGN KEY(`runId`) REFERENCES `runs`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_route_points_runId` ON `route_points` (`runId`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '28319f153215cd5d376b92b7a63a7613')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ba07ba110cf948bb881b58820e035d8c')");
       }
 
       @Override
       public void dropAllTables(@NonNull final SupportSQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS `users`");
         db.execSQL("DROP TABLE IF EXISTS `runs`");
         db.execSQL("DROP TABLE IF EXISTS `route_points`");
         final List<? extends RoomDatabase.Callback> _callbacks = mCallbacks;
@@ -92,8 +97,27 @@ public final class FitnessDatabase_Impl extends FitnessDatabase {
       @NonNull
       public RoomOpenHelper.ValidationResult onValidateSchema(
           @NonNull final SupportSQLiteDatabase db) {
-        final HashMap<String, TableInfo.Column> _columnsRuns = new HashMap<String, TableInfo.Column>(9);
+        final HashMap<String, TableInfo.Column> _columnsUsers = new HashMap<String, TableInfo.Column>(8);
+        _columnsUsers.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsers.put("username", new TableInfo.Column("username", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsers.put("email", new TableInfo.Column("email", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsers.put("passwordHash", new TableInfo.Column("passwordHash", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsers.put("role", new TableInfo.Column("role", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsers.put("profilePicturePath", new TableInfo.Column("profilePicturePath", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsers.put("weight", new TableInfo.Column("weight", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsers.put("targetDistanceKm", new TableInfo.Column("targetDistanceKm", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysUsers = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesUsers = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoUsers = new TableInfo("users", _columnsUsers, _foreignKeysUsers, _indicesUsers);
+        final TableInfo _existingUsers = TableInfo.read(db, "users");
+        if (!_infoUsers.equals(_existingUsers)) {
+          return new RoomOpenHelper.ValidationResult(false, "users(com.schule.myfitnessTracker.data.model.User).\n"
+                  + " Expected:\n" + _infoUsers + "\n"
+                  + " Found:\n" + _existingUsers);
+        }
+        final HashMap<String, TableInfo.Column> _columnsRuns = new HashMap<String, TableInfo.Column>(13);
         _columnsRuns.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsRuns.put("userId", new TableInfo.Column("userId", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsRuns.put("startTime", new TableInfo.Column("startTime", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsRuns.put("endTime", new TableInfo.Column("endTime", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsRuns.put("distanceMeters", new TableInfo.Column("distanceMeters", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -102,8 +126,13 @@ public final class FitnessDatabase_Impl extends FitnessDatabase {
         _columnsRuns.put("calories", new TableInfo.Column("calories", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsRuns.put("elevationGain", new TableInfo.Column("elevationGain", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsRuns.put("isActive", new TableInfo.Column("isActive", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        final HashSet<TableInfo.ForeignKey> _foreignKeysRuns = new HashSet<TableInfo.ForeignKey>(0);
-        final HashSet<TableInfo.Index> _indicesRuns = new HashSet<TableInfo.Index>(0);
+        _columnsRuns.put("isMock", new TableInfo.Column("isMock", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsRuns.put("trackingMode", new TableInfo.Column("trackingMode", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsRuns.put("activityType", new TableInfo.Column("activityType", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysRuns = new HashSet<TableInfo.ForeignKey>(1);
+        _foreignKeysRuns.add(new TableInfo.ForeignKey("users", "CASCADE", "NO ACTION", Arrays.asList("userId"), Arrays.asList("id")));
+        final HashSet<TableInfo.Index> _indicesRuns = new HashSet<TableInfo.Index>(1);
+        _indicesRuns.add(new TableInfo.Index("index_runs_userId", false, Arrays.asList("userId"), Arrays.asList("ASC")));
         final TableInfo _infoRuns = new TableInfo("runs", _columnsRuns, _foreignKeysRuns, _indicesRuns);
         final TableInfo _existingRuns = TableInfo.read(db, "runs");
         if (!_infoRuns.equals(_existingRuns)) {
@@ -133,7 +162,7 @@ public final class FitnessDatabase_Impl extends FitnessDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "28319f153215cd5d376b92b7a63a7613", "19d7e5eab00267b4646f4d836a291531");
+    }, "ba07ba110cf948bb881b58820e035d8c", "805a0e622cf7ca1cea2e5b4f5b1c3470");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -144,7 +173,7 @@ public final class FitnessDatabase_Impl extends FitnessDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     final HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "runs","route_points");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "users","runs","route_points");
   }
 
   @Override
@@ -160,6 +189,7 @@ public final class FitnessDatabase_Impl extends FitnessDatabase {
       if (_supportsDeferForeignKeys) {
         _db.execSQL("PRAGMA defer_foreign_keys = TRUE");
       }
+      _db.execSQL("DELETE FROM `users`");
       _db.execSQL("DELETE FROM `runs`");
       _db.execSQL("DELETE FROM `route_points`");
       super.setTransactionSuccessful();
@@ -179,6 +209,7 @@ public final class FitnessDatabase_Impl extends FitnessDatabase {
   @NonNull
   protected Map<Class<?>, List<Class<?>>> getRequiredTypeConverters() {
     final HashMap<Class<?>, List<Class<?>>> _typeConvertersMap = new HashMap<Class<?>, List<Class<?>>>();
+    _typeConvertersMap.put(UserDao.class, UserDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(RunDao.class, RunDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(RoutePointDao.class, RoutePointDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
@@ -197,6 +228,20 @@ public final class FitnessDatabase_Impl extends FitnessDatabase {
       @NonNull final Map<Class<? extends AutoMigrationSpec>, AutoMigrationSpec> autoMigrationSpecs) {
     final List<Migration> _autoMigrations = new ArrayList<Migration>();
     return _autoMigrations;
+  }
+
+  @Override
+  public UserDao userDao() {
+    if (_userDao != null) {
+      return _userDao;
+    } else {
+      synchronized(this) {
+        if(_userDao == null) {
+          _userDao = new UserDao_Impl(this);
+        }
+        return _userDao;
+      }
+    }
   }
 
   @Override

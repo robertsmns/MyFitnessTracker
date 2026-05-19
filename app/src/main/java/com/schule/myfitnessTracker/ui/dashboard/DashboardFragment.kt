@@ -1,20 +1,21 @@
 package com.schule.myfitnessTracker.ui.dashboard
 
 import android.app.Application
+import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
@@ -25,6 +26,7 @@ import com.schule.myfitnessTracker.data.db.FitnessRepository
 import com.schule.myfitnessTracker.data.model.Run
 import com.schule.myfitnessTracker.databinding.FragmentDashboardBinding
 import com.schule.myfitnessTracker.ui.history.RunDetailsDialogFragment
+import com.schule.myfitnessTracker.util.SecurityUtils
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,26 +41,56 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     private val profileManager = com.schule.myfitnessTracker.util.ProfileManager(application)
     private val mockDataManager = com.schule.myfitnessTracker.util.MockDataManager(repository)
 
-    val todayDistance: LiveData<Float>  = repository.todayDistance
-    val todaySteps: LiveData<Int>       = repository.todaySteps
-    val todayCalories: LiveData<Int>    = repository.todayCalories
-    val lastRun: LiveData<Run?>         = repository.lastRun
-    val avgSpeed: LiveData<Float>       = repository.avgSpeed
+    private val modeTrigger = MutableLiveData<Pair<Long, Boolean>>()
 
-    val userName   = androidx.lifecycle.MutableLiveData(profileManager.name)
-    val userWeight = androidx.lifecycle.MutableLiveData(profileManager.weight)
+    val todayDistance: LiveData<Float>  = modeTrigger.switchMap { (uid, mock) -> repository.getTodayDistance(uid, mock) }
+    val todaySteps: LiveData<Int>       = modeTrigger.switchMap { (uid, mock) -> repository.getTodaySteps(uid, mock) }
+    val todayCalories: LiveData<Int>    = modeTrigger.switchMap { (uid, mock) -> repository.getTodayCalories(uid, mock) }
+    val lastRun: LiveData<Run?>         = modeTrigger.switchMap { (uid, mock) -> repository.getLastRun(uid, mock) }
+    val avgSpeed: LiveData<Float>       = modeTrigger.switchMap { (uid, mock) -> repository.getAvgSpeed(uid, mock) }
 
-    // Wöchentliche Statistiken (für Balkendiagramm)
-    private val _weeklyStats = androidx.lifecycle.MutableLiveData<List<DailyStats>>()
+    val userName   = MutableLiveData(profileManager.name)
+    val userWeight = MutableLiveData(profileManager.weight)
+    val userEmail  = MutableLiveData("")
+    val userRole   = MutableLiveData("USER")
+    val userProfilePic = MutableLiveData<String?>(null)
+
+    private val _weeklyStats = MutableLiveData<List<DailyStats>>()
     val weeklyStats: LiveData<List<DailyStats>> = _weeklyStats
 
     init {
+        loadUser()
+    }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            val user = repository.getUserById(profileManager.currentUserId)
+            if (user != null) {
+                userName.postValue(user.username)
+                userWeight.postValue(user.weight)
+                userEmail.postValue(user.email)
+                userRole.postValue(user.role)
+                userProfilePic.postValue(user.profilePicturePath)
+                
+                profileManager.name = user.username
+                profileManager.weight = user.weight
+                profileManager.targetDistanceKm = user.targetDistanceKm
+            } else {
+                // User existiert nicht mehr in DB (Migration/Wipe)
+                logout()
+            }
+        }
+    }
+
+    fun refreshMode() {
+        modeTrigger.value = profileManager.currentUserId to profileManager.isSimulationMode
         loadWeeklyStats()
+        loadUser()
     }
 
     fun loadWeeklyStats() {
         viewModelScope.launch {
-            val stats = repository.getWeeklyStats()
+            val stats = repository.getWeeklyStats(profileManager.currentUserId, profileManager.isSimulationMode)
             _weeklyStats.postValue(stats)
         }
     }
@@ -69,16 +101,35 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun updateProfile(name: String, weight: Float) {
-        profileManager.name = name
-        profileManager.weight = weight
-        userName.value = name
-        userWeight.value = weight
+    fun updateProfile(name: String, weight: Float, target: Float, newPassword: String? = null, profilePic: String? = null) {
+        viewModelScope.launch {
+            val user = repository.getUserById(profileManager.currentUserId) ?: return@launch
+            var updatedUser = user.copy(
+                username = name,
+                weight = weight,
+                targetDistanceKm = target
+            )
+            
+            if (!newPassword.isNullOrBlank()) {
+                updatedUser = updatedUser.copy(passwordHash = SecurityUtils.hashPassword(newPassword))
+            }
+            
+            if (profilePic != null) {
+                updatedUser = updatedUser.copy(profilePicturePath = profilePic)
+            }
+
+            repository.updateUser(updatedUser)
+            loadUser()
+        }
+    }
+
+    fun logout() {
+        profileManager.currentUserId = -1L
     }
 
     fun loadMockData() {
         viewModelScope.launch {
-            mockDataManager.insertSimulationData()
+            mockDataManager.insertSimulationData(profileManager.currentUserId)
             loadWeeklyStats()
         }
     }
@@ -90,23 +141,26 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
 // Fragment
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Dashboard – Tages- und Wochenübersicht.
- *
- * Zeigt:
- *  - Heutige Distanz, Schritte, Kalorien
- *  - Wöchentliches Balkendiagramm (MPAndroidChart)
- *  - Liste der letzten Trainingseinheiten
- */
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DashboardViewModel by viewModels()
 
-    private lateinit var runAdapter: RunHistoryAdapter
+    private var selectedImageUri: Uri? = null
+    private var currentDialogBinding: com.schule.myfitnessTracker.databinding.DialogEditProfileBinding? = null
 
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            selectedImageUri = it
+            currentDialogBinding?.let { db ->
+                db.ivProfilePicture.setImageURI(it)
+                db.ivProfilePicture.setPadding(0, 0, 0, 0)
+                db.ivProfilePicture.clearColorFilter()
+                db.ivProfilePicture.imageTintList = null
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
@@ -123,8 +177,7 @@ class DashboardFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // Aktualisiert die Statistiken und das Diagramm jedes Mal, wenn das Dashboard sichtbar wird
-        viewModel.loadWeeklyStats()
+        viewModel.refreshMode()
     }
 
     override fun onDestroyView() {
@@ -132,61 +185,80 @@ class DashboardFragment : Fragment() {
         _binding = null
     }
 
-    // RecyclerView entfernt, da wir nur noch das letzte Training zeigen
-
     private fun setupProfile() {
         binding.cardProfile.setOnClickListener {
             showEditProfileDialog()
         }
+
+        binding.cardActiveMode.setOnClickListener {
+            findNavController().navigate(R.id.mapFragment)
+        }
     }
+
 
     private fun showEditProfileDialog() {
         val profileManager = com.schule.myfitnessTracker.util.ProfileManager(requireContext())
-        val layout = LinearLayout(context).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(60, 20, 60, 20)
+        val dialogBinding = com.schule.myfitnessTracker.databinding.DialogEditProfileBinding.inflate(layoutInflater)
+        currentDialogBinding = dialogBinding
+        selectedImageUri = null
+
+        // Bestehende Werte setzen
+        dialogBinding.etName.setText(viewModel.userName.value)
+        dialogBinding.etWeight.setText(viewModel.userWeight.value.toString())
+        dialogBinding.etTarget.setText(profileManager.targetDistanceKm.toString())
+        dialogBinding.etEmail.setText(viewModel.userEmail.value)
+        
+        viewModel.userProfilePic.value?.let { path ->
+            setProfilePicSafe(dialogBinding.ivProfilePicture, path)
         }
 
-        val nameInput = EditText(context).apply {
-            hint = "Name"
-            setText(viewModel.userName.value)
-        }
-        val weightInput = EditText(context).apply {
-            hint = "Gewicht (kg)"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
-            setText(viewModel.userWeight.value.toString())
-        }
-        val targetInput = EditText(context).apply {
-            hint = "Ziel-Distanz (km)"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
-            setText(profileManager.targetDistanceKm.toString())
+        dialogBinding.btnChangePicture.setOnClickListener {
+            pickImageLauncher.launch("image/*")
         }
 
-        layout.addView(nameInput)
-        layout.addView(weightInput)
-        layout.addView(targetInput)
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("Profil & Ziele")
-            .setView(layout)
+        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
             .setPositiveButton("Speichern") { _, _ ->
-                val name = nameInput.text.toString()
-                val weight = weightInput.text.toString().toFloatOrNull() ?: 75f
-                val target = targetInput.text.toString().toFloatOrNull() ?: 5f
-                
-                viewModel.updateProfile(name, weight)
-                profileManager.targetDistanceKm = target
-            }
-            .setNeutralButton("Demo-Daten laden") { _, _ ->
-                viewModel.loadMockData()
+                val name = dialogBinding.etName.text.toString()
+                val weight = dialogBinding.etWeight.text.toString().toFloatOrNull() ?: 75f
+                val target = dialogBinding.etTarget.text.toString().toFloatOrNull() ?: 5f
+                val newPass = dialogBinding.etNewPassword.text.toString()
+
+                if (newPass.isNotBlank() && !SecurityUtils.isValidPassword(newPass)) {
+                    Toast.makeText(requireContext(), "Neues Passwort ist zu unsicher!", Toast.LENGTH_LONG).show()
+                    return@setPositiveButton
+                }
+
+                val savedPath = selectedImageUri?.let { profileManager.saveProfilePicture(it) }
+
+                viewModel.updateProfile(
+                    name = name,
+                    weight = weight,
+                    target = target,
+                    newPassword = if (newPass.isBlank()) null else newPass,
+                    profilePic = savedPath ?: viewModel.userProfilePic.value
+                )
             }
             .setNegativeButton("Abbrechen", null)
-            .show()
+            .setOnDismissListener {
+                currentDialogBinding = null
+            }
+            .create()
+
+        dialogBinding.btnLogout.setOnClickListener {
+            dialog.dismiss()
+            viewModel.logout()
+            findNavController().navigate(R.id.loginFragment)
+        }
+
+        if (viewModel.userRole.value == "ADMIN" && profileManager.isSimulationMode) {
+            dialog.setButton(androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL, "Demo-Daten laden") { _, _ ->
+                viewModel.loadMockData()
+            }
+        }
+        
+        dialog.show()
     }
-
-    // Die Funktion showElevationProfile kann komplett gelöscht werden, da wir die Höhenmeter nicht mehr wollen
-
-    // ── Diagramm ──────────────────────────────────────────────────────────────
 
     private fun setupChart() {
         val isDarkMode = (resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == 
@@ -222,7 +294,6 @@ class DashboardFragment : Fragment() {
                 axisMinimum = 0f
                 this.textColor = textColor
                 this.gridColor = gridColor
-                // Dynamische Einheit an der Achse
                 valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
                         return if (value >= 1f) "%.1f km".format(value) else "%.0f m".format(value * 1000)
@@ -243,7 +314,6 @@ class DashboardFragment : Fragment() {
                          android.content.res.Configuration.UI_MODE_NIGHT_YES
         val valueColor = if (isDarkMode) Color.WHITE else Color.parseColor("#333333")
 
-        // Letzte 7 Tage mit Standardwert 0 auffüllen
         val dayFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val labelFormat = SimpleDateFormat("EEE", Locale.GERMAN)
         val calendar = Calendar.getInstance()
@@ -262,10 +332,9 @@ class DashboardFragment : Fragment() {
         val labels = filledStats.map { it.first }
 
         val dataSet = BarDataSet(entries, "Distanz pro Tag").apply {
-            color = Color.parseColor("#2196F3")
+            color = ContextCompat.getColor(requireContext(), R.color.primary)
             valueTextColor = valueColor
             valueTextSize = 10f
-            // Werte über den Balken formatieren (m oder km)
             valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     return if (value <= 0f) "" 
@@ -280,17 +349,11 @@ class DashboardFragment : Fragment() {
         binding.barChart.invalidate()
     }
 
-    // ── Beobachter ────────────────────────────────────────────────────────────
-
     private fun observeViewModel() {
-        // Tages-Stats
         viewModel.todayDistance.observe(viewLifecycleOwner) { distM ->
             val meters = distM ?: 0f
             if (meters < 1000f) {
                 binding.tvTodayDistance.text = "%.0f".format(meters)
-                // Wir müssen auch das Label "km" unter der Zahl anpassen, 
-                // falls wir eine TextView dafür haben.
-                // In deinem Layout ist das TextView unter tv_today_distance:
                 val parent = binding.tvTodayDistance.parent as? android.widget.LinearLayout
                 (parent?.getChildAt(2) as? android.widget.TextView)?.text = "m"
             } else {
@@ -304,8 +367,6 @@ class DashboardFragment : Fragment() {
         viewModel.todaySteps.observe(viewLifecycleOwner) { steps ->
             val s = steps ?: 0
             binding.tvTodaySteps.text = "%,d".format(s)
-
-            // Fortschrittsbalken (Ziel: 10.000 Schritte)
             val progress = (s.toFloat() / 10_000f * 100).toInt().coerceIn(0, 100)
             binding.progressSteps.progress = progress
             binding.tvStepsGoal.text = "$s / 10.000"
@@ -319,13 +380,11 @@ class DashboardFragment : Fragment() {
             binding.tvTodayCalories.text = (calories ?: 0).toString()
         }
 
-        // Letztes Training anzeigen
         viewModel.lastRun.observe(viewLifecycleOwner) { run ->
             if (run != null) {
                 binding.lastRunLayout.root.visibility = View.VISIBLE
                 binding.tvNoRuns.visibility = View.GONE
                 
-                // Manuelles Binden der Daten an das included Layout
                 val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
                 val timeFormat = SimpleDateFormat("HH:mm", Locale.GERMAN)
                 
@@ -336,7 +395,7 @@ class DashboardFragment : Fragment() {
                 binding.lastRunLayout.tvSpeed.text = "⌀ %.1f km/h".format(run.avgSpeedKmh)
                 binding.lastRunLayout.tvSteps.text = "%,d Schritte".format(run.steps)
                 binding.lastRunLayout.tvCalories.text = "${run.calories} kcal"
-                binding.lastRunLayout.btnDelete.setOnClickListener { viewModel.deleteRun(run) }
+                binding.lastRunLayout.btnDelete.setOnClickListener { showDeleteConfirmDialog(run) }
                 binding.lastRunLayout.root.setOnClickListener {
                     val detailsDialog = RunDetailsDialogFragment(run)
                     detailsDialog.show(childFragmentManager, "run_details")
@@ -347,17 +406,84 @@ class DashboardFragment : Fragment() {
             }
         }
 
-        // Wöchentliches Diagramm
         viewModel.weeklyStats.observe(viewLifecycleOwner) { stats ->
             updateChart(stats)
         }
 
-        // Profil
         viewModel.userName.observe(viewLifecycleOwner) { name ->
-            binding.tvProfileName.text = if (name.isNullOrEmpty()) "Hallo Sportler!" else "Hallo $name!"
+            val displayName = if (name.isNullOrEmpty()) getString(R.string.default_user_name) else name
+            binding.tvProfileName.text = getString(R.string.hello_athlete, displayName)
         }
+
         viewModel.userWeight.observe(viewLifecycleOwner) { weight ->
-            binding.tvProfileWeight.text = "$weight kg"
+            binding.tvProfileWeight.text = getString(R.string.weight_label, weight?.toString() ?: "75")
         }
+        
+        viewModel.userProfilePic.observe(viewLifecycleOwner) { picUri ->
+            setProfilePicSafe(binding.ivProfileDashboard, picUri, true)
+        }
+    }
+
+    private fun pm() = com.schule.myfitnessTracker.util.ProfileManager(requireContext())
+
+    private fun hasLocationPermissions(): Boolean {
+        return ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
+    }
+
+    /**
+     * Setzt das Profilbild sicher und fängt SecurityExceptions ab.
+     */
+    private fun setProfilePicSafe(imageView: com.google.android.material.imageview.ShapeableImageView, path: String?, isDashboard: Boolean = false) {
+        if (path.isNullOrEmpty()) {
+            setDefaultProfilePic(imageView, isDashboard)
+            return
+        }
+
+        try {
+            if (path.startsWith("content://")) {
+                val uri = Uri.parse(path)
+                requireContext().contentResolver.openInputStream(uri)?.close()
+                imageView.setImageURI(uri)
+            } else {
+                val file = java.io.File(path)
+                if (file.exists()) {
+                    val bitmap = android.graphics.BitmapFactory.decodeFile(path)
+                    imageView.setImageBitmap(bitmap)
+                } else {
+                    setDefaultProfilePic(imageView, isDashboard)
+                    return
+                }
+            }
+            
+            imageView.setPadding(0, 0, 0, 0)
+            imageView.clearColorFilter()
+            imageView.imageTintList = null 
+        } catch (e: Exception) {
+            e.printStackTrace()
+            setDefaultProfilePic(imageView, isDashboard)
+        }
+    }
+
+    private fun setDefaultProfilePic(imageView: com.google.android.material.imageview.ShapeableImageView, isDashboard: Boolean) {
+        imageView.setImageResource(R.drawable.ic_profile_placeholder)
+        if (isDashboard) {
+            imageView.setPadding(0, 0, 0, 0)
+        } else {
+            imageView.setPadding(0, 0, 0, 0)
+        }
+        // Tint entfernen, damit das schwarz-weiße Placeholder Bild original bleibt
+        imageView.clearColorFilter()
+        imageView.imageTintList = null
+    }
+
+    private fun showDeleteConfirmDialog(run: Run) {
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Lauf löschen")
+            .setMessage("Möchtest du diesen Lauf wirklich unwiderruflich löschen?")
+            .setPositiveButton("Löschen") { _, _ ->
+                viewModel.deleteRun(run)
+            }
+            .setNegativeButton("Abbrechen", null)
+            .show()
     }
 }

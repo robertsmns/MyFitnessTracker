@@ -17,10 +17,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:text="Dashboard"
+            android:text="@string/dashboard_title"
             android:textColor="@color/on_surface"
             android:textSize="28sp"
             android:textStyle="bold" />
+
 
         <!-- Profil-Card -->
         <com.google.android.material.card.MaterialCardView
@@ -39,6 +40,18 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_profile_dashboard"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@android:color/white"
+                    android:padding="2dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_run"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                    app:tint="@color/primary" />
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -49,7 +62,7 @@
                         android:id="@+id/tv_profile_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hallo Sportler!"
+                        android:text="@string/hello_athlete"
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -58,7 +71,7 @@
                         android:id="@+id/tv_profile_weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gewicht: 75 kg"
+                        android:text="@string/weight_label"
                         android:textColor="#CCFFFFFF" />
                 </LinearLayout>
 
@@ -66,7 +79,61 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_dashboard"
+                    android:contentDescription="@null"
                     app:tint="@android:color/white" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Aktivitätsmodus-Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_active_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_run"
+                    app:tint="@color/primary" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_training"
+                        android:textColor="@color/on_surface"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gps_tracking_map"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_map"
+                    app:tint="@color/on_surface_variant" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -75,7 +142,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Heute"
+            android:text="@string/today_label"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/on_surface"
@@ -105,7 +172,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🏃 Distanz (GPS)"
+                        android:text="@string/distance_gps_label"
                         android:textSize="12sp"
                         android:textColor="@color/on_surface_variant" />
 
@@ -145,7 +212,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="⚡ Ø Tempo (GPS)"
+                        android:text="@string/avg_speed_gps_label"
                         android:textSize="12sp"
                         android:textColor="@color/on_surface_variant" />
 
@@ -185,7 +252,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🔥 Verbrannte Kalorien"
+                    android:text="@string/calories_burned_label"
                     android:textColor="@color/on_surface"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -220,8 +287,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="(Berechnet aus: km × kg × 0.9)"
-                    android:textSize="10sp"
+                    android:text="@string/calories_calc_hint"
+                    android:textSize="11sp"
                     android:textColor="@color/on_surface_variant"
                     android:fontStyle="italic" />
 
@@ -251,7 +318,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="👟 Schritte"
+                        android:text="@string/steps_label"
                         android:textColor="@color/on_surface"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -281,9 +348,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontStyle="italic"
-                    android:text="(Schritte Sensor)"
+                    android:text="@string/steps_sensor_hint"
                     android:textColor="@color/on_surface_variant"
-                    android:textSize="10sp" />
+                    android:textSize="11sp" />
 
                 <ProgressBar
                     android:id="@+id/progress_steps"
@@ -303,7 +370,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Diese Woche"
+            android:text="@string/weekly_chart"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/on_surface"
@@ -328,7 +395,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Letztes Training"
+            android:text="@string/last_training_label"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/on_surface"
@@ -344,7 +411,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="24dp"
-            android:text="Noch keine Trainings gespeichert."
+            android:text="@string/no_runs_saved"
             android:textColor="@color/on_surface_variant"
             android:visibility="gone" />
 

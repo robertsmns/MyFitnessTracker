@@ -10,4 +10,19 @@
     <string name="steps_today">Schritte heute</string>
     <string name="weekly_chart">Diese Woche</string>
     <string name="history">Trainings-Historie</string>
+    <string name="start_training">Training starten</string>
+    <string name="gps_tracking_map">GPS-Tracking &amp; Karte</string>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="hello_athlete">Hallo %1$s!</string>
+    <string name="default_user_name">Sportler</string>
+    <string name="weight_label">Gewicht: %1$s kg</string>
+    <string name="today_label">Heute</string>
+    <string name="distance_gps_label">🏃 Distanz (GPS)</string>
+    <string name="avg_speed_gps_label">⚡ Ø Tempo (GPS)</string>
+    <string name="calories_burned_label">🔥 Verbrannte Kalorien</string>
+    <string name="calories_calc_hint">(Berechnet aus: km × kg × 0.9)</string>
+    <string name="steps_label">👟 Schritte</string>
+    <string name="steps_sensor_hint">(Schritte Sensor)</string>
+    <string name="last_training_label">Letztes Training</string>
+    <string name="no_runs_saved">Noch keine Trainings gespeichert.</string>
 </resources>

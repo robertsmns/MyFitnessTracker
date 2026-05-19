@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.google.android.material.button.MaterialButton;
@@ -36,6 +37,9 @@ public final class FragmentMapBinding implements ViewBinding {
   public final MaterialButton btnStartStop;
 
   @NonNull
+  public final FragmentContainerView mapContainer;
+
+  @NonNull
   public final MaterialCardView statsOverlay;
 
   @NonNull
@@ -53,13 +57,15 @@ public final class FragmentMapBinding implements ViewBinding {
   private FragmentMapBinding(@NonNull ConstraintLayout rootView,
       @NonNull FloatingActionButton btnCenter, @NonNull LinearLayout btnContainer,
       @NonNull MaterialButton btnPause, @NonNull MaterialButton btnStartStop,
-      @NonNull MaterialCardView statsOverlay, @NonNull TextView tvDistance,
-      @NonNull TextView tvSpeed, @NonNull TextView tvSteps, @NonNull TextView tvTimer) {
+      @NonNull FragmentContainerView mapContainer, @NonNull MaterialCardView statsOverlay,
+      @NonNull TextView tvDistance, @NonNull TextView tvSpeed, @NonNull TextView tvSteps,
+      @NonNull TextView tvTimer) {
     this.rootView = rootView;
     this.btnCenter = btnCenter;
     this.btnContainer = btnContainer;
     this.btnPause = btnPause;
     this.btnStartStop = btnStartStop;
+    this.mapContainer = mapContainer;
     this.statsOverlay = statsOverlay;
     this.tvDistance = tvDistance;
     this.tvSpeed = tvSpeed;
@@ -118,6 +124,12 @@ public final class FragmentMapBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.map_container;
+      FragmentContainerView mapContainer = ViewBindings.findChildViewById(rootView, id);
+      if (mapContainer == null) {
+        break missingId;
+      }
+
       id = R.id.statsOverlay;
       MaterialCardView statsOverlay = ViewBindings.findChildViewById(rootView, id);
       if (statsOverlay == null) {
@@ -149,7 +161,7 @@ public final class FragmentMapBinding implements ViewBinding {
       }
 
       return new FragmentMapBinding((ConstraintLayout) rootView, btnCenter, btnContainer, btnPause,
-          btnStartStop, statsOverlay, tvDistance, tvSpeed, tvSteps, tvTimer);
+          btnStartStop, mapContainer, statsOverlay, tvDistance, tvSpeed, tvSteps, tvTimer);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

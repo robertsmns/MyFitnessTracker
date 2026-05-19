@@ -14,7 +14,7 @@ import kotlin.random.Random
  */
 class MockDataManager(private val repository: FitnessRepository) {
 
-    suspend fun insertSimulationData() = withContext(Dispatchers.IO) {
+    suspend fun insertSimulationData(userId: Long) = withContext(Dispatchers.IO) {
         val calendar = Calendar.getInstance()
         
         // Erzeuge 10 Läufe verteilt über die letzten 14 Tage
@@ -40,6 +40,7 @@ class MockDataManager(private val repository: FitnessRepository) {
             val avgSpeed = (distanceM / 1000f) / (durationMin / 60f)
 
             val run = Run(
+                userId = userId,
                 startTime = startTime,
                 endTime = endTime,
                 distanceMeters = distanceM,

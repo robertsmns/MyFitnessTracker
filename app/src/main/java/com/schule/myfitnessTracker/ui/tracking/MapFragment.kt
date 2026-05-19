@@ -1,5 +1,6 @@
 package com.schule.myfitnessTracker.ui.tracking
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -40,8 +42,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var map: GoogleMap? = null
     private var polyline: Polyline? = null
     private var startMarker: Marker? = null
-    private var currentMarker: Marker? = null
 
+    private var isFollowing = true
     private val routePoints = mutableListOf<RoutePoint>()
     private var isFirstLocationUpdate = true
 
@@ -59,7 +61,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         // Google Maps initialisieren
         val mapFragment = childFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(R.id.map_container) as SupportMapFragment
+        
+        // Initial ausblenden, um das "Blitzen" beim Dark-Mode-Laden zu verhindern
+        binding.mapContainer.alpha = 0f
+        
         mapFragment.getMapAsync(this)
 
         setupButtons()
@@ -87,10 +93,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
+        // Karte einblenden, nachdem der Style angewendet wurde
+        binding.mapContainer.animate().alpha(1f).setDuration(400).start()
+
         // Karten-Stil
         map?.apply {
             mapType = GoogleMap.MAP_TYPE_NORMAL
-            uiSettings.isZoomControlsEnabled = true
+            uiSettings.isZoomControlsEnabled = false
             uiSettings.isCompassEnabled      = true
             uiSettings.isMyLocationButtonEnabled = false
 
@@ -100,18 +109,28 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             } catch (e: SecurityException) {
                 e.printStackTrace()
             }
+
+            // Erkennen, wenn der Benutzer die Karte manuell verschiebt -> Follow-Mode aus
+            setOnCameraMoveStartedListener { reason ->
+                if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
+                    setFollowMode(false)
+                }
+            }
         }
 
         // Polylinie vorbereiten
         polyline = map?.addPolyline(
             PolylineOptions()
-                .color(Color.parseColor("#2196F3"))  // Material Blue
+                .color(ContextCompat.getColor(requireContext(), R.color.primary))
                 .width(12f)
                 .geodesic(true)
         )
 
         // Bereits geladene Punkte zeichnen (falls Fragment neu erstellt)
         if (routePoints.isNotEmpty()) redrawRoute()
+
+        // Initialen Status des Zentrier-Buttons setzen
+        setFollowMode(isFollowing)
     }
 
     // ── UI & Buttons ──────────────────────────────────────────────────────────
@@ -124,7 +143,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             viewModel.pauseTracking()
         }
         binding.btnCenter.setOnClickListener {
-            centerOnCurrentLocation()
+            // Toggle Follow-Mode
+            setFollowMode(!isFollowing)
+            
+            // Wenn aktiviert, sofort zentrieren
+            if (isFollowing) {
+                centerOnCurrentLocation()
+            }
         }
     }
 
@@ -132,9 +157,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Tracking-Status → Button-Beschriftung & Reset UI
         viewModel.isTracking.observe(viewLifecycleOwner) { tracking ->
             binding.btnStartStop.text = if (tracking) "STOP" else "START"
-            binding.btnStartStop.setBackgroundColor(
-                if (tracking) Color.parseColor("#F44336")   // Rot
-                else Color.parseColor("#4CAF50")            // Grün
+            binding.btnStartStop.backgroundTintList = ColorStateList.valueOf(
+                if (tracking) ContextCompat.getColor(requireContext(), R.color.error)
+                else ContextCompat.getColor(requireContext(), R.color.success)
             )
             binding.btnPause.visibility = if (tracking) View.VISIBLE else View.GONE
             
@@ -161,10 +186,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 redrawRoute()
 
                 // Automatisch auf letzte Position zoomen
-                if (points.isNotEmpty() && isFirstLocationUpdate) {
+                if (points.isNotEmpty()) {
                     val last = points.last()
-                    zoomToPosition(last.latitude, last.longitude)
-                    isFirstLocationUpdate = false
+                    if (isFirstLocationUpdate || isFollowing) {
+                        zoomToPosition(last.latitude, last.longitude)
+                        isFirstLocationUpdate = false
+                    }
                 }
             }
         }
@@ -174,7 +201,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             val target = profileManager.targetDistanceKm * 1000f
             if (meters >= target && target > 0) {
                 // Ziel erreicht! (Könnte man optisch hervorheben)
-                binding.tvDistance.setTextColor(Color.parseColor("#4CAF50")) // Grün
+                binding.tvDistance.setTextColor(ContextCompat.getColor(requireContext(), R.color.success))
             } else {
                 binding.tvDistance.setTextColor(Color.WHITE)
             }
@@ -189,9 +216,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         viewModel.isPaused.observe(viewLifecycleOwner) { paused ->
             binding.btnPause.text = if (paused) "WEITER" else "PAUSE"
-            binding.btnPause.setBackgroundColor(
-                if (paused) Color.parseColor("#4CAF50") // Grün zum Weitermachen
-                else Color.parseColor("#FF9800")       // Orange für Pause
+            binding.btnPause.backgroundTintList = ColorStateList.valueOf(
+                if (paused) ContextCompat.getColor(requireContext(), R.color.success)
+                else Color.parseColor("#FF9800")
             )
         }
 
@@ -205,9 +232,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         // Standort-Updates für initiale Zentrierung
         viewModel.lastLocation.observe(viewLifecycleOwner) { location ->
-            if (location != null && isFirstLocationUpdate) {
-                zoomToPosition(location.latitude, location.longitude)
-                isFirstLocationUpdate = false
+            if (location != null) {
+                if (isFirstLocationUpdate || isFollowing) {
+                    zoomToPosition(location.latitude, location.longitude)
+                    isFirstLocationUpdate = false
+                }
             }
         }
     }
@@ -218,7 +247,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         if (routePoints.isEmpty()) {
             polyline?.points = emptyList()
             startMarker?.remove()
-            currentMarker?.remove()
             return
         }
 
@@ -235,15 +263,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
             )
         }
-
-        // Aktueller Positions-Marker
-        currentMarker?.remove()
-        currentMarker = map?.addMarker(
-            MarkerOptions()
-                .position(latLngs.last())
-                .title("Aktuell")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-        )
     }
 
     private fun zoomToPosition(lat: Double, lng: Double) {
@@ -276,5 +295,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         } catch (e: SecurityException) {
             e.printStackTrace()
         }
+    }
+
+    private fun setFollowMode(enabled: Boolean) {
+        isFollowing = enabled
+        // Optisches Feedback für den Button (Active: Primary Background + White Icon, Inactive: White Background + Gray Icon)
+        binding.btnCenter.backgroundTintList = ColorStateList.valueOf(
+            if (enabled) ContextCompat.getColor(requireContext(), R.color.primary) 
+            else ContextCompat.getColor(requireContext(), R.color.surface)
+        )
+        binding.btnCenter.imageTintList = ColorStateList.valueOf(
+            if (enabled) Color.WHITE else Color.GRAY
+        )
     }
 }

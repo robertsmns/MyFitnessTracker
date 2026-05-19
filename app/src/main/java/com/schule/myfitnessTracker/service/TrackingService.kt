@@ -22,7 +22,9 @@ import com.schule.myfitnessTracker.data.model.RoutePoint
 import com.schule.myfitnessTracker.ui.MainActivity
 import com.schule.myfitnessTracker.util.ProfileManager
 import kotlinx.coroutines.*
+import java.util.Random
 import kotlin.math.roundToInt
+import kotlin.random.Random as KotlinRandom
 
 /**
  * Foreground Service für GPS-Tracking.
@@ -40,16 +42,16 @@ class TrackingService : LifecycleService(), SensorEventListener {
         const val ACTION_START = "ACTION_START_TRACKING"
         const val ACTION_STOP  = "ACTION_STOP_TRACKING"
         const val ACTION_PAUSE = "ACTION_PAUSE_TRACKING"
+        const val ACTION_ACTIVITY_UPDATE = "ACTION_ACTIVITY_UPDATE"
 
         private const val CHANNEL_ID = "fitness_tracking_channel"
         private const val NOTIFICATION_ID = 1
 
-        // GPS Intervall (Millisekunden)
-        private const val LOCATION_INTERVAL_MS = 3000L
-        private const val LOCATION_FASTEST_MS  = 1500L
+        // GPS Intervalle
+        private const val INTERVAL_ACTIVE_MS = 1000L   // 1 Sekunde für Sport
 
         // Statische LiveData – bleibt über Fragment-Wechsel hinweg erhalten
-        val isTracking   = MutableLiveData(false)
+        val isTracking   = MutableLiveData(false)      // Läuft IRGENDWAS (Service an)?
         val currentRunId = MutableLiveData<Long?>(null)
         val distanceM    = MutableLiveData(0f)        // Meter
         val speedKmh     = MutableLiveData(0f)
@@ -57,7 +59,10 @@ class TrackingService : LifecycleService(), SensorEventListener {
         val elapsedSec   = MutableLiveData(0L)
         val lastLocation = MutableLiveData<Location?>(null)
         val isPaused     = MutableLiveData(false)
+        val isSimulationActive = MutableLiveData(false)
         val heartRate    = MutableLiveData(0) // Platzhalter für Bluetooth-Brustgurt
+        val activityType = MutableLiveData("RUNNING")
+        val currentStartTime = MutableLiveData(0L)
     }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -69,6 +74,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private var prevLocation: Location? = null
+    private var simulationJob: Job? = null
     private var totalDistance = 0f
     private var totalElevationGain = 0f
     private var startTime = 0L
@@ -84,6 +90,8 @@ class TrackingService : LifecycleService(), SensorEventListener {
         repository = FitnessRepository(db)
         profileManager = ProfileManager(applicationContext)
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         setupLocationClient()
         setupSensors()
     }
@@ -92,7 +100,12 @@ class TrackingService : LifecycleService(), SensorEventListener {
         super.onStartCommand(intent, flags, startId)
 
         when (intent?.action) {
-            ACTION_START -> startTracking()
+            ACTION_START -> {
+                val simulate = intent.getBooleanExtra("SIMULATE", false)
+                val type = intent.getStringExtra("ACTIVITY_TYPE") ?: "RUNNING"
+                val mode = intent.getStringExtra("TRACKING_MODE") ?: "ACTIVE"
+                startTracking(simulate, type, mode)
+            }
             ACTION_STOP  -> stopTracking()
             ACTION_PAUSE -> pauseTracking()
         }
@@ -134,15 +147,18 @@ class TrackingService : LifecycleService(), SensorEventListener {
 
     // ── Tracking starten ─────────────────────────────────────────────────────
 
-    private fun startTracking() {
-        startForeground(NOTIFICATION_ID, buildNotification("GPS wird verbunden…"))
+    private fun startTracking(simulate: Boolean = false, type: String = "RUNNING", mode: String = "ACTIVE") {
+        startForeground(NOTIFICATION_ID, buildNotification("GPS wird verbunden…", "Training aktiv"))
 
         totalDistance = 0f
         totalElevationGain = 0f
         prevLocation  = null
         startTime     = System.currentTimeMillis()
+        currentStartTime.postValue(startTime)
+        activityType.postValue(type)
         stepsAtStart  = totalStepsRaw
         isPaused.postValue(false)
+        isSimulationActive.postValue(simulate)
 
         isTracking.postValue(true)
         distanceM.postValue(0f)
@@ -151,16 +167,70 @@ class TrackingService : LifecycleService(), SensorEventListener {
 
         // Neuen Run in DB anlegen
         serviceScope.launch {
-            val runId = repository.startNewRun()
-            currentRunId.postValue(runId)
+            try {
+                val runId = repository.startNewRun(
+                    userId = profileManager.currentUserId,
+                    isMock = simulate,
+                    trackingMode = mode,
+                    activityType = type
+                )
+                currentRunId.postValue(runId)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Falls der User nicht existiert (z.B. nach Wipe), stoppen wir den Service
+                withContext(Dispatchers.Main) {
+                    stopTracking()
+                }
+            }
         }
 
-        requestLocationUpdates()
+        if (simulate) {
+            startGpsSimulation()
+        } else {
+            requestLocationUpdates(INTERVAL_ACTIVE_MS)
+        }
         startTimer()
     }
 
+    private fun startGpsSimulation() {
+        simulationJob?.cancel()
+        simulationJob = serviceScope.launch {
+            // Startpunkt: Berlin-Mitte
+            var curLat = 52.5200
+            var curLng = 13.4050
+            
+            while (isActive) {
+                if (isPaused.value != true) {
+                    val loc = Location("simulation").apply {
+                        latitude = curLat
+                        longitude = curLng
+                        speed = 3.5f + KotlinRandom.nextFloat() // ca. 12 km/h
+                        accuracy = 2f
+                        time = System.currentTimeMillis()
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            verticalAccuracyMeters = 1f
+                        }
+                    }
+                    
+                    withContext(Dispatchers.Main) {
+                        handleNewLocation(loc)
+                    }
+
+                    // Bewege den Punkt ein kleines Stück
+                    curLat += 0.0001
+                    curLng += (KotlinRandom.nextDouble() - 0.5) * 0.0001
+                    
+                    // Simuliere Schritte (ca. 2 Schritte pro Sekunde)
+                    val currentSteps = stepCount.value ?: 0
+                    stepCount.postValue(currentSteps + 2)
+                }
+                delay(1000L)
+            }
+        }
+    }
+
     private fun stopTracking() {
-        // 1. Daten SOFORT einfrieren (Snapshot erstellen)
+        // 2. Daten SOFORT einfrieren (Snapshot erstellen)
         val finalRunId = currentRunId.value
         val finalDistance = totalDistance
         val finalSteps = stepCount.value ?: 0
@@ -170,7 +240,9 @@ class TrackingService : LifecycleService(), SensorEventListener {
         // 2. Sofortiger UI-Reset (damit die App sauber aussieht)
         isTracking.postValue(false)
         isPaused.postValue(false)
+        isSimulationActive.postValue(false)
         timerJob?.cancel()
+        simulationJob?.cancel()
         fusedLocationClient.removeLocationUpdates(locationCallback)
 
         // 3. Speichern und Beenden im Hintergrund-Scope
@@ -218,6 +290,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
         stepsAtStart = 0
         totalElevationGain = 0f
         startTime = 0L
+        currentStartTime.postValue(0L)
         prevLocation = null
     }
 
@@ -237,13 +310,15 @@ class TrackingService : LifecycleService(), SensorEventListener {
 
     // ── GPS ──────────────────────────────────────────────────────────────────
 
-    private fun requestLocationUpdates() {
-        val request = LocationRequest.Builder(LOCATION_INTERVAL_MS)
-            .setMinUpdateIntervalMillis(LOCATION_FASTEST_MS)
+    private fun requestLocationUpdates(intervalMs: Long) {
+        val request = LocationRequest.Builder(intervalMs)
+            .setMinUpdateIntervalMillis(intervalMs / 2)
             .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
             .build()
 
         try {
+            // Erstmal alte Updates entfernen, um Intervall sicher zu ändern
+            fusedLocationClient.removeLocationUpdates(locationCallback)
             fusedLocationClient.requestLocationUpdates(
                 request,
                 locationCallback,
@@ -282,8 +357,8 @@ class TrackingService : LifecycleService(), SensorEventListener {
         speedKmh.postValue(speed)
 
         // GPS-Punkt in DB speichern
-        val runId = currentRunId.value ?: return
         serviceScope.launch {
+            val runId = currentRunId.value ?: return@launch
             repository.addRoutePoint(
                 RoutePoint(
                     runId     = runId,
@@ -333,7 +408,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
 
     // ── Benachrichtigung ─────────────────────────────────────────────────────
 
-    private fun buildNotification(text: String) = run {
+    private fun buildNotification(text: String, title: String? = null) = run {
         createNotificationChannel()
 
         val openAppIntent = Intent(this, MainActivity::class.java)
@@ -359,7 +434,7 @@ class TrackingService : LifecycleService(), SensorEventListener {
 
         NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_run)
-            .setContentTitle("MyFitnessTracker – Tracking aktiv")
+            .setContentTitle(title ?: "Training aktiv")
             .setContentText(text)
             .setContentIntent(pendingIntent)
             .setOngoing(true)

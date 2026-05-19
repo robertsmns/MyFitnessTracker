@@ -48,22 +48,35 @@ public final class RunDao_Impl implements RunDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `runs` (`id`,`startTime`,`endTime`,`distanceMeters`,`avgSpeedKmh`,`steps`,`calories`,`elevationGain`,`isActive`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `runs` (`id`,`userId`,`startTime`,`endTime`,`distanceMeters`,`avgSpeedKmh`,`steps`,`calories`,`elevationGain`,`isActive`,`isMock`,`trackingMode`,`activityType`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
       protected void bind(@NonNull final SupportSQLiteStatement statement,
           @NonNull final Run entity) {
         statement.bindLong(1, entity.getId());
-        statement.bindLong(2, entity.getStartTime());
-        statement.bindLong(3, entity.getEndTime());
-        statement.bindDouble(4, entity.getDistanceMeters());
-        statement.bindDouble(5, entity.getAvgSpeedKmh());
-        statement.bindLong(6, entity.getSteps());
-        statement.bindLong(7, entity.getCalories());
-        statement.bindDouble(8, entity.getElevationGain());
+        statement.bindLong(2, entity.getUserId());
+        statement.bindLong(3, entity.getStartTime());
+        statement.bindLong(4, entity.getEndTime());
+        statement.bindDouble(5, entity.getDistanceMeters());
+        statement.bindDouble(6, entity.getAvgSpeedKmh());
+        statement.bindLong(7, entity.getSteps());
+        statement.bindLong(8, entity.getCalories());
+        statement.bindDouble(9, entity.getElevationGain());
         final int _tmp = entity.isActive() ? 1 : 0;
-        statement.bindLong(9, _tmp);
+        statement.bindLong(10, _tmp);
+        final int _tmp_1 = entity.isMock() ? 1 : 0;
+        statement.bindLong(11, _tmp_1);
+        if (entity.getTrackingMode() == null) {
+          statement.bindNull(12);
+        } else {
+          statement.bindString(12, entity.getTrackingMode());
+        }
+        if (entity.getActivityType() == null) {
+          statement.bindNull(13);
+        } else {
+          statement.bindString(13, entity.getActivityType());
+        }
       }
     };
     this.__deletionAdapterOfRun = new EntityDeletionOrUpdateAdapter<Run>(__db) {
@@ -83,23 +96,36 @@ public final class RunDao_Impl implements RunDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "UPDATE OR ABORT `runs` SET `id` = ?,`startTime` = ?,`endTime` = ?,`distanceMeters` = ?,`avgSpeedKmh` = ?,`steps` = ?,`calories` = ?,`elevationGain` = ?,`isActive` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `runs` SET `id` = ?,`userId` = ?,`startTime` = ?,`endTime` = ?,`distanceMeters` = ?,`avgSpeedKmh` = ?,`steps` = ?,`calories` = ?,`elevationGain` = ?,`isActive` = ?,`isMock` = ?,`trackingMode` = ?,`activityType` = ? WHERE `id` = ?";
       }
 
       @Override
       protected void bind(@NonNull final SupportSQLiteStatement statement,
           @NonNull final Run entity) {
         statement.bindLong(1, entity.getId());
-        statement.bindLong(2, entity.getStartTime());
-        statement.bindLong(3, entity.getEndTime());
-        statement.bindDouble(4, entity.getDistanceMeters());
-        statement.bindDouble(5, entity.getAvgSpeedKmh());
-        statement.bindLong(6, entity.getSteps());
-        statement.bindLong(7, entity.getCalories());
-        statement.bindDouble(8, entity.getElevationGain());
+        statement.bindLong(2, entity.getUserId());
+        statement.bindLong(3, entity.getStartTime());
+        statement.bindLong(4, entity.getEndTime());
+        statement.bindDouble(5, entity.getDistanceMeters());
+        statement.bindDouble(6, entity.getAvgSpeedKmh());
+        statement.bindLong(7, entity.getSteps());
+        statement.bindLong(8, entity.getCalories());
+        statement.bindDouble(9, entity.getElevationGain());
         final int _tmp = entity.isActive() ? 1 : 0;
-        statement.bindLong(9, _tmp);
-        statement.bindLong(10, entity.getId());
+        statement.bindLong(10, _tmp);
+        final int _tmp_1 = entity.isMock() ? 1 : 0;
+        statement.bindLong(11, _tmp_1);
+        if (entity.getTrackingMode() == null) {
+          statement.bindNull(12);
+        } else {
+          statement.bindString(12, entity.getTrackingMode());
+        }
+        if (entity.getActivityType() == null) {
+          statement.bindNull(13);
+        } else {
+          statement.bindString(13, entity.getActivityType());
+        }
+        statement.bindLong(14, entity.getId());
       }
     };
   }
@@ -159,9 +185,14 @@ public final class RunDao_Impl implements RunDao {
   }
 
   @Override
-  public LiveData<List<Run>> getAllRuns() {
-    final String _sql = "SELECT * FROM runs ORDER BY startTime DESC";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+  public LiveData<List<Run>> getAllRuns(final long userId, final boolean isMock) {
+    final String _sql = "SELECT * FROM runs WHERE userId = ? AND isMock = ? ORDER BY startTime DESC";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, userId);
+    _argIndex = 2;
+    final int _tmp = isMock ? 1 : 0;
+    _statement.bindLong(_argIndex, _tmp);
     return __db.getInvalidationTracker().createLiveData(new String[] {"runs"}, false, new Callable<List<Run>>() {
       @Override
       @Nullable
@@ -169,6 +200,7 @@ public final class RunDao_Impl implements RunDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "userId");
           final int _cursorIndexOfStartTime = CursorUtil.getColumnIndexOrThrow(_cursor, "startTime");
           final int _cursorIndexOfEndTime = CursorUtil.getColumnIndexOrThrow(_cursor, "endTime");
           final int _cursorIndexOfDistanceMeters = CursorUtil.getColumnIndexOrThrow(_cursor, "distanceMeters");
@@ -177,11 +209,16 @@ public final class RunDao_Impl implements RunDao {
           final int _cursorIndexOfCalories = CursorUtil.getColumnIndexOrThrow(_cursor, "calories");
           final int _cursorIndexOfElevationGain = CursorUtil.getColumnIndexOrThrow(_cursor, "elevationGain");
           final int _cursorIndexOfIsActive = CursorUtil.getColumnIndexOrThrow(_cursor, "isActive");
+          final int _cursorIndexOfIsMock = CursorUtil.getColumnIndexOrThrow(_cursor, "isMock");
+          final int _cursorIndexOfTrackingMode = CursorUtil.getColumnIndexOrThrow(_cursor, "trackingMode");
+          final int _cursorIndexOfActivityType = CursorUtil.getColumnIndexOrThrow(_cursor, "activityType");
           final List<Run> _result = new ArrayList<Run>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Run _item;
             final long _tmpId;
             _tmpId = _cursor.getLong(_cursorIndexOfId);
+            final long _tmpUserId;
+            _tmpUserId = _cursor.getLong(_cursorIndexOfUserId);
             final long _tmpStartTime;
             _tmpStartTime = _cursor.getLong(_cursorIndexOfStartTime);
             final long _tmpEndTime;
@@ -197,10 +234,26 @@ public final class RunDao_Impl implements RunDao {
             final float _tmpElevationGain;
             _tmpElevationGain = _cursor.getFloat(_cursorIndexOfElevationGain);
             final boolean _tmpIsActive;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsActive);
-            _tmpIsActive = _tmp != 0;
-            _item = new Run(_tmpId,_tmpStartTime,_tmpEndTime,_tmpDistanceMeters,_tmpAvgSpeedKmh,_tmpSteps,_tmpCalories,_tmpElevationGain,_tmpIsActive);
+            final int _tmp_1;
+            _tmp_1 = _cursor.getInt(_cursorIndexOfIsActive);
+            _tmpIsActive = _tmp_1 != 0;
+            final boolean _tmpIsMock;
+            final int _tmp_2;
+            _tmp_2 = _cursor.getInt(_cursorIndexOfIsMock);
+            _tmpIsMock = _tmp_2 != 0;
+            final String _tmpTrackingMode;
+            if (_cursor.isNull(_cursorIndexOfTrackingMode)) {
+              _tmpTrackingMode = null;
+            } else {
+              _tmpTrackingMode = _cursor.getString(_cursorIndexOfTrackingMode);
+            }
+            final String _tmpActivityType;
+            if (_cursor.isNull(_cursorIndexOfActivityType)) {
+              _tmpActivityType = null;
+            } else {
+              _tmpActivityType = _cursor.getString(_cursorIndexOfActivityType);
+            }
+            _item = new Run(_tmpId,_tmpUserId,_tmpStartTime,_tmpEndTime,_tmpDistanceMeters,_tmpAvgSpeedKmh,_tmpSteps,_tmpCalories,_tmpElevationGain,_tmpIsActive,_tmpIsMock,_tmpTrackingMode,_tmpActivityType);
             _result.add(_item);
           }
           return _result;
@@ -217,14 +270,19 @@ public final class RunDao_Impl implements RunDao {
   }
 
   @Override
-  public LiveData<Float> getTodayDistanceLive() {
+  public LiveData<Float> getTodayDistanceLive(final long userId, final boolean isMock) {
     final String _sql = "\n"
             + "        SELECT COALESCE(SUM(distanceMeters), 0) \n"
             + "        FROM runs \n"
-            + "        WHERE DATE(startTime / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime')\n"
-            + "          AND isActive = 0\n"
+            + "        WHERE userId = ? AND DATE(startTime / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime')\n"
+            + "          AND isActive = 0 AND isMock = ?\n"
             + "    ";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, userId);
+    _argIndex = 2;
+    final int _tmp = isMock ? 1 : 0;
+    _statement.bindLong(_argIndex, _tmp);
     return __db.getInvalidationTracker().createLiveData(new String[] {"runs"}, false, new Callable<Float>() {
       @Override
       @Nullable
@@ -233,13 +291,13 @@ public final class RunDao_Impl implements RunDao {
         try {
           final Float _result;
           if (_cursor.moveToFirst()) {
-            final Float _tmp;
+            final Float _tmp_1;
             if (_cursor.isNull(0)) {
-              _tmp = null;
+              _tmp_1 = null;
             } else {
-              _tmp = _cursor.getFloat(0);
+              _tmp_1 = _cursor.getFloat(0);
             }
-            _result = _tmp;
+            _result = _tmp_1;
           } else {
             _result = null;
           }
@@ -257,13 +315,19 @@ public final class RunDao_Impl implements RunDao {
   }
 
   @Override
-  public LiveData<Integer> getTodayCaloriesLive() {
+  public LiveData<Integer> getTodayCaloriesLive(final long userId, final boolean isMock) {
     final String _sql = "\n"
             + "        SELECT COALESCE(SUM(calories), 0) \n"
             + "        FROM runs \n"
-            + "        WHERE DATE(startTime / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime')\n"
+            + "        WHERE userId = ? AND DATE(startTime / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime')\n"
+            + "          AND isMock = ?\n"
             + "    ";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, userId);
+    _argIndex = 2;
+    final int _tmp = isMock ? 1 : 0;
+    _statement.bindLong(_argIndex, _tmp);
     return __db.getInvalidationTracker().createLiveData(new String[] {"runs"}, false, new Callable<Integer>() {
       @Override
       @Nullable
@@ -272,13 +336,13 @@ public final class RunDao_Impl implements RunDao {
         try {
           final Integer _result;
           if (_cursor.moveToFirst()) {
-            final Integer _tmp;
+            final Integer _tmp_1;
             if (_cursor.isNull(0)) {
-              _tmp = null;
+              _tmp_1 = null;
             } else {
-              _tmp = _cursor.getInt(0);
+              _tmp_1 = _cursor.getInt(0);
             }
-            _result = _tmp;
+            _result = _tmp_1;
           } else {
             _result = null;
           }
@@ -296,9 +360,15 @@ public final class RunDao_Impl implements RunDao {
   }
 
   @Override
-  public Object getActiveRun(final Continuation<? super Run> $completion) {
-    final String _sql = "SELECT * FROM runs WHERE isActive = 1 LIMIT 1";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+  public Object getActiveRun(final long userId, final boolean isMock,
+      final Continuation<? super Run> $completion) {
+    final String _sql = "SELECT * FROM runs WHERE userId = ? AND isActive = 1 AND isMock = ? LIMIT 1";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, userId);
+    _argIndex = 2;
+    final int _tmp = isMock ? 1 : 0;
+    _statement.bindLong(_argIndex, _tmp);
     final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
     return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<Run>() {
       @Override
@@ -307,6 +377,7 @@ public final class RunDao_Impl implements RunDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "userId");
           final int _cursorIndexOfStartTime = CursorUtil.getColumnIndexOrThrow(_cursor, "startTime");
           final int _cursorIndexOfEndTime = CursorUtil.getColumnIndexOrThrow(_cursor, "endTime");
           final int _cursorIndexOfDistanceMeters = CursorUtil.getColumnIndexOrThrow(_cursor, "distanceMeters");
@@ -315,10 +386,15 @@ public final class RunDao_Impl implements RunDao {
           final int _cursorIndexOfCalories = CursorUtil.getColumnIndexOrThrow(_cursor, "calories");
           final int _cursorIndexOfElevationGain = CursorUtil.getColumnIndexOrThrow(_cursor, "elevationGain");
           final int _cursorIndexOfIsActive = CursorUtil.getColumnIndexOrThrow(_cursor, "isActive");
+          final int _cursorIndexOfIsMock = CursorUtil.getColumnIndexOrThrow(_cursor, "isMock");
+          final int _cursorIndexOfTrackingMode = CursorUtil.getColumnIndexOrThrow(_cursor, "trackingMode");
+          final int _cursorIndexOfActivityType = CursorUtil.getColumnIndexOrThrow(_cursor, "activityType");
           final Run _result;
           if (_cursor.moveToFirst()) {
             final long _tmpId;
             _tmpId = _cursor.getLong(_cursorIndexOfId);
+            final long _tmpUserId;
+            _tmpUserId = _cursor.getLong(_cursorIndexOfUserId);
             final long _tmpStartTime;
             _tmpStartTime = _cursor.getLong(_cursorIndexOfStartTime);
             final long _tmpEndTime;
@@ -334,10 +410,26 @@ public final class RunDao_Impl implements RunDao {
             final float _tmpElevationGain;
             _tmpElevationGain = _cursor.getFloat(_cursorIndexOfElevationGain);
             final boolean _tmpIsActive;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsActive);
-            _tmpIsActive = _tmp != 0;
-            _result = new Run(_tmpId,_tmpStartTime,_tmpEndTime,_tmpDistanceMeters,_tmpAvgSpeedKmh,_tmpSteps,_tmpCalories,_tmpElevationGain,_tmpIsActive);
+            final int _tmp_1;
+            _tmp_1 = _cursor.getInt(_cursorIndexOfIsActive);
+            _tmpIsActive = _tmp_1 != 0;
+            final boolean _tmpIsMock;
+            final int _tmp_2;
+            _tmp_2 = _cursor.getInt(_cursorIndexOfIsMock);
+            _tmpIsMock = _tmp_2 != 0;
+            final String _tmpTrackingMode;
+            if (_cursor.isNull(_cursorIndexOfTrackingMode)) {
+              _tmpTrackingMode = null;
+            } else {
+              _tmpTrackingMode = _cursor.getString(_cursorIndexOfTrackingMode);
+            }
+            final String _tmpActivityType;
+            if (_cursor.isNull(_cursorIndexOfActivityType)) {
+              _tmpActivityType = null;
+            } else {
+              _tmpActivityType = _cursor.getString(_cursorIndexOfActivityType);
+            }
+            _result = new Run(_tmpId,_tmpUserId,_tmpStartTime,_tmpEndTime,_tmpDistanceMeters,_tmpAvgSpeedKmh,_tmpSteps,_tmpCalories,_tmpElevationGain,_tmpIsActive,_tmpIsMock,_tmpTrackingMode,_tmpActivityType);
           } else {
             _result = null;
           }
@@ -351,9 +443,14 @@ public final class RunDao_Impl implements RunDao {
   }
 
   @Override
-  public LiveData<Run> getLastRun() {
-    final String _sql = "SELECT * FROM runs ORDER BY startTime DESC LIMIT 1";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+  public LiveData<Run> getLastRun(final long userId, final boolean isMock) {
+    final String _sql = "SELECT * FROM runs WHERE userId = ? AND isMock = ? ORDER BY startTime DESC LIMIT 1";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, userId);
+    _argIndex = 2;
+    final int _tmp = isMock ? 1 : 0;
+    _statement.bindLong(_argIndex, _tmp);
     return __db.getInvalidationTracker().createLiveData(new String[] {"runs"}, false, new Callable<Run>() {
       @Override
       @Nullable
@@ -361,6 +458,7 @@ public final class RunDao_Impl implements RunDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "userId");
           final int _cursorIndexOfStartTime = CursorUtil.getColumnIndexOrThrow(_cursor, "startTime");
           final int _cursorIndexOfEndTime = CursorUtil.getColumnIndexOrThrow(_cursor, "endTime");
           final int _cursorIndexOfDistanceMeters = CursorUtil.getColumnIndexOrThrow(_cursor, "distanceMeters");
@@ -369,10 +467,15 @@ public final class RunDao_Impl implements RunDao {
           final int _cursorIndexOfCalories = CursorUtil.getColumnIndexOrThrow(_cursor, "calories");
           final int _cursorIndexOfElevationGain = CursorUtil.getColumnIndexOrThrow(_cursor, "elevationGain");
           final int _cursorIndexOfIsActive = CursorUtil.getColumnIndexOrThrow(_cursor, "isActive");
+          final int _cursorIndexOfIsMock = CursorUtil.getColumnIndexOrThrow(_cursor, "isMock");
+          final int _cursorIndexOfTrackingMode = CursorUtil.getColumnIndexOrThrow(_cursor, "trackingMode");
+          final int _cursorIndexOfActivityType = CursorUtil.getColumnIndexOrThrow(_cursor, "activityType");
           final Run _result;
           if (_cursor.moveToFirst()) {
             final long _tmpId;
             _tmpId = _cursor.getLong(_cursorIndexOfId);
+            final long _tmpUserId;
+            _tmpUserId = _cursor.getLong(_cursorIndexOfUserId);
             final long _tmpStartTime;
             _tmpStartTime = _cursor.getLong(_cursorIndexOfStartTime);
             final long _tmpEndTime;
@@ -388,10 +491,26 @@ public final class RunDao_Impl implements RunDao {
             final float _tmpElevationGain;
             _tmpElevationGain = _cursor.getFloat(_cursorIndexOfElevationGain);
             final boolean _tmpIsActive;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsActive);
-            _tmpIsActive = _tmp != 0;
-            _result = new Run(_tmpId,_tmpStartTime,_tmpEndTime,_tmpDistanceMeters,_tmpAvgSpeedKmh,_tmpSteps,_tmpCalories,_tmpElevationGain,_tmpIsActive);
+            final int _tmp_1;
+            _tmp_1 = _cursor.getInt(_cursorIndexOfIsActive);
+            _tmpIsActive = _tmp_1 != 0;
+            final boolean _tmpIsMock;
+            final int _tmp_2;
+            _tmp_2 = _cursor.getInt(_cursorIndexOfIsMock);
+            _tmpIsMock = _tmp_2 != 0;
+            final String _tmpTrackingMode;
+            if (_cursor.isNull(_cursorIndexOfTrackingMode)) {
+              _tmpTrackingMode = null;
+            } else {
+              _tmpTrackingMode = _cursor.getString(_cursorIndexOfTrackingMode);
+            }
+            final String _tmpActivityType;
+            if (_cursor.isNull(_cursorIndexOfActivityType)) {
+              _tmpActivityType = null;
+            } else {
+              _tmpActivityType = _cursor.getString(_cursorIndexOfActivityType);
+            }
+            _result = new Run(_tmpId,_tmpUserId,_tmpStartTime,_tmpEndTime,_tmpDistanceMeters,_tmpAvgSpeedKmh,_tmpSteps,_tmpCalories,_tmpElevationGain,_tmpIsActive,_tmpIsMock,_tmpTrackingMode,_tmpActivityType);
           } else {
             _result = null;
           }
@@ -409,15 +528,21 @@ public final class RunDao_Impl implements RunDao {
   }
 
   @Override
-  public LiveData<Float> getDistanceSince(final long since) {
+  public LiveData<Float> getDistanceSince(final long userId, final long since,
+      final boolean isMock) {
     final String _sql = "\n"
             + "        SELECT COALESCE(SUM(distanceMeters), 0) \n"
             + "        FROM runs \n"
-            + "        WHERE startTime >= ? AND isActive = 0\n"
+            + "        WHERE userId = ? AND startTime >= ? AND isActive = 0 AND isMock = ?\n"
             + "    ";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 3);
     int _argIndex = 1;
+    _statement.bindLong(_argIndex, userId);
+    _argIndex = 2;
     _statement.bindLong(_argIndex, since);
+    _argIndex = 3;
+    final int _tmp = isMock ? 1 : 0;
+    _statement.bindLong(_argIndex, _tmp);
     return __db.getInvalidationTracker().createLiveData(new String[] {"runs"}, false, new Callable<Float>() {
       @Override
       @Nullable
@@ -426,13 +551,13 @@ public final class RunDao_Impl implements RunDao {
         try {
           final Float _result;
           if (_cursor.moveToFirst()) {
-            final Float _tmp;
+            final Float _tmp_1;
             if (_cursor.isNull(0)) {
-              _tmp = null;
+              _tmp_1 = null;
             } else {
-              _tmp = _cursor.getFloat(0);
+              _tmp_1 = _cursor.getFloat(0);
             }
-            _result = _tmp;
+            _result = _tmp_1;
           } else {
             _result = null;
           }
@@ -450,13 +575,19 @@ public final class RunDao_Impl implements RunDao {
   }
 
   @Override
-  public LiveData<Integer> getTodayStepsLive() {
+  public LiveData<Integer> getTodayStepsLive(final long userId, final boolean isMock) {
     final String _sql = "\n"
             + "        SELECT COALESCE(SUM(steps), 0) \n"
             + "        FROM runs \n"
-            + "        WHERE DATE(startTime / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime')\n"
+            + "        WHERE userId = ? AND DATE(startTime / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime')\n"
+            + "          AND isMock = ?\n"
             + "    ";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, userId);
+    _argIndex = 2;
+    final int _tmp = isMock ? 1 : 0;
+    _statement.bindLong(_argIndex, _tmp);
     return __db.getInvalidationTracker().createLiveData(new String[] {"runs"}, false, new Callable<Integer>() {
       @Override
       @Nullable
@@ -465,13 +596,13 @@ public final class RunDao_Impl implements RunDao {
         try {
           final Integer _result;
           if (_cursor.moveToFirst()) {
-            final Integer _tmp;
+            final Integer _tmp_1;
             if (_cursor.isNull(0)) {
-              _tmp = null;
+              _tmp_1 = null;
             } else {
-              _tmp = _cursor.getInt(0);
+              _tmp_1 = _cursor.getInt(0);
             }
-            _result = _tmp;
+            _result = _tmp_1;
           } else {
             _result = null;
           }
@@ -489,9 +620,14 @@ public final class RunDao_Impl implements RunDao {
   }
 
   @Override
-  public LiveData<Float> getAvgSpeedLive() {
-    final String _sql = "SELECT COALESCE(AVG(avgSpeedKmh), 0) FROM runs WHERE isActive = 0";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+  public LiveData<Float> getAvgSpeedLive(final long userId, final boolean isMock) {
+    final String _sql = "SELECT COALESCE(AVG(avgSpeedKmh), 0) FROM runs WHERE userId = ? AND isActive = 0 AND isMock = ?";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, userId);
+    _argIndex = 2;
+    final int _tmp = isMock ? 1 : 0;
+    _statement.bindLong(_argIndex, _tmp);
     return __db.getInvalidationTracker().createLiveData(new String[] {"runs"}, false, new Callable<Float>() {
       @Override
       @Nullable
@@ -500,13 +636,13 @@ public final class RunDao_Impl implements RunDao {
         try {
           final Float _result;
           if (_cursor.moveToFirst()) {
-            final Float _tmp;
+            final Float _tmp_1;
             if (_cursor.isNull(0)) {
-              _tmp = null;
+              _tmp_1 = null;
             } else {
-              _tmp = _cursor.getFloat(0);
+              _tmp_1 = _cursor.getFloat(0);
             }
-            _result = _tmp;
+            _result = _tmp_1;
           } else {
             _result = null;
           }
@@ -537,6 +673,7 @@ public final class RunDao_Impl implements RunDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "userId");
           final int _cursorIndexOfStartTime = CursorUtil.getColumnIndexOrThrow(_cursor, "startTime");
           final int _cursorIndexOfEndTime = CursorUtil.getColumnIndexOrThrow(_cursor, "endTime");
           final int _cursorIndexOfDistanceMeters = CursorUtil.getColumnIndexOrThrow(_cursor, "distanceMeters");
@@ -545,10 +682,15 @@ public final class RunDao_Impl implements RunDao {
           final int _cursorIndexOfCalories = CursorUtil.getColumnIndexOrThrow(_cursor, "calories");
           final int _cursorIndexOfElevationGain = CursorUtil.getColumnIndexOrThrow(_cursor, "elevationGain");
           final int _cursorIndexOfIsActive = CursorUtil.getColumnIndexOrThrow(_cursor, "isActive");
+          final int _cursorIndexOfIsMock = CursorUtil.getColumnIndexOrThrow(_cursor, "isMock");
+          final int _cursorIndexOfTrackingMode = CursorUtil.getColumnIndexOrThrow(_cursor, "trackingMode");
+          final int _cursorIndexOfActivityType = CursorUtil.getColumnIndexOrThrow(_cursor, "activityType");
           final Run _result;
           if (_cursor.moveToFirst()) {
             final long _tmpId;
             _tmpId = _cursor.getLong(_cursorIndexOfId);
+            final long _tmpUserId;
+            _tmpUserId = _cursor.getLong(_cursorIndexOfUserId);
             final long _tmpStartTime;
             _tmpStartTime = _cursor.getLong(_cursorIndexOfStartTime);
             final long _tmpEndTime;
@@ -567,7 +709,23 @@ public final class RunDao_Impl implements RunDao {
             final int _tmp;
             _tmp = _cursor.getInt(_cursorIndexOfIsActive);
             _tmpIsActive = _tmp != 0;
-            _result = new Run(_tmpId,_tmpStartTime,_tmpEndTime,_tmpDistanceMeters,_tmpAvgSpeedKmh,_tmpSteps,_tmpCalories,_tmpElevationGain,_tmpIsActive);
+            final boolean _tmpIsMock;
+            final int _tmp_1;
+            _tmp_1 = _cursor.getInt(_cursorIndexOfIsMock);
+            _tmpIsMock = _tmp_1 != 0;
+            final String _tmpTrackingMode;
+            if (_cursor.isNull(_cursorIndexOfTrackingMode)) {
+              _tmpTrackingMode = null;
+            } else {
+              _tmpTrackingMode = _cursor.getString(_cursorIndexOfTrackingMode);
+            }
+            final String _tmpActivityType;
+            if (_cursor.isNull(_cursorIndexOfActivityType)) {
+              _tmpActivityType = null;
+            } else {
+              _tmpActivityType = _cursor.getString(_cursorIndexOfActivityType);
+            }
+            _result = new Run(_tmpId,_tmpUserId,_tmpStartTime,_tmpEndTime,_tmpDistanceMeters,_tmpAvgSpeedKmh,_tmpSteps,_tmpCalories,_tmpElevationGain,_tmpIsActive,_tmpIsMock,_tmpTrackingMode,_tmpActivityType);
           } else {
             _result = null;
           }
@@ -581,19 +739,24 @@ public final class RunDao_Impl implements RunDao {
   }
 
   @Override
-  public Object getWeeklyStats(final long since,
+  public Object getWeeklyStats(final long userId, final long since, final boolean isMock,
       final Continuation<? super List<DailyStats>> $completion) {
     final String _sql = "\n"
             + "        SELECT DATE(startTime / 1000, 'unixepoch', 'localtime') AS day,\n"
             + "               SUM(distanceMeters) / 1000.0 AS distanceKm\n"
             + "        FROM runs\n"
-            + "        WHERE startTime >= ? AND isActive = 0\n"
+            + "        WHERE userId = ? AND startTime >= ? AND isActive = 0 AND isMock = ?\n"
             + "        GROUP BY day\n"
             + "        ORDER BY day ASC\n"
             + "    ";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 3);
     int _argIndex = 1;
+    _statement.bindLong(_argIndex, userId);
+    _argIndex = 2;
     _statement.bindLong(_argIndex, since);
+    _argIndex = 3;
+    final int _tmp = isMock ? 1 : 0;
+    _statement.bindLong(_argIndex, _tmp);
     final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
     return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<List<DailyStats>>() {
       @Override

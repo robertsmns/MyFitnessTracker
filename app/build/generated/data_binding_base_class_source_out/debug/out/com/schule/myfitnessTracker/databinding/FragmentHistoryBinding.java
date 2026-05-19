@@ -4,6 +4,7 @@ package com.schule.myfitnessTracker.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
+import com.google.android.material.card.MaterialCardView;
 import com.schule.myfitnessTracker.R;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -21,16 +23,38 @@ public final class FragmentHistoryBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
+  public final MaterialCardView cardLiveStatus;
+
+  @NonNull
+  public final ImageView ivLiveIcon;
+
+  @NonNull
   public final RecyclerView rvRunHistory;
+
+  @NonNull
+  public final TextView tvLiveActivity;
+
+  @NonNull
+  public final TextView tvLiveSince;
 
   @NonNull
   public final TextView tvNoRuns;
 
-  private FragmentHistoryBinding(@NonNull LinearLayout rootView, @NonNull RecyclerView rvRunHistory,
-      @NonNull TextView tvNoRuns) {
+  @NonNull
+  public final View viewPulse;
+
+  private FragmentHistoryBinding(@NonNull LinearLayout rootView,
+      @NonNull MaterialCardView cardLiveStatus, @NonNull ImageView ivLiveIcon,
+      @NonNull RecyclerView rvRunHistory, @NonNull TextView tvLiveActivity,
+      @NonNull TextView tvLiveSince, @NonNull TextView tvNoRuns, @NonNull View viewPulse) {
     this.rootView = rootView;
+    this.cardLiveStatus = cardLiveStatus;
+    this.ivLiveIcon = ivLiveIcon;
     this.rvRunHistory = rvRunHistory;
+    this.tvLiveActivity = tvLiveActivity;
+    this.tvLiveSince = tvLiveSince;
     this.tvNoRuns = tvNoRuns;
+    this.viewPulse = viewPulse;
   }
 
   @Override
@@ -60,9 +84,33 @@ public final class FragmentHistoryBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.card_live_status;
+      MaterialCardView cardLiveStatus = ViewBindings.findChildViewById(rootView, id);
+      if (cardLiveStatus == null) {
+        break missingId;
+      }
+
+      id = R.id.iv_live_icon;
+      ImageView ivLiveIcon = ViewBindings.findChildViewById(rootView, id);
+      if (ivLiveIcon == null) {
+        break missingId;
+      }
+
       id = R.id.rv_run_history;
       RecyclerView rvRunHistory = ViewBindings.findChildViewById(rootView, id);
       if (rvRunHistory == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_live_activity;
+      TextView tvLiveActivity = ViewBindings.findChildViewById(rootView, id);
+      if (tvLiveActivity == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_live_since;
+      TextView tvLiveSince = ViewBindings.findChildViewById(rootView, id);
+      if (tvLiveSince == null) {
         break missingId;
       }
 
@@ -72,7 +120,14 @@ public final class FragmentHistoryBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentHistoryBinding((LinearLayout) rootView, rvRunHistory, tvNoRuns);
+      id = R.id.view_pulse;
+      View viewPulse = ViewBindings.findChildViewById(rootView, id);
+      if (viewPulse == null) {
+        break missingId;
+      }
+
+      return new FragmentHistoryBinding((LinearLayout) rootView, cardLiveStatus, ivLiveIcon,
+          rvRunHistory, tvLiveActivity, tvLiveSince, tvNoRuns, viewPulse);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Kräftigere Brand Colors für den Dark Mode -->
-    <color name="primary">#42A5F5</color> <!-- Ein leuchtenderes Blau -->
-    <color name="primary_variant">#1E88E5</color>
-    <color name="secondary">#FFA726</color> <!-- Ein satteres Orange -->
-    <color name="secondary_variant">#FB8C00</color>
+    <!-- Modern "Athletic Blue" Dark Mode -->
+    <color name="primary">#64B5F6</color> <!-- Ein helleres, leuchtendes Blau für Dark Mode -->
+    <color name="primary_variant">#1976D2</color>
+    <color name="secondary">#4DD0E1</color>
+    <color name="secondary_variant">#00ACC1</color>
 
-    <!-- Surface & Background -->
-    <color name="background">#121212</color>
-    <color name="surface">#1E1E1E</color>
-    <item name="on_surface" type="color">#FFFFFF</item>
-    <item name="on_surface_variant" type="color">#B0B0B0</item> <!-- Viel heller für bessere Lesbarkeit -->
+    <!-- Surface & Background - Optimiert für Tiefe ohne "Dreck-Effekt" -->
+    <color name="background">#121212</color> <!-- Klassisches Material Dark Background -->
+    <color name="surface">#1E1E1E</color>    <!-- Etwas helleres Grau für Karten/Dialoge (Elevation) -->
+    <color name="on_surface">#FFFFFF</color>
+    <color name="on_surface_variant">#B0BEC5</color>
+    <color name="navigation_selection_color">#42A5F5</color> <!-- Ein leuchtenderes Blau für bessere Sichtbarkeit der Auswahl -->
 
     <!-- Status -->
-    <color name="error">#EF5350</color> <!-- Kräftiges Rot -->
-    <color name="success">#66BB6A</color> <!-- Kräftiges Grün -->
+    <color name="error">#FF5252</color> <!-- Kräftiges Rot für Dark Mode -->
+    <color name="success">#00E676</color> <!-- Leuchtendes, kräftiges Grün für den Start-Button -->
 
-    <!-- Karte -->
-    <color name="route_color">#42A5F5</color>
+    <!-- Karte & Charts -->
+    <color name="route_color">#64B5F6</color>
 </resources>

@@ -6,14 +6,44 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
+ * Repräsentiert einen Benutzer der App.
+ */
+@Entity(tableName = "users")
+data class User(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    val username: String,
+    val email: String,
+    val passwordHash: String,
+    val role: String = "USER", // "ADMIN" oder "USER"
+    val profilePicturePath: String? = null,
+    val weight: Float = 75f,
+    val targetDistanceKm: Float = 5f
+)
+
+/**
  * Repräsentiert eine einzelne Trainingseinheit (Lauf/Spaziergang).
  *
  * Wird in der Room-Datenbank in der Tabelle "runs" gespeichert.
  */
-@Entity(tableName = "runs")
+@Entity(
+    tableName = "runs",
+    foreignKeys = [
+        ForeignKey(
+            entity = User::class,
+            parentColumns = ["id"],
+            childColumns = ["userId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index("userId")]
+)
 data class Run(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
+
+    /** Zu welchem User gehört dieser Run */
+    val userId: Long,
 
     /** Startzeit in Millisekunden (Unix-Timestamp) */
     val startTime: Long = System.currentTimeMillis(),
@@ -37,7 +67,16 @@ data class Run(
     val elevationGain: Float = 0f,
 
     /** Ist die Session noch aktiv? */
-    val isActive: Boolean = true
+    val isActive: Boolean = true,
+
+    /** Ist dies ein simulierter Lauf (Mock-Daten)? */
+    val isMock: Boolean = false,
+
+    /** Tracking Modus: "ACTIVE" (Training) oder "PASSIVE" (Hintergrund/Alltag) */
+    val trackingMode: String = "ACTIVE",
+
+    /** Typ der Aktivität (WALKING, RUNNING, BICYCLE, etc.) */
+    val activityType: String = "RUNNING"
 ) {
     /** Dauer in Sekunden */
     val durationSeconds: Long

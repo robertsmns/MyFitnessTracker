@@ -13,6 +13,7 @@ import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.github.mikephil.charting.charts.BarChart;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.schule.myfitnessTracker.R;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -26,7 +27,13 @@ public final class FragmentDashboardBinding implements ViewBinding {
   public final BarChart barChart;
 
   @NonNull
+  public final MaterialCardView cardActiveMode;
+
+  @NonNull
   public final MaterialCardView cardProfile;
+
+  @NonNull
+  public final ShapeableImageView ivProfileDashboard;
 
   @NonNull
   public final ItemRunBinding lastRunLayout;
@@ -62,7 +69,8 @@ public final class FragmentDashboardBinding implements ViewBinding {
   public final TextView tvTodaySteps;
 
   private FragmentDashboardBinding(@NonNull ScrollView rootView, @NonNull BarChart barChart,
-      @NonNull MaterialCardView cardProfile, @NonNull ItemRunBinding lastRunLayout,
+      @NonNull MaterialCardView cardActiveMode, @NonNull MaterialCardView cardProfile,
+      @NonNull ShapeableImageView ivProfileDashboard, @NonNull ItemRunBinding lastRunLayout,
       @NonNull ProgressBar progressSteps, @NonNull TextView textView, @NonNull TextView tvAvgSpeed,
       @NonNull TextView tvNoRuns, @NonNull TextView tvProfileName,
       @NonNull TextView tvProfileWeight, @NonNull TextView tvStepsGoal,
@@ -70,7 +78,9 @@ public final class FragmentDashboardBinding implements ViewBinding {
       @NonNull TextView tvTodaySteps) {
     this.rootView = rootView;
     this.barChart = barChart;
+    this.cardActiveMode = cardActiveMode;
     this.cardProfile = cardProfile;
+    this.ivProfileDashboard = ivProfileDashboard;
     this.lastRunLayout = lastRunLayout;
     this.progressSteps = progressSteps;
     this.textView = textView;
@@ -117,9 +127,21 @@ public final class FragmentDashboardBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.card_active_mode;
+      MaterialCardView cardActiveMode = ViewBindings.findChildViewById(rootView, id);
+      if (cardActiveMode == null) {
+        break missingId;
+      }
+
       id = R.id.card_profile;
       MaterialCardView cardProfile = ViewBindings.findChildViewById(rootView, id);
       if (cardProfile == null) {
+        break missingId;
+      }
+
+      id = R.id.iv_profile_dashboard;
+      ShapeableImageView ivProfileDashboard = ViewBindings.findChildViewById(rootView, id);
+      if (ivProfileDashboard == null) {
         break missingId;
       }
 
@@ -190,9 +212,10 @@ public final class FragmentDashboardBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentDashboardBinding((ScrollView) rootView, barChart, cardProfile,
-          binding_lastRunLayout, progressSteps, textView, tvAvgSpeed, tvNoRuns, tvProfileName,
-          tvProfileWeight, tvStepsGoal, tvTodayCalories, tvTodayDistance, tvTodaySteps);
+      return new FragmentDashboardBinding((ScrollView) rootView, barChart, cardActiveMode,
+          cardProfile, ivProfileDashboard, binding_lastRunLayout, progressSteps, textView,
+          tvAvgSpeed, tvNoRuns, tvProfileName, tvProfileWeight, tvStepsGoal, tvTodayCalories,
+          tvTodayDistance, tvTodaySteps);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

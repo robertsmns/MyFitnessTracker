@@ -8,16 +8,8 @@
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_fragment_history.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\fragment_history.xml"
-    },
-    {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xxxhdpi\\ic_launcher.webp"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
     {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_dialog_elevation_profile.xml.flat",
@@ -28,44 +20,28 @@
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_launcher_background.xml"
     },
     {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\color_nav_text_tint.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\color\\nav_text_tint.xml"
+    },
+    {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_stop.xml.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_stop.xml"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xhdpi\\ic_launcher_round.webp"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-hdpi\\ic_launcher_round.webp"
     },
     {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-xhdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\menu_bottom_nav_menu.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\menu\\bottom_nav_menu.xml"
-    },
-    {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_play.xml.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_play.xml"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\color-night_nav_item_tint.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\color-night\\nav_item_tint.xml"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-hdpi_ic_launcher_foreground.webp.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-hdpi\\ic_launcher_foreground.webp"
     },
     {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-mdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-mdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-hdpi_ic_launcher_foreground.webp.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-hdpi\\ic_launcher_foreground.webp"
     },
     {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_delete.xml.flat",
@@ -76,60 +52,28 @@
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xhdpi\\ic_launcher_foreground.webp"
     },
     {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\color_nav_item_tint.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\color\\nav_item_tint.xml"
-    },
-    {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-mdpi_ic_launcher_foreground.webp.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-mdpi\\ic_launcher_foreground.webp"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_item_run.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\item_run.xml"
     },
     {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-xxhdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_run.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_run.xml"
-    },
-    {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-mdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-mdpi\\ic_launcher.webp"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_pause.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_pause.xml"
     },
     {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_dialog_run_details.xml.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\dialog_run_details.xml"
     },
     {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_fragment_map.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\fragment_map.xml"
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\color-night_nav_text_tint.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\color-night\\nav_text_tint.xml"
     },
     {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_history.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_history.xml"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-anydpi-v26\\ic_launcher.xml"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_fragment_dashboard.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\fragment_dashboard.xml"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\navigation_nav_graph.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\navigation\\nav_graph.xml"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_map.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_map.xml"
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_fragment_register.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\fragment_register.xml"
     },
     {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_my_location.xml.flat",
@@ -140,24 +84,16 @@
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\xml\\file_paths.xml"
     },
     {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xxxhdpi\\ic_launcher_foreground.webp"
-    },
-    {
-        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_launcher_foreground.xml"
-    },
-    {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_activity_main.xml.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\activity_main.xml"
     },
     {
-        "merged": "com.schule.myfitnessTracker.app-debug-57:/layout_fragment_map.xml.flat",
-        "source": "com.schule.myfitnessTracker.app-main-59:/layout/fragment_map.xml"
-    },
-    {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-hdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "com.schule.myfitnessTracker.app-debug-57:/layout_fragment_dashboard.xml.flat",
+        "source": "com.schule.myfitnessTracker.app-main-59:/layout/fragment_dashboard.xml"
     },
     {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_dashboard.xml.flat",
@@ -166,5 +102,101 @@
     {
         "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\raw_map_style_dark.json.flat",
         "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\raw\\map_style_dark.json"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_fragment_history.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\fragment_history.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\menu_bottom_nav_menu.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\menu\\bottom_nav_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\color-night_nav_item_tint.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\color-night\\nav_item_tint.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\color_nav_item_tint.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\color\\nav_item_tint.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_fragment_login.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\fragment_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_item_run.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\item_run.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_settings.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_settings.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_run.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_run.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_pause.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_pause.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_fragment_map.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\fragment_map.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_history.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_history.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_fragment_dashboard.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\fragment_dashboard.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\navigation_nav_graph.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\navigation\\nav_graph.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_map.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_map.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\mipmap-xxxhdpi\\ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\drawable_ic_profile_placeholder.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\drawable\\ic_profile_placeholder.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_fragment_options.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\fragment_options.xml"
+    },
+    {
+        "merged": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-debug-57:\\layout_dialog_edit_profile.xml.flat",
+        "source": "C:\\Users\\sieme\\.gradle\\daemon\\8.6\\com.schule.myfitnessTracker.app-main-59:\\layout\\dialog_edit_profile.xml"
     }
 ]

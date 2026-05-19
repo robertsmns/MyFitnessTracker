@@ -30,6 +30,6 @@
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled"
         app:itemIconTint="@color/nav_item_tint"
-        app:itemTextColor="@color/nav_item_tint" />
+        app:itemTextColor="@color/nav_text_tint" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

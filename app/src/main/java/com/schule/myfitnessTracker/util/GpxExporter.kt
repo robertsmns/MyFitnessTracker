@@ -28,10 +28,18 @@ object GpxExporter {
                 file
             )
 
+            val typeLabel = when (run.activityType) {
+                "WALKING" -> "Gehen"
+                "RUNNING" -> "Laufen"
+                "BICYCLE" -> "Radfahren"
+                "VEHICLE" -> "Fahrt"
+                else      -> "Aktivität"
+            }
+
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "application/gpx+xml"
                 putExtra(Intent.EXTRA_STREAM, uri)
-                putExtra(Intent.EXTRA_SUBJECT, "Mein Lauf vom ${SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date(run.startTime))}")
+                putExtra(Intent.EXTRA_SUBJECT, "Mein/e $typeLabel vom ${SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date(run.startTime))}")
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             context.startActivity(Intent.createChooser(intent, "GPX Exportieren"))

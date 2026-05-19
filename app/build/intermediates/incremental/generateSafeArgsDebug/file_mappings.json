@@ -1,1 +1,1 @@
-[{"navFile":"src\\main\\res\\navigation\\nav_graph.xml","javaFiles":[]}]
+[{"navFile":"src\\main\\res\\navigation\\nav_graph.xml","javaFiles":["com.schule.myfitnessTracker.ui.auth.LoginFragmentDirections","com.schule.myfitnessTracker.ui.auth.RegisterFragmentDirections"]}]

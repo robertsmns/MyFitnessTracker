@@ -31,8 +31,8 @@ class RunDetailsDialogFragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Macht das Dialog-Fenster breiter
-        setStyle(STYLE_NORMAL, android.R.style.Theme_Material_Light_Dialog_MinWidth)
+        // Nutzt das System-Theme (DayNight) statt festem Light Mode
+        setStyle(STYLE_NORMAL, android.R.style.Theme_Material_Dialog_MinWidth)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -43,8 +43,22 @@ class RunDetailsDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Karte initial ausblenden gegen Dark-Mode-Blitzen
+        binding.detailMap.alpha = 0f
+
         val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMAN)
-        binding.tvTitle.text = "Lauf vom ${dateFormat.format(Date(run.startTime))}"
+        
+        val modeLabel = if (run.trackingMode == "PASSIVE") "Alltag: " else "Sport: "
+        val typeLabel = when (run.activityType) {
+            "WALKING" -> "Gehen"
+            "RUNNING" -> "Laufen"
+            "BICYCLE" -> "Radfahren"
+            "VEHICLE" -> "Fahrt"
+            "STILL"   -> "Stillstand"
+            else      -> "Aktivität"
+        }
+        
+        binding.tvTitle.text = "$modeLabel$typeLabel vom ${dateFormat.format(Date(run.startTime))}"
 
         binding.btnClose.setOnClickListener { dismiss() }
 
@@ -68,6 +82,9 @@ class RunDetailsDialogFragment(
                 if (isDarkMode) {
                     googleMap.setMapStyle(com.google.android.gms.maps.model.MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style_dark))
                 }
+
+                // Einblenden nach Styling
+                binding.detailMap.animate().alpha(1f).setDuration(400).start()
 
                 if (points.isNotEmpty()) {
                     val latLngs = points.map { LatLng(it.latitude, it.longitude) }

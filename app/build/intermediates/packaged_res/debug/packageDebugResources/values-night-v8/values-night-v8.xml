@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background">#121212</color>
-    <color name="error">#EF5350</color>
-    <item name="on_surface" type="color">#FFFFFF</item>
-    <item name="on_surface_variant" type="color">#B0B0B0</item>
-    <color name="primary">#42A5F5</color>
-    <color name="primary_variant">#1E88E5</color>
-    <color name="route_color">#42A5F5</color>
-    <color name="secondary">#FFA726</color>
-    <color name="secondary_variant">#FB8C00</color>
-    <color name="success">#66BB6A</color>
+    <color name="error">#FF5252</color>
+    <color name="navigation_selection_color">#42A5F5</color>
+    <color name="on_surface">#FFFFFF</color>
+    <color name="on_surface_variant">#B0BEC5</color>
+    <color name="primary">#64B5F6</color>
+    <color name="primary_variant">#1976D2</color>
+    <color name="route_color">#64B5F6</color>
+    <color name="secondary">#4DD0E1</color>
+    <color name="secondary_variant">#00ACC1</color>
+    <color name="success">#00E676</color>
     <color name="surface">#1E1E1E</color>
-    <style name="Theme.MyFitnessTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.MyFitnessTracker" parent="Theme.Material3.DayNight.NoActionBar">
+        
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorOnPrimary">@color/background</item>
+        <item name="colorPrimaryContainer">@color/primary</item>
+        <item name="colorOnPrimaryContainer">@color/background</item>
+
         <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondary_variant</item>
+        <item name="colorOnSecondary">@color/on_surface</item>
+
         <item name="android:colorBackground">@color/background</item>
         <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorSurfaceVariant">@color/surface</item> 
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
+
+        <item name="colorSecondaryContainer">@color/navigation_selection_color</item> 
+        <item name="colorOnSecondaryContainer">@color/on_surface</item>
+
+        <item name="colorOutline">@color/primary</item>
         <item name="colorError">@color/error</item>
+
         
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:windowLightStatusBar">false</item>
